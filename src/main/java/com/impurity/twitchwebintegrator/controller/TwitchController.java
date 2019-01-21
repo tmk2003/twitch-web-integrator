@@ -27,7 +27,7 @@ public class TwitchController {
     }
 
     @GetMapping("/total/followers")
-    public int getTotalFollowers(@RequestParam String channelName) {
+    public Long getTotalFollowers(@RequestParam String channelName) {
         return twitchService.getTotalFollowers(channelName);
     }
 }

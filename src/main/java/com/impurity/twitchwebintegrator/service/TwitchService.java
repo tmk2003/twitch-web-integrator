@@ -87,7 +87,7 @@ public class TwitchService {
      * @param channel - Channel to grab the followers for
      * @return An array of followers
      */
-    public int getTotalFollowers(@RequestParam String channel) {
+    public Long getTotalFollowers(@RequestParam String channel) {
         TwitchUser twitchUser = this.getUser(channel);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getFollowersURL)
                 .queryParam(TO_ID_KEY, twitchUser.getId());
@@ -96,11 +96,11 @@ public class TwitchService {
         String responseBody = sendTwitchRequest(builder.toUriString());
 
         // Parse down to the data array
-        int totalFollowers;
+        Long totalFollowers;
         try {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
-            totalFollowers = (int) jsonObject.get(TOTAL_KEY);
+            totalFollowers = (Long) jsonObject.get(TOTAL_KEY);
         } catch (ParseException e) {
             LOGGER.error("Could not parse response from twitch", e);
             throw new TwitchFollowerException("Twitch Response Body was Invalid", e);
