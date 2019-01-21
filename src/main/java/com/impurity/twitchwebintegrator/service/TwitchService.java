@@ -124,8 +124,8 @@ public class TwitchService {
                 twitchFollower.setFollowed_at((String) currentNode.get(FOLLOWED_AT_KEY));
                 twitchFollowers[i] = twitchFollower;
             } catch (Exception e) {
-                LOGGER.error("Error constructing our twitch user", e);
-                throw new TwitchUserException("Cannot create twitch user", e);
+                LOGGER.error("Error constructing our twitch follower", e);
+                throw new TwitchFollowerException("Cannot create twitch follower", e);
             }
         }
 
