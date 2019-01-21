@@ -15,7 +15,7 @@ public class TwitchKeys {
     public final static String VIEW_COUNT_KEY = "view_count";
 
     /* Followers */
-    public final static String TOTAL_KEY = "id";
+    public final static String TOTAL_KEY = "total";
     public final static String FROM_ID_KEY = "from_id";
     public final static String FROM_NAME_KEY = "from_name";
     public final static String TO_ID_KEY = "to_id";

@@ -83,11 +83,41 @@ public class TwitchService {
     }
 
     /**
-     * Get the users followers
+     * Get the users recent followers
      * @param channel - Channel to grab the followers for
      * @return An array of followers
      */
-    public TwitchFollower[] getFollowers(@RequestParam String channel) {
+    public int getTotalFollowers(@RequestParam String channel) {
+        TwitchUser twitchUser = this.getUser(channel);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getFollowersURL)
+                .queryParam(TO_ID_KEY, twitchUser.getId());
+
+        // Attempt to contact twitch api
+        String responseBody = sendTwitchRequest(builder.toUriString());
+
+        // Parse down to the data array
+        int totalFollowers;
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            totalFollowers = (int) jsonObject.get(TOTAL_KEY);
+        } catch (ParseException e) {
+            LOGGER.error("Could not parse response from twitch", e);
+            throw new TwitchFollowerException("Twitch Response Body was Invalid", e);
+        } catch (Exception e) {
+            LOGGER.error("Error parsing out the data field", e);
+            throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
+        }
+
+        return totalFollowers;
+    }
+
+    /**
+     * Get the users recent followers
+     * @param channel - Channel to grab the followers for
+     * @return An array of followers
+     */
+    public TwitchFollower[] getRecentFollowers(@RequestParam String channel) {
         TwitchUser twitchUser = this.getUser(channel);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getFollowersURL)
                 .queryParam(TO_ID_KEY, twitchUser.getId());

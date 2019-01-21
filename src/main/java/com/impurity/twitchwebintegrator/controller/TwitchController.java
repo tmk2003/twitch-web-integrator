@@ -21,9 +21,13 @@ public class TwitchController {
         return twitchService.getUser(channelName);
     }
 
-    @GetMapping("/followers")
+    @GetMapping("/recent/followers")
     public TwitchFollower[] getFollowers(@RequestParam String channelName) {
-        return twitchService.getFollowers(channelName);
+        return twitchService.getRecentFollowers(channelName);
     }
 
+    @GetMapping("/total/followers")
+    public int getTotalFollowers(@RequestParam String channelName) {
+        return twitchService.getTotalFollowers(channelName);
+    }
 }
