@@ -1,6 +1,5 @@
 package com.impurity.twitchwebintegrator.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
 import com.impurity.twitchwebintegrator.exception.TwitchUserException;
@@ -14,14 +13,15 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
 
+/**
+ * @author Tyler Kokoszka
+ */
 @Service
 public class TwitchService {
 
@@ -31,10 +31,10 @@ public class TwitchService {
     private TwitchProperties _twitchProperties;
 
     private final Logger LOGGER = LoggerFactory.getLogger(TwitchService.class);
-    private final String clientID = "Client-ID";
 
     /**
      * Get the twitch user
+     *
      * @param channel - Channel to grab the user for
      * @return A twitch user
      */
@@ -80,6 +80,7 @@ public class TwitchService {
 
     /**
      * Get the users recent followers
+     *
      * @param channel - Channel to grab the followers for
      * @return An array of followers
      */
@@ -106,6 +107,7 @@ public class TwitchService {
 
     /**
      * Get the users recent followers
+     *
      * @param channel - Channel to grab the followers for
      * @return An array of followers
      */

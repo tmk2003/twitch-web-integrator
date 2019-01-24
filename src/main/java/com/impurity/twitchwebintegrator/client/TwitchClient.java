@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static com.impurity.twitchwebintegrator.constant.TwitchKeys.TO_ID_KEY;
+import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
 /**
  * @author Tyler Kokoszka
@@ -20,20 +20,26 @@ public class TwitchClient {
     private TwitchProperties _twitchProperties;
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String loginParam = "login";
 
+    /**
+     * Perform a Get on the twitch API to attempt to retrieve a Twitch User
+     *
+     * @param channel - Name of the channel to get information on
+     * @return The response of the rest call
+     */
     public String sendGetUser(String channel) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl(_twitchProperties.getGetUserUrl())
-                .queryParam(loginParam, channel);
+                .queryParam(LOGIN_KEY, channel);
 
         return sendTwitchRequest(uriComponentsBuilder.toUriString());
     }
 
     /**
+     * Perform a Get on the twitch API to attempt to retrieve a Twitch Users Followers
      *
-     * @param twitchUser
-     * @return
+     * @param twitchUser - The Twitch User to perform the look up on
+     * @return The response of the rest call
      */
     public String sendGetFollowers(TwitchUser twitchUser) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
@@ -44,6 +50,7 @@ public class TwitchClient {
 
     /**
      * Generate the response body from twitch based off the uri
+     *
      * @param uri - Generated uri based off the request
      * @return - Response body
      */
