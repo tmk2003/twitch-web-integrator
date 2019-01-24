@@ -29,7 +29,6 @@ public class TwitchService {
     private final Logger LOGGER = LoggerFactory.getLogger(TwitchService.class);
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final String getUserURL = "https://api.twitch.tv/helix/users";
     private final String getFollowersURL = "https://api.twitch.tv/helix/users/follows";
@@ -39,6 +38,11 @@ public class TwitchService {
     @Value("${client-id}")
     private String getClientID;
 
+    /**
+     * Get the twitch user
+     * @param channel - Channel to grab the user for
+     * @return A twitch user
+     */
     public TwitchUser getUser(@RequestParam String channel) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getUserURL)
                 .queryParam(loginParam, channel);
