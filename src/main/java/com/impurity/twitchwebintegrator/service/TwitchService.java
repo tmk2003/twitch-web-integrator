@@ -32,10 +32,6 @@ public class TwitchService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TwitchService.class);
     private final String clientID = "Client-ID";
-    private final String loginParam = "login";
-
-    @Value("${client-id}")
-    private String getClientID;
 
     /**
      * Get the twitch user
@@ -43,11 +39,8 @@ public class TwitchService {
      * @return A twitch user
      */
     public TwitchUser getUser(@RequestParam String channel) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetUserUrl())
-                .queryParam(loginParam, channel);
-
         // Attempt to contact twitch API with our constructed url
-        String responseBody = _twitchClient.sendTwitchRequest(builder.toUriString());
+        String responseBody = _twitchClient.sendGetUser(channel);
 
         // Parse down to the data array
         JSONObject dataNode;
@@ -91,12 +84,8 @@ public class TwitchService {
      * @return An array of followers
      */
     public Long getTotalFollowers(@RequestParam String channel) {
-        TwitchUser twitchUser = this.getUser(channel);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
-                .queryParam(TO_ID_KEY, twitchUser.getId());
-
         // Attempt to contact twitch api
-        String responseBody = _twitchClient.sendTwitchRequest(builder.toUriString());
+        String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
 
         // Parse down to the data array
         Long totalFollowers;
@@ -121,12 +110,8 @@ public class TwitchService {
      * @return An array of followers
      */
     public TwitchFollower[] getRecentFollowers(@RequestParam String channel) {
-        TwitchUser twitchUser = this.getUser(channel);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
-                .queryParam(TO_ID_KEY, twitchUser.getId());
-
         // Attempt to contact twitch api
-        String responseBody = _twitchClient.sendTwitchRequest(builder.toUriString());
+        String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
 
         // Parse down to the data array
         JSONArray jsonArray;

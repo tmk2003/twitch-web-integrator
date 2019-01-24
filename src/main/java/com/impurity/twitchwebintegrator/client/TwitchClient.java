@@ -1,28 +1,55 @@
 package com.impurity.twitchwebintegrator.client;
 
+import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import static com.impurity.twitchwebintegrator.constant.TwitchKeys.TO_ID_KEY;
+
+/**
+ * @author Tyler Kokoszka
+ */
 public class TwitchClient {
 
     @Autowired
-    private TwitchProperties twitchProperties;
+    private TwitchProperties _twitchProperties;
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String clientID = "Client-ID";
+    private final String loginParam = "login";
+
+    public String sendGetUser(String channel) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
+                .fromHttpUrl(_twitchProperties.getGetUserUrl())
+                .queryParam(loginParam, channel);
+
+        return sendTwitchRequest(uriComponentsBuilder.toUriString());
+    }
+
+    /**
+     *
+     * @param twitchUser
+     * @return
+     */
+    public String sendGetFollowers(TwitchUser twitchUser) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
+                .queryParam(TO_ID_KEY, twitchUser.getId());
+
+        return sendTwitchRequest(builder.toUriString());
+    }
 
     /**
      * Generate the response body from twitch based off the uri
      * @param uri - Generated uri based off the request
      * @return - Response body
      */
-    public String sendTwitchRequest(String uri) {
+    private String sendTwitchRequest(String uri) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(clientID, clientID);
+        headers.set("Client-ID", _twitchProperties.getClientId());
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
