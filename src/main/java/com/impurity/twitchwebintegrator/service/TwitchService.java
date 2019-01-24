@@ -1,23 +1,22 @@
 package com.impurity.twitchwebintegrator.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
 import com.impurity.twitchwebintegrator.exception.TwitchUserException;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
@@ -26,12 +25,12 @@ import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 @Service
 public class TwitchService {
 
+    @Autowired
+    private TwitchClient _twitchClient;
+    @Autowired
+    private TwitchProperties _twitchProperties;
+
     private final Logger LOGGER = LoggerFactory.getLogger(TwitchService.class);
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    private final String getUserURL = "https://api.twitch.tv/helix/users";
-    private final String getFollowersURL = "https://api.twitch.tv/helix/users/follows";
     private final String clientID = "Client-ID";
     private final String loginParam = "login";
 
@@ -44,11 +43,11 @@ public class TwitchService {
      * @return A twitch user
      */
     public TwitchUser getUser(@RequestParam String channel) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getUserURL)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetUserUrl())
                 .queryParam(loginParam, channel);
 
         // Attempt to contact twitch API with our constructed url
-        String responseBody = sendTwitchRequest(builder.toUriString());
+        String responseBody = _twitchClient.sendTwitchRequest(builder.toUriString());
 
         // Parse down to the data array
         JSONObject dataNode;
@@ -93,11 +92,11 @@ public class TwitchService {
      */
     public Long getTotalFollowers(@RequestParam String channel) {
         TwitchUser twitchUser = this.getUser(channel);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getFollowersURL)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
                 .queryParam(TO_ID_KEY, twitchUser.getId());
 
         // Attempt to contact twitch api
-        String responseBody = sendTwitchRequest(builder.toUriString());
+        String responseBody = _twitchClient.sendTwitchRequest(builder.toUriString());
 
         // Parse down to the data array
         Long totalFollowers;
@@ -123,11 +122,11 @@ public class TwitchService {
      */
     public TwitchFollower[] getRecentFollowers(@RequestParam String channel) {
         TwitchUser twitchUser = this.getUser(channel);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getFollowersURL)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
                 .queryParam(TO_ID_KEY, twitchUser.getId());
 
         // Attempt to contact twitch api
-        String responseBody = sendTwitchRequest(builder.toUriString());
+        String responseBody = _twitchClient.sendTwitchRequest(builder.toUriString());
 
         // Parse down to the data array
         JSONArray jsonArray;
@@ -164,27 +163,5 @@ public class TwitchService {
         }
 
         return twitchFollowers;
-    }
-
-    /**
-     * Generate the response body from twitch based off the uri
-     * @param uri - Generated uri based off the request
-     * @return - Response body
-     */
-    private String sendTwitchRequest(String uri) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(clientID, getClientID);
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-
-        HttpEntity<String> response = restTemplate.exchange(
-                uri, HttpMethod.GET,
-                entity, String.class);
-
-        if (response == null) throw new IllegalArgumentException("Twitch Response was Null");
-        String responseBody = response.getBody();
-        if (responseBody == null) throw new IllegalArgumentException("Twitch Response Body was Null");
-
-        return responseBody;
     }
 }
