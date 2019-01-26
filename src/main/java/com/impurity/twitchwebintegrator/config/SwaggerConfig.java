@@ -15,12 +15,12 @@ import java.util.*;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    public static final Contact DEFAULT_CONTACT = new Contact(
+    private static final Contact DEFAULT_CONTACT = new Contact(
             "Tyler Kokoszka", "https://tmk2003.github.io/Personal-Website/", "techkoko77@gmail.com");
 
-    public static final Collection<VendorExtension> DEFAULT_VENDOREXTENTIONS = new LinkedList<>();
+    private static final Collection<VendorExtension> DEFAULT_VENDOREXTENTIONS = new LinkedList<>();
 
-    public static final ApiInfo DEFAULT_API_INFO = new ApiInfo(
+    private static final ApiInfo DEFAULT_API_INFO = new ApiInfo(
             "Twitch Web Integrator",
             "A Restful API to query twitch for user information", "TODO",
             "TODO", DEFAULT_CONTACT,
@@ -31,7 +31,6 @@ public class SwaggerConfig {
     private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES =
             new HashSet<>(Arrays.asList("application/json", "application/xml"));
 
-    /* String title, String description, String version, String termsOfServiceUrl, Contact contact, String license, String licenseUrl, Collection<VendorExtension> vendorExtensions */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
