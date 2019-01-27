@@ -4,12 +4,10 @@ import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = {"https://tmk2003.github.io", "http://localhost:4200"}, maxAge = 3600)
+@RequestMapping("/twitch")
 @RestController
 public class TwitchController {
 
@@ -21,12 +19,12 @@ public class TwitchController {
         return twitchService.getUser(channelName);
     }
 
-    @GetMapping("/recent/followers")
+    @GetMapping("/followers/recent")
     public TwitchFollower[] getFollowers(@RequestParam String channelName) {
         return twitchService.getRecentFollowers(channelName);
     }
 
-    @GetMapping("/total/followers")
+    @GetMapping("/followers/total")
     public Long getTotalFollowers(@RequestParam String channelName) {
         return twitchService.getTotalFollowers(channelName);
     }
