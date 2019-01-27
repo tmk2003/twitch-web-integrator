@@ -14,18 +14,24 @@ public class TwitchController {
     @Autowired
     private TwitchService twitchService;
 
-    @GetMapping("/user")
-    public TwitchUser getUser(@RequestParam String channelName) {
+    @GetMapping("/user/{channelName}")
+    public TwitchUser getUser(
+            @PathVariable("channelName") String channelName
+    ) {
         return twitchService.getUser(channelName);
     }
 
-    @GetMapping("/followers/recent")
-    public TwitchFollower[] getFollowers(@RequestParam String channelName) {
+    @GetMapping("/followers/{channelName}/recent")
+    public TwitchFollower[] getFollowers(
+            @PathVariable("channelName") String channelName
+    ) {
         return twitchService.getRecentFollowers(channelName);
     }
 
-    @GetMapping("/followers/total")
-    public Long getTotalFollowers(@RequestParam String channelName) {
+    @GetMapping("/followers/{channelName}/total")
+    public Long getTotalFollowers(
+            @PathVariable("channelName") String channelName
+    ) {
         return twitchService.getTotalFollowers(channelName);
     }
 }
