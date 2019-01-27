@@ -9,6 +9,7 @@ public class SteamProperties {
 
     private String key;
     private String getLibraryUrl;
+    private String imageUrl;
 
     public String getKey() {
         return key;
@@ -24,5 +25,13 @@ public class SteamProperties {
 
     public void setGetLibraryUrl(String getLibraryUrl) {
         this.getLibraryUrl = getLibraryUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

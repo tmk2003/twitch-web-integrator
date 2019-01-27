@@ -4,7 +4,6 @@ import com.impurity.twitchwebintegrator.client.SteamClient;
 import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
 import com.impurity.twitchwebintegrator.exception.TwitchUserException;
 import com.impurity.twitchwebintegrator.model.SteamGame;
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
-import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
 @Service
 public class SteamServiceImpl implements SteamService {
@@ -55,8 +53,16 @@ public class SteamServiceImpl implements SteamService {
                 SteamGame steamGame = new SteamGame();
                 steamGame.setAppId((Long) currentNode.get(APPID));
                 steamGame.setHasCommunityVisibleStats((Boolean) currentNode.get(HAS_COMMUNITY_VISIBLE_STATS));
-                steamGame.setImgIconUrl((String) currentNode.get(IMG_ICON_URL));
-                steamGame.setImgLogoUrl((String) currentNode.get(IMG_LOGO_URL));
+                steamGame.setImgIconUrl(
+                        _steamClient.imageHashToUrl(
+                                steamGame.getAppId(),
+                                (String) currentNode.get(IMG_ICON_URL))
+                );
+                steamGame.setImgLogoUrl(
+                        _steamClient.imageHashToUrl(
+                                steamGame.getAppId(),
+                                (String) currentNode.get(IMG_LOGO_URL))
+                );
                 steamGame.setName((String) currentNode.get(NAME));
                 steamGame.setPlaytimeForever((Long) currentNode.get(PLAYTIME_FOREVER));
                 steamGames[i] = steamGame;

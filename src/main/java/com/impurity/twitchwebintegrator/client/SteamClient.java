@@ -1,7 +1,5 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.constant.SteamKeys;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -17,6 +15,16 @@ public class SteamClient {
     @Autowired
     private SteamProperties _steamProperties;
     private final RestTemplate restTemplate = new RestTemplate();
+
+    /**
+     * Convert a app id & image hash to an image url
+     * @param appId the app id for the steam game
+     * @param imageHash the image hash for the steam game
+     * @return the proper url to get the image
+     */
+    public String imageHashToUrl(Long appId, String imageHash) {
+        return "http://media.steampowered.com/steamcommunity/public/images/apps/" + appId + "/" + imageHash + ".jpg";
+    }
 
     /**
      * Perform a Get on the twitch API to attempt to retrieve a Twitch User
