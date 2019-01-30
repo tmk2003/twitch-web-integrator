@@ -4,6 +4,7 @@ import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
 import com.impurity.twitchwebintegrator.exception.TwitchUserException;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
+import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import com.impurity.twitchwebintegrator.service.TwitchService;
@@ -15,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
@@ -76,6 +80,57 @@ public class TwitchServiceImpl implements TwitchService {
         }
 
         return twitchUser;
+    }
+
+
+    /**
+     * Get the twitch user
+     *
+     * @param channel - Channel to grab the user for
+     * @return A twitch user
+     */
+    @Override
+    public TwitchStream getStream(String channel) {
+        // Attempt to contact twitch API with our constructed url
+        String responseBody = _twitchClient.sendGetStream(channel);
+
+        // Parse down to the data array
+        JSONObject dataNode;
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
+            dataNode = (JSONObject) jsonArray.get(0);
+        } catch (ParseException e) {
+            LOGGER.error("Could not parse response from twitch", e);
+            throw new TwitchUserException("Twitch Response Body was Invalid", e);
+        } catch (Exception e) {
+            LOGGER.error("Error parsing out the data field", e);
+            throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
+        }
+
+        // Create Twitch User
+        TwitchStream twitchStream;
+        try {
+            twitchStream = new TwitchStream();
+            twitchStream.setId((String) dataNode.get(ID_KEY));
+            twitchStream.setUserId((String) dataNode.get(USER_ID_KEY));
+            twitchStream.setUserName((String) dataNode.get(USER_NAME_KEY));
+            twitchStream.setGameId((String) dataNode.get(GAME_ID_KEY));
+            twitchStream.setType((String) dataNode.get(TYPE_KEY));
+            twitchStream.setTitle((String) dataNode.get(TITLE_KEY));
+            twitchStream.setLanguage((String) dataNode.get(LANGUAGE_KEY));
+            twitchStream.setThumbnailUrl((String) dataNode.get(THUMBNAIL_URL_KEY));
+            twitchStream.setViewerCount((Long) dataNode.get(VIEWER_COUNT_KEY));
+            twitchStream.setStartedAt((String) dataNode.get(STARTED_AT_KEY));
+            twitchStream.setCommunityIds(jsonArrayToStringArray((JSONArray) dataNode.get(COMMUNITY_IDS_KEY)));
+            twitchStream.setTagIds(jsonArrayToStringArray((JSONArray) dataNode.get(TAG_IDS_KEY)));
+        } catch (Exception e) {
+            LOGGER.error("Error constructing our twitch stream", e);
+            throw new TwitchUserException("Cannot create twitch stream", e);
+        }
+
+        return twitchStream;
     }
 
     /**
@@ -152,5 +207,18 @@ public class TwitchServiceImpl implements TwitchService {
         }
 
         return twitchFollowers;
+    }
+
+    /**
+     * Converts a jsonArray to a stringArray
+     * @param jsonArray JSON array from twitch
+     * @return String array for a pojo to use
+     */
+    private String[] jsonArrayToStringArray(JSONArray jsonArray) {
+        String[] stringArray = new String[jsonArray.size()];
+        for(int i = 0; i < jsonArray.size(); i++) {
+            stringArray[i] = (String) jsonArray.get(i);
+        }
+        return stringArray;
     }
 }

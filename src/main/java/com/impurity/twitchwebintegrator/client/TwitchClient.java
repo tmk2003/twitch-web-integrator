@@ -36,6 +36,20 @@ public class TwitchClient {
     }
 
     /**
+     * Perform a Get on the twitch API to attempt to retrieve a Twitch Stream
+     *
+     * @param channel - Name of the channel to get information on
+     * @return The response of the rest call
+     */
+    public String sendGetStream(String channel) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
+                .fromHttpUrl(_twitchProperties.getGetStreamUrl())
+                .queryParam(USER_LOGIN_KEY, channel);
+
+        return sendTwitchRequest(uriComponentsBuilder.toUriString());
+    }
+
+    /**
      * Perform a Get on the twitch API to attempt to retrieve a Twitch Users Followers
      *
      * @param twitchUser - The Twitch User to perform the look up on

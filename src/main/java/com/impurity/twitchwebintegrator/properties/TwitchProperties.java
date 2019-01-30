@@ -9,6 +9,7 @@ public class TwitchProperties {
 
     private String getUserUrl;
     private String getFollowersUrl;
+    private String getStreamUrl;
     private String clientId;
 
     public String getGetUserUrl() {
@@ -25,6 +26,14 @@ public class TwitchProperties {
 
     public void setGetFollowersUrl(String getFollowersUrl) {
         this.getFollowersUrl = getFollowersUrl;
+    }
+
+    public String getGetStreamUrl() {
+        return getStreamUrl;
+    }
+
+    public void setGetStreamUrl(String getStreamUrl) {
+        this.getStreamUrl = getStreamUrl;
     }
 
     public String getClientId() {

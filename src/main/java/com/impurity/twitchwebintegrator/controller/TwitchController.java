@@ -1,6 +1,7 @@
 package com.impurity.twitchwebintegrator.controller;
 
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
+import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,13 @@ public class TwitchController {
             @PathVariable("channelName") String channelName
     ) {
         return twitchService.getUser(channelName);
+    }
+
+    @GetMapping("/stream/{channelName}")
+    public TwitchStream getStream(
+            @PathVariable("channelName") String channelName
+    ) {
+        return twitchService.getStream(channelName);
     }
 
     @GetMapping("/followers/{channelName}/recent")

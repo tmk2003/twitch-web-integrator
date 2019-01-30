@@ -1,6 +1,7 @@
 package com.impurity.twitchwebintegrator.service;
 
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
+import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 
 
@@ -16,6 +17,14 @@ public interface TwitchService {
      * @return A twitch user
      */
     TwitchUser getUser(String channel);
+
+    /**
+     * Get the twitch stream
+     *
+     * @param channel - Channel to grab the user for
+     * @return A twitch stream
+     */
+    TwitchStream getStream(String channel);
 
     /**
      * Get the users recent followers

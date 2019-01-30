@@ -22,4 +22,16 @@ public class TwitchKeys {
     public final static String TO_NAME_KEY = "to_name";
     public final static String FOLLOWED_AT_KEY = "followed_at";
 
+    /* Streams */
+    public final static String USER_LOGIN_KEY = "user_login";
+    public final static String USER_ID_KEY = "user_id";
+    public final static String USER_NAME_KEY = "user_name";
+    public final static String GAME_ID_KEY = "game_id";
+    public final static String COMMUNITY_IDS_KEY = "community_ids";
+    public final static String TITLE_KEY = "title";
+    public final static String VIEWER_COUNT_KEY = "viewer_count";
+    public final static String STARTED_AT_KEY = "started_at";
+    public final static String LANGUAGE_KEY = "language";
+    public final static String THUMBNAIL_URL_KEY = "thumbnail_url";
+    public final static String TAG_IDS_KEY = "tag_ids";
 }
