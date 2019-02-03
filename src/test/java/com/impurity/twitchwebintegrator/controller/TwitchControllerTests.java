@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.exception.TwitchUserException;
-import com.impurity.twitchwebintegrator.exception.TwitchUserNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;

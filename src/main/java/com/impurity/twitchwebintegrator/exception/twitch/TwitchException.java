@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.exception;
+package com.impurity.twitchwebintegrator.exception.twitch;
 
 /**
  * @author Tyler Kokoszka

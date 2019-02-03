@@ -1,9 +1,9 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
-import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
-import com.impurity.twitchwebintegrator.exception.TwitchUserException;
-import com.impurity.twitchwebintegrator.exception.TwitchUserNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
@@ -17,9 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 

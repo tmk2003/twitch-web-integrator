@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.SteamClient;
-import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
-import com.impurity.twitchwebintegrator.exception.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
 import com.impurity.twitchwebintegrator.model.SteamGame;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import org.json.simple.JSONArray;

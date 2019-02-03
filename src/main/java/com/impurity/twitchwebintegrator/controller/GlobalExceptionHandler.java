@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.exception.TwitchUserException;
-import com.impurity.twitchwebintegrator.exception.TwitchUserNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

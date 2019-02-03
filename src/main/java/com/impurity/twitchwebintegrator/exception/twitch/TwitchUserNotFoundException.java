@@ -1,15 +1,15 @@
-package com.impurity.twitchwebintegrator.exception;
+package com.impurity.twitchwebintegrator.exception.twitch;
 
 /**
  * @author Tyler Kokoszka
  */
-public class TwitchUserException extends TwitchException {
+public class TwitchUserNotFoundException extends TwitchUserException {
     /**
      * Generic Twitch Exception
      *
      * @param message Explanatory message
      */
-    public TwitchUserException(String message) {
+    public TwitchUserNotFoundException(String message) {
         super(message);
     }
 
@@ -19,7 +19,7 @@ public class TwitchUserException extends TwitchException {
      * @param message Explanatory message
      * @param cause Stack track cause
      */
-    public TwitchUserException(String message, Throwable cause) {
+    public TwitchUserNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }
