@@ -1,7 +1,5 @@
 package com.impurity.twitchwebintegrator.model;
 
-import java.util.Date;
-
 public class TwitchStream {
     private String id;
     private String userId;

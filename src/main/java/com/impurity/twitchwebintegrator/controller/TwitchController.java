@@ -13,33 +13,33 @@ import org.springframework.web.bind.annotation.*;
 public class TwitchController {
 
     @Autowired
-    private TwitchService twitchService;
+    private TwitchService _twitchService;
 
-    @GetMapping("/user/{channelName}")
+    @GetMapping(value = "/user/{channelName}", produces = "application/json")
     public TwitchUser getUser(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getUser(channelName);
+        return _twitchService.getUser(channelName);
     }
 
     @GetMapping("/stream/{channelName}")
     public TwitchStream getStream(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getStream(channelName);
+        return _twitchService.getStream(channelName);
     }
 
     @GetMapping("/followers/{channelName}/recent")
     public TwitchFollower[] getFollowers(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getRecentFollowers(channelName);
+        return _twitchService.getRecentFollowers(channelName);
     }
 
     @GetMapping("/followers/{channelName}/total")
     public Long getTotalFollowers(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getTotalFollowers(channelName);
+        return _twitchService.getTotalFollowers(channelName);
     }
 }

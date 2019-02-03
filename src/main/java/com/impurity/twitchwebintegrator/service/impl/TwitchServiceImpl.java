@@ -3,6 +3,7 @@ package com.impurity.twitchwebintegrator.service.impl;
 import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.exception.TwitchFollowerException;
 import com.impurity.twitchwebintegrator.exception.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
@@ -55,7 +56,7 @@ public class TwitchServiceImpl implements TwitchService {
             dataNode = (JSONObject) jsonArray.get(0);
         } catch (ParseException e) {
             LOGGER.error("Could not parse response from twitch", e);
-            throw new TwitchUserException("Twitch Response Body was Invalid", e);
+            throw new TwitchUserNotFoundException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
             LOGGER.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
