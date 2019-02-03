@@ -29,7 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(TwitchUserNotFoundException.class)
     protected ResponseEntity<Object> handledTwitchUserNotFoundException(Exception ex, WebRequest request) {
-        String message = "The Twitch User was not found";
+        String message = ex.getMessage();
         LOGGER.info(message, ex);
         return handleExceptionInternal(
                 ex, message, new HttpHeaders(), HttpStatus.NOT_FOUND, request

@@ -48,19 +48,24 @@ public class TwitchServiceImpl implements TwitchService {
         String responseBody = _twitchClient.sendGetUser(channel);
 
         // Parse down to the data array
-        JSONObject dataNode;
+        JSONArray jsonArray;
         try {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
-            JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
-            dataNode = (JSONObject) jsonArray.get(0);
+            jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
         } catch (ParseException e) {
             LOGGER.error("Could not parse response from twitch", e);
-            throw new TwitchUserNotFoundException("Twitch Response Body was Invalid", e);
+            throw new TwitchUserException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
             LOGGER.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
+
+        // Determine if twitch API returned us a Twitch User
+        if(jsonArray.size() == 0)
+            throw new TwitchUserNotFoundException(channel + " was not found in twitch API");
+
+        JSONObject dataNode = (JSONObject) jsonArray.get(0);
 
         // Create Twitch User
         TwitchUser twitchUser;
