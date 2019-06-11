@@ -3,6 +3,9 @@ package com.impurity.twitchwebintegrator.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author tmk2003
+ */
 @Component
 @ConfigurationProperties(prefix = "twitch")
 public class TwitchProperties {

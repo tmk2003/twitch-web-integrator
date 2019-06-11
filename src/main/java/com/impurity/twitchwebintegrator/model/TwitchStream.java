@@ -1,5 +1,8 @@
 package com.impurity.twitchwebintegrator.model;
 
+/**
+ * @author tmk2003
+ */
 public class TwitchStream {
     private String id;
     private String userId;

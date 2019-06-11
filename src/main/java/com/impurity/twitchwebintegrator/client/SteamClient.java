@@ -10,6 +10,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
 
+/**
+ * @author tmk2003
+ */
 public class SteamClient {
 
     @Autowired

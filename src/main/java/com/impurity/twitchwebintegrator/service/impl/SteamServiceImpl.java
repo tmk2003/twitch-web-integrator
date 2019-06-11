@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
 
+/**
+ * @author tmk2003
+ */
 @Service
 public class SteamServiceImpl implements SteamService {
 

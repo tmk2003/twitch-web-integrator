@@ -3,14 +3,14 @@ package com.impurity.twitchwebintegrator.exception.twitch;
 /**
  * @author tmk2003
  */
-public class TwitchStreamException extends TwitchException {
+public class TwitchStreamNotFoundException extends TwitchException {
     /**
-     * Generic Twitch Exception
+     * Generic Twitch stream not found Exception
      *
      * @param message Explanatory message
      * @param cause Stack track cause
      */
-    public TwitchStreamException(String message, Throwable cause) {
+    public TwitchStreamNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }

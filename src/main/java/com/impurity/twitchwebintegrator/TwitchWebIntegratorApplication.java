@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Entry of the application
+ * Application entry
+ * @author tmk2003
  */
 @SpringBootApplication
 public class TwitchWebIntegratorApplication {

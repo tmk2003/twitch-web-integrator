@@ -4,7 +4,6 @@ import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 
-
 /**
  * @author Tyler Kokoszka
  */

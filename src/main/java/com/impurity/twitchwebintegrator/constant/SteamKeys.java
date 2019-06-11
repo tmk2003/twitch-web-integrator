@@ -1,5 +1,8 @@
 package com.impurity.twitchwebintegrator.constant;
 
+/**
+ * @author tmk2003
+ */
 public class SteamKeys {
     public final static String KEY = "key";
     public final static String STEAM_ID = "steamid";

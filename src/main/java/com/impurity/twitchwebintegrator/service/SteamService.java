@@ -2,6 +2,9 @@ package com.impurity.twitchwebintegrator.service;
 
 import com.impurity.twitchwebintegrator.model.SteamGame;
 
+/**
+ * @author tmk2003
+ */
 public interface SteamService {
 
     /**

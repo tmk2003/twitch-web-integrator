@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
 /**
- * @author Tyler Kokoszka
+ * @author tmk2003
  */
 @Service
 public class TwitchServiceImpl implements TwitchService {

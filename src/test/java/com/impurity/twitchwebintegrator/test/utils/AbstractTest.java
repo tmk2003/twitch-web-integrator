@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 /**
- * @author Tyler Kokoszka
+ * @author tmk2003
  */
 public abstract class AbstractTest {
 

@@ -1,5 +1,8 @@
 package com.impurity.twitchwebintegrator.model;
 
+/**
+ * @author tmk2003
+ */
 public class TwitchFollower {
 
     private String from_id;

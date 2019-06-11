@@ -1,5 +1,8 @@
 package com.impurity.twitchwebintegrator.constant;
 
+/**
+ * @author tmk2003
+ */
 public class TwitchKeys {
     public final static String DATA_KEY = "data";
 

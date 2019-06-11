@@ -7,6 +7,9 @@ import com.impurity.twitchwebintegrator.service.TwitchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author tmk2003
+ */
 @CrossOrigin(origins = {"https://tmk2003.github.io", "http://localhost:4200"}, maxAge = 3600)
 @RequestMapping("/twitch")
 @RestController

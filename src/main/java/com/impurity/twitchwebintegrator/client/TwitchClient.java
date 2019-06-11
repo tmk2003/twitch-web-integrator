@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
 /**
- * @author Tyler Kokoszka
+ * @author tmk2003
  */
 public class TwitchClient {
 

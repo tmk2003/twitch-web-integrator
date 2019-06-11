@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.exception.twitch;
 
 /**
- * @author Tyler Kokoszka
+ * @author tmk2003
  */
 public class TwitchUserNotFoundException extends TwitchUserException {
     /**
