@@ -2,6 +2,7 @@ package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.exception.twitch.RestTemplateClientException;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +17,12 @@ public abstract class RestTemplateClient {
     public RestTemplateClient() {
         this._restTemplate = new RestTemplate();
     }
+
+    /**
+     * Create the header with the required header fields
+     * @return the header with the required fields added
+     */
+    protected abstract HttpHeaders getHeaders();
 
     /**
      * Generate the response body from steam based off the uri

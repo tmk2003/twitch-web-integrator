@@ -22,6 +22,11 @@ public class SteamClient extends RestTemplateClient {
         this._steamProperties = steamProperties;
     }
 
+    @Override
+    protected HttpHeaders getHeaders() {
+        return new HttpHeaders();
+    }
+
     /**
      * Convert a app id & image hash to an image url
      * @param appId the app id for the steam game
@@ -45,9 +50,6 @@ public class SteamClient extends RestTemplateClient {
                 .queryParam(STEAM_ID, steamID)
                 .queryParam(INCLUDE_APPINFO, 1);
 
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-
-        return makeRequest(builder.toUriString(), HttpMethod.GET, entity);
+        return makeRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
     }
 }

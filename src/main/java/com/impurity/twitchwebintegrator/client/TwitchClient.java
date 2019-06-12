@@ -24,6 +24,13 @@ public class TwitchClient extends RestTemplateClient {
         this._twitchProperties = twitchProperties;
     }
 
+    @Override
+    protected HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Client-ID", _twitchProperties.getClientId());
+        return headers;
+    }
+
     /**
      * Perform a Get on the twitch API to attempt to retrieve a Twitch User
      *
@@ -31,15 +38,11 @@ public class TwitchClient extends RestTemplateClient {
      * @return The response of the rest call
      */
     public String sendGetUser(String channel) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Client-ID", _twitchProperties.getClientId());
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl(_twitchProperties.getUserUrl())
                 .queryParam(LOGIN_KEY, channel);
 
-        return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, entity);
+        return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
     }
 
     /**
@@ -49,15 +52,11 @@ public class TwitchClient extends RestTemplateClient {
      * @return The response of the rest call
      */
     public String sendGetStream(String channel) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Client-ID", _twitchProperties.getClientId());
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl(_twitchProperties.getStreamUrl())
                 .queryParam(USER_LOGIN_KEY, channel);
 
-        return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, entity);
+        return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
     }
 
     /**
@@ -67,14 +66,10 @@ public class TwitchClient extends RestTemplateClient {
      * @return The response of the rest call
      */
     public String sendGetFollowers(TwitchUser twitchUser) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Client-ID", _twitchProperties.getClientId());
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(_twitchProperties.getFollowersUrl())
                 .queryParam(TO_ID_KEY, twitchUser.getId());
 
-        return makeRequest(builder.toUriString(), HttpMethod.GET, entity);
+        return makeRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
     }
 }
