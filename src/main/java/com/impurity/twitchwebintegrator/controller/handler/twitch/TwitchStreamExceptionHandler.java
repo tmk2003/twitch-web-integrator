@@ -1,9 +1,7 @@
 package com.impurity.twitchwebintegrator.controller.handler.twitch;
 
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamCreationException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -22,8 +20,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class TwitchStreamExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(TwitchStreamException.class)
-    protected ResponseEntity<Object> handledTwitchStreamException(Exception ex, WebRequest request) {
+    @ExceptionHandler(TwitchStreamCreationException.class)
+    protected ResponseEntity<Object> handledTwitchStreamCreationException(Exception ex, WebRequest request) {
         log.info("The Twitch Stream from the Twitch API could not be constructed: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, "Error creating the Stream", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request

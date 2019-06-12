@@ -3,7 +3,7 @@ package com.impurity.twitchwebintegrator.exception.twitch;
 /**
  * @author tmk2003
  */
-public class TwitchUserException extends TwitchException {
+public class TwitchUserCreationException extends TwitchException {
     private final long serialVersionUID = -1672930411967682149L;
 
     /**
@@ -11,7 +11,7 @@ public class TwitchUserException extends TwitchException {
      *
      * @param message Explanatory message
      */
-    public TwitchUserException(String message) {
+    public TwitchUserCreationException(String message) {
         super(message);
     }
 
@@ -21,7 +21,7 @@ public class TwitchUserException extends TwitchException {
      * @param message Explanatory message
      * @param cause Stack track cause
      */
-    public TwitchUserException(String message, Throwable cause) {
+    public TwitchUserCreationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

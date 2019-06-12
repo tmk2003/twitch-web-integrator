@@ -1,6 +1,5 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.constant.Profiles;
 import com.impurity.twitchwebintegrator.exception.twitch.*;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchStream;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,7 +65,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a twitch user and it cannot be created, return 500")
     public void twitch_user_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getUser(_mockChannelName)).thenThrow(TwitchUserException.class);
+        when(_mockTwitchService.getUser(_mockChannelName)).thenThrow(TwitchUserCreationException.class);
         _mockMvc.perform(get("/twitch/user/" + _mockChannelName))
                 .andExpect(status().isInternalServerError());
     }
@@ -97,7 +95,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a twitch stream and it cannot be created, return 500")
     public void twitch_stream_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getStream(_mockChannelName)).thenThrow(TwitchStreamException.class);
+        when(_mockTwitchService.getStream(_mockChannelName)).thenThrow(TwitchStreamCreationException.class);
         _mockMvc.perform(get("/twitch/stream/" + _mockChannelName))
                 .andExpect(status().isInternalServerError());
     }
@@ -126,7 +124,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch recent followers and it cannot be created, return 500")
     public void twitch_followers_recent_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getRecentFollowers(_mockChannelName)).thenThrow(TwitchFollowerException.class);
+        when(_mockTwitchService.getRecentFollowers(_mockChannelName)).thenThrow(TwitchFollowerCreationException.class);
         _mockMvc.perform(get("/twitch/followers/" + _mockChannelName + "/recent"))
                 .andExpect(status().isInternalServerError());
     }
@@ -152,7 +150,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch total followers and it cannot be created, return 500")
     public void twitch_followers_total_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getTotalFollowers(_mockChannelName)).thenThrow(TwitchFollowerException.class);
+        when(_mockTwitchService.getTotalFollowers(_mockChannelName)).thenThrow(TwitchFollowerCreationException.class);
         _mockMvc.perform(get("/twitch/followers/" + _mockChannelName + "/total"))
                 .andExpect(status().isInternalServerError());
     }

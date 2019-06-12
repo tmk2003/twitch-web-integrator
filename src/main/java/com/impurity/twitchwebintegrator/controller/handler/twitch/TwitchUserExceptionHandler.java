@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.controller.handler.twitch;
 
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserCreationException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -20,8 +20,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class TwitchUserExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(TwitchUserException.class)
-    protected ResponseEntity<Object> handledTwitchUserException(Exception ex, WebRequest request) {
+    @ExceptionHandler(TwitchUserCreationException.class)
+    protected ResponseEntity<Object> handledTwitchUserCreationException(Exception ex, WebRequest request) {
         log.info("The Twitch User from the Twitch API could not be constructed: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, "Error creating the user", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request

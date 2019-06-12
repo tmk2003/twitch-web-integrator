@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.SteamClient;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerCreationException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserCreationException;
 import com.impurity.twitchwebintegrator.model.SteamGame;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class SteamServiceImpl implements SteamService {
             gamesNode = (JSONArray) JSONObjectResponse.get(GAMES);
         } catch (ParseException e) {
             log.error("Could not parse response from twitch", e);
-            throw new TwitchUserException("Twitch Response Body was Invalid", e);
+            throw new TwitchUserCreationException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
             log.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
@@ -69,7 +69,7 @@ public class SteamServiceImpl implements SteamService {
                 steamGames[i] = steamGame;
             } catch (Exception e) {
                 log.error("Error constructing our twitch follower", e);
-                throw new TwitchFollowerException("Cannot create twitch follower", e);
+                throw new TwitchFollowerCreationException("Cannot create twitch follower", e);
             }
         }
 
