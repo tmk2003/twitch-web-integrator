@@ -6,6 +6,7 @@ import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
+import com.impurity.twitchwebintegrator.test.utils.TwitchFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a twitch user and is found, return 200 and user")
     public void twitch_user_return_200() throws Exception {
-        TwitchUser twitchUser = getValidTwitchUser();
+        TwitchUser twitchUser = TwitchFactory.getValidTwitchUser();
 
         when(_mockTwitchService.getUser(_mockChannelName)).thenReturn(twitchUser);
         _mockMvc.perform(get("/twitch/user/" + _mockChannelName))
@@ -104,7 +105,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch recent followers and is found, return 200 and user")
     public void twitch_followers_recent_return_200() throws Exception {
-        TwitchFollower[] twitchFollowers = getValidTwitchFollowerArray(10);
+        TwitchFollower[] twitchFollowers = TwitchFactory.getValidTwitchFollowerArray(10);
         when(_mockTwitchService.getRecentFollowers(_mockChannelName)).thenReturn(twitchFollowers);
         _mockMvc.perform(get("/twitch/followers/" + _mockChannelName + "/recent"))
                 .andExpect(status().isOk())
