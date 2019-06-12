@@ -2,11 +2,9 @@ package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
@@ -14,12 +12,17 @@ import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 /**
  * @author tmk2003
  */
-public class TwitchClient {
+public class TwitchClient extends RestTemplateClient {
 
-    @Autowired
-    private TwitchProperties _twitchProperties;
+    private final TwitchProperties _twitchProperties;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    /**
+     * Create the Twitch Client
+     * @param twitchProperties - required properties
+     */
+    public TwitchClient(TwitchProperties twitchProperties) {
+        this._twitchProperties = twitchProperties;
+    }
 
     /**
      * Perform a Get on the twitch API to attempt to retrieve a Twitch User
@@ -28,11 +31,15 @@ public class TwitchClient {
      * @return The response of the rest call
      */
     public String sendGetUser(String channel) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Client-ID", _twitchProperties.getClientId());
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .fromHttpUrl(_twitchProperties.getGetUserUrl())
+                .fromHttpUrl(_twitchProperties.getUserUrl())
                 .queryParam(LOGIN_KEY, channel);
 
-        return sendTwitchRequest(uriComponentsBuilder.toUriString());
+        return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, entity);
     }
 
     /**
@@ -42,11 +49,15 @@ public class TwitchClient {
      * @return The response of the rest call
      */
     public String sendGetStream(String channel) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Client-ID", _twitchProperties.getClientId());
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .fromHttpUrl(_twitchProperties.getGetStreamUrl())
+                .fromHttpUrl(_twitchProperties.getStreamUrl())
                 .queryParam(USER_LOGIN_KEY, channel);
 
-        return sendTwitchRequest(uriComponentsBuilder.toUriString());
+        return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, entity);
     }
 
     /**
@@ -56,32 +67,14 @@ public class TwitchClient {
      * @return The response of the rest call
      */
     public String sendGetFollowers(TwitchUser twitchUser) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_twitchProperties.getGetFollowersUrl())
-                .queryParam(TO_ID_KEY, twitchUser.getId());
-
-        return sendTwitchRequest(builder.toUriString());
-    }
-
-    /**
-     * Generate the response body from twitch based off the uri
-     *
-     * @param uri - Generated uri based off the request
-     * @return - Response body
-     */
-    private String sendTwitchRequest(String uri) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Client-ID", _twitchProperties.getClientId());
-
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
-        HttpEntity<String> response = restTemplate.exchange(
-                uri, HttpMethod.GET,
-                entity, String.class);
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(_twitchProperties.getFollowersUrl())
+                .queryParam(TO_ID_KEY, twitchUser.getId());
 
-        if (response == null) throw new IllegalArgumentException("Twitch Response was Null");
-        String responseBody = response.getBody();
-        if (responseBody == null) throw new IllegalArgumentException("Twitch Response Body was Null");
-
-        return responseBody;
+        return makeRequest(builder.toUriString(), HttpMethod.GET, entity);
     }
 }

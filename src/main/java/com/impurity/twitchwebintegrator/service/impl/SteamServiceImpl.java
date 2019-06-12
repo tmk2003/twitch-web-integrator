@@ -5,12 +5,11 @@ import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerException
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
 import com.impurity.twitchwebintegrator.model.SteamGame;
 import com.impurity.twitchwebintegrator.service.SteamService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +18,9 @@ import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
 /**
  * @author tmk2003
  */
+@Slf4j
 @Service
 public class SteamServiceImpl implements SteamService {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(SteamServiceImpl.class);
 
     @Autowired
     private SteamClient _steamClient;
@@ -39,10 +37,10 @@ public class SteamServiceImpl implements SteamService {
             JSONObject JSONObjectResponse = (JSONObject) jsonObject.get(RESPONSE);
             gamesNode = (JSONArray) JSONObjectResponse.get(GAMES);
         } catch (ParseException e) {
-            LOGGER.error("Could not parse response from twitch", e);
+            log.error("Could not parse response from twitch", e);
             throw new TwitchUserException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
-            LOGGER.error("Error parsing out the data field", e);
+            log.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
 
@@ -70,7 +68,7 @@ public class SteamServiceImpl implements SteamService {
                 steamGame.setPlaytimeForever((Long) currentNode.get(PLAYTIME_FOREVER));
                 steamGames[i] = steamGame;
             } catch (Exception e) {
-                LOGGER.error("Error constructing our twitch follower", e);
+                log.error("Error constructing our twitch follower", e);
                 throw new TwitchFollowerException("Cannot create twitch follower", e);
             }
         }

@@ -4,13 +4,14 @@ package com.impurity.twitchwebintegrator.exception.twitch;
  * @author tmk2003
  */
 public class TwitchStreamNotFoundException extends TwitchException {
+    private final long serialVersionUID = 5080983408617973600L;
+
     /**
      * Generic Twitch stream not found Exception
      *
      * @param message Explanatory message
-     * @param cause Stack track cause
      */
-    public TwitchStreamNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public TwitchStreamNotFoundException(String message) {
+        super(message);
     }
 }

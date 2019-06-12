@@ -1,11 +1,9 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
@@ -13,11 +11,16 @@ import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
 /**
  * @author tmk2003
  */
-public class SteamClient {
+public class SteamClient extends RestTemplateClient {
+    private final SteamProperties _steamProperties;
 
-    @Autowired
-    private SteamProperties _steamProperties;
-    private final RestTemplate restTemplate = new RestTemplate();
+    /**
+     * Create the Steam Client
+     * @param steamProperties - Required properties
+     */
+    public SteamClient(final SteamProperties steamProperties) {
+        this._steamProperties = steamProperties;
+    }
 
     /**
      * Convert a app id & image hash to an image url
@@ -26,7 +29,7 @@ public class SteamClient {
      * @return the proper url to get the image
      */
     public String imageHashToUrl(Long appId, String imageHash) {
-        return "http://media.steampowered.com/steamcommunity/public/images/apps/" + appId + "/" + imageHash + ".jpg";
+        return this._steamProperties.getImageUrl() + appId + "/" + imageHash + ".jpg";
     }
 
     /**
@@ -36,33 +39,15 @@ public class SteamClient {
      * @return The response of the rest call
      */
     public String sendGetLibrary(String steamID) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(_steamProperties.getGetLibraryUrl())
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(_steamProperties.getLibraryUrl())
                 .queryParam(KEY, _steamProperties.getKey())
                 .queryParam(STEAM_ID, steamID)
                 .queryParam(INCLUDE_APPINFO, 1);
 
-        return sendSteamRequest(builder.toUriString());
-    }
-
-    /**
-     * Generate the response body from steam based off the uri
-     *
-     * @param uri - Generated uri based off the request
-     * @return - Response body
-     */
-    private String sendSteamRequest(String uri) {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
-        HttpEntity<String> response = restTemplate.exchange(
-                uri, HttpMethod.GET,
-                entity, String.class);
-
-        if (response == null) throw new IllegalArgumentException("Steam Response was Null");
-        String responseBody = response.getBody();
-        if (responseBody == null) throw new IllegalArgumentException("Steam Response Body was Null");
-
-        return responseBody;
+        return makeRequest(builder.toUriString(), HttpMethod.GET, entity);
     }
-
 }

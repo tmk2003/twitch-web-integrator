@@ -23,7 +23,6 @@ public abstract class AbstractTest {
      */
     protected String mapToJson(Object obj)
             throws JsonProcessingException {
-
         return _objectMapper.writeValueAsString(obj);
     }
 
@@ -40,7 +39,6 @@ public abstract class AbstractTest {
      */
     protected <T> T mapFromJson(String json, Class<T> clazz)
             throws JsonParseException, JsonMappingException, IOException {
-
         return _objectMapper.readValue(json, clazz);
     }
 }

@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author tmk2003
+ */
 @Configuration
 public class SteamConfig {
 
@@ -14,7 +17,7 @@ public class SteamConfig {
 
     @Bean
     public SteamClient getSteamClient() {
-        return new SteamClient();
+        return new SteamClient(_steamProperties);
     }
 
 }

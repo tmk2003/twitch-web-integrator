@@ -12,7 +12,7 @@ public class TwitchKeys {
     public final static String DISPLAY_NAME_KEY = "display_name";
     public final static String TYPE_KEY = "type";
     public final static String BROADCASTER_TYPE_KEY = "broadcaster_type";
-    public final static String DESCIPTION_KEY = "description";
+    public final static String DESCRIPTION_KEY = "description";
     public final static String PROFILE_IMAGE_URL_KEY = "profile_image_url";
     public final static String OFFLINE_IMAGE_URL_KEY = "offline_image_url";
     public final static String VIEW_COUNT_KEY = "view_count";

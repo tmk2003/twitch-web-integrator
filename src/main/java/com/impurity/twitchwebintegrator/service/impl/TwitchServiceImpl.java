@@ -2,6 +2,7 @@ package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
@@ -9,24 +10,24 @@ import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import com.impurity.twitchwebintegrator.service.TwitchService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
 /**
  * @author tmk2003
  */
+@Slf4j
 @Service
 public class TwitchServiceImpl implements TwitchService {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(TwitchServiceImpl.class);
 
     @Autowired
     private TwitchClient _twitchClient;
@@ -51,16 +52,15 @@ public class TwitchServiceImpl implements TwitchService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
             jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
         } catch (ParseException e) {
-            LOGGER.error("Could not parse response from twitch", e);
+            log.error("Could not parse response from twitch", e);
             throw new TwitchUserException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
-            LOGGER.error("Error parsing out the data field", e);
+            log.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
-
-        // Determine if twitch API returned us a Twitch User
-        if(jsonArray.size() == 0)
+        if(jsonArray.isEmpty()) {
             throw new TwitchUserNotFoundException(channel + " was not found in twitch API");
+        }
 
         JSONObject dataNode = (JSONObject) jsonArray.get(0);
 
@@ -70,15 +70,15 @@ public class TwitchServiceImpl implements TwitchService {
             twitchUser = new TwitchUser();
             twitchUser.setId((String) dataNode.get(ID_KEY));
             twitchUser.setLogin((String) dataNode.get(LOGIN_KEY));
-            twitchUser.setDisplay_name((String) dataNode.get(DISPLAY_NAME_KEY));
+            twitchUser.setDisplayName((String) dataNode.get(DISPLAY_NAME_KEY));
             twitchUser.setType((String) dataNode.get(TYPE_KEY));
-            twitchUser.setBroadcaster_type((String) dataNode.get(BROADCASTER_TYPE_KEY));
-            twitchUser.setDescription((String) dataNode.get(DESCIPTION_KEY));
-            twitchUser.setProfile_image_url((String) dataNode.get(PROFILE_IMAGE_URL_KEY));
-            twitchUser.setOffline_image_url((String) dataNode.get(OFFLINE_IMAGE_URL_KEY));
-            twitchUser.setView_count((Long) dataNode.get(VIEW_COUNT_KEY));
+            twitchUser.setBroadcasterType((String) dataNode.get(BROADCASTER_TYPE_KEY));
+            twitchUser.setDescription((String) dataNode.get(DESCRIPTION_KEY));
+            twitchUser.setProfileImageUrl((String) dataNode.get(PROFILE_IMAGE_URL_KEY));
+            twitchUser.setOfflineImageUrl((String) dataNode.get(OFFLINE_IMAGE_URL_KEY));
+            twitchUser.setViewCount((Long) dataNode.get(VIEW_COUNT_KEY));
         } catch (Exception e) {
-            LOGGER.error("Error constructing our twitch user", e);
+            log.error("Error constructing our twitch user", e);
             throw new TwitchUserException("Cannot create twitch user", e);
         }
 
@@ -98,20 +98,21 @@ public class TwitchServiceImpl implements TwitchService {
         String responseBody = _twitchClient.sendGetStream(channel);
 
         // Parse down to the data array
-        JSONObject dataNode;
+        JSONObject jsonObject;
         try {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
-            JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
-            dataNode = (JSONObject) jsonArray.get(0);
+            jsonObject = (JSONObject) jsonParser.parse(responseBody);
         } catch (ParseException e) {
-            LOGGER.error("Could not parse response from twitch", e);
+            log.error("Could not parse response from twitch", e);
             throw new TwitchUserException("Twitch Response Body was Invalid", e);
-        } catch (Exception e) {
-            LOGGER.error("Error parsing out the data field", e);
-            throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
 
+        JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
+        if(jsonArray.isEmpty()) {
+            throw new TwitchStreamNotFoundException("Twitch stream not found.");
+        }
+
+        JSONObject dataNode = (JSONObject) jsonArray.get(0);
         // Create Twitch User
         TwitchStream twitchStream;
         try {
@@ -129,7 +130,7 @@ public class TwitchServiceImpl implements TwitchService {
             twitchStream.setCommunityIds(jsonArrayToStringArray((JSONArray) dataNode.get(COMMUNITY_IDS_KEY)));
             twitchStream.setTagIds(jsonArrayToStringArray((JSONArray) dataNode.get(TAG_IDS_KEY)));
         } catch (Exception e) {
-            LOGGER.error("Error constructing our twitch stream", e);
+            log.error("Error constructing our twitch stream", e);
             throw new TwitchUserException("Cannot create twitch stream", e);
         }
 
@@ -154,10 +155,10 @@ public class TwitchServiceImpl implements TwitchService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
             totalFollowers = (Long) jsonObject.get(TOTAL_KEY);
         } catch (ParseException e) {
-            LOGGER.error("Could not parse response from twitch", e);
+            log.error("Could not parse response from twitch", e);
             throw new TwitchFollowerException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
-            LOGGER.error("Error parsing out the data field", e);
+            log.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
 
@@ -182,10 +183,10 @@ public class TwitchServiceImpl implements TwitchService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
             jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
         } catch (ParseException e) {
-            LOGGER.error("Could not parse response from twitch", e);
+            log.error("Could not parse response from twitch", e);
             throw new TwitchFollowerException("Twitch Response Body was Invalid", e);
         } catch (Exception e) {
-            LOGGER.error("Error parsing out the data field", e);
+            log.error("Error parsing out the data field", e);
             throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
 
@@ -197,14 +198,14 @@ public class TwitchServiceImpl implements TwitchService {
 
                 // Create Twitch User
                 TwitchFollower twitchFollower = new TwitchFollower();
-                twitchFollower.setFrom_id((String) currentNode.get(FROM_ID_KEY));
-                twitchFollower.setFrom_name((String) currentNode.get(FROM_NAME_KEY));
-                twitchFollower.setTo_id((String) currentNode.get(TO_ID_KEY));
-                twitchFollower.setTo_name((String) currentNode.get(TO_NAME_KEY));
-                twitchFollower.setFollowed_at((String) currentNode.get(FOLLOWED_AT_KEY));
+                twitchFollower.setFromId((String) currentNode.get(FROM_ID_KEY));
+                twitchFollower.setFromName((String) currentNode.get(FROM_NAME_KEY));
+                twitchFollower.setToId((String) currentNode.get(TO_ID_KEY));
+                twitchFollower.setToName((String) currentNode.get(TO_NAME_KEY));
+                twitchFollower.setFollowedAt((String) currentNode.get(FOLLOWED_AT_KEY));
                 twitchFollowers[i] = twitchFollower;
             } catch (Exception e) {
-                LOGGER.error("Error constructing our twitch follower", e);
+                log.error("Error constructing our twitch follower", e);
                 throw new TwitchFollowerException("Cannot create twitch follower", e);
             }
         }

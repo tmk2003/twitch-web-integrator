@@ -12,6 +12,5 @@ public class TwitchWebIntegratorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TwitchWebIntegratorApplication.class, args);
 	}
-
 }
 
