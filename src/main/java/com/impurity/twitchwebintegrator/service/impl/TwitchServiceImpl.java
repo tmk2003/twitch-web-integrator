@@ -1,10 +1,7 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowerException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.*;
 import com.impurity.twitchwebintegrator.model.TwitchFollower;
 import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
@@ -42,10 +39,8 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public TwitchUser getUser(String channel) {
-        // Attempt to contact twitch API with our constructed url
         String responseBody = _twitchClient.sendGetUser(channel);
 
-        // Parse down to the data array
         JSONArray jsonArray;
         try {
             JSONParser jsonParser = new JSONParser();
@@ -64,7 +59,6 @@ public class TwitchServiceImpl implements TwitchService {
 
         JSONObject dataNode = (JSONObject) jsonArray.get(0);
 
-        // Create Twitch User
         TwitchUser twitchUser;
         try {
             twitchUser = new TwitchUser();
@@ -94,10 +88,8 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public TwitchStream getStream(String channel) {
-        // Attempt to contact twitch API with our constructed url
         String responseBody = _twitchClient.sendGetStream(channel);
 
-        // Parse down to the data array
         JSONObject jsonObject;
         try {
             JSONParser jsonParser = new JSONParser();
@@ -113,7 +105,6 @@ public class TwitchServiceImpl implements TwitchService {
         }
 
         JSONObject dataNode = (JSONObject) jsonArray.get(0);
-        // Create Twitch User
         TwitchStream twitchStream;
         try {
             twitchStream = new TwitchStream();
@@ -145,24 +136,18 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public Long getTotalFollowers(String channel) {
-        // Attempt to contact twitch api
         String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
 
-        // Parse down to the data array
-        Long totalFollowers;
+        JSONObject jsonObject;
         try {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
-            totalFollowers = (Long) jsonObject.get(TOTAL_KEY);
+            jsonObject = (JSONObject) jsonParser.parse(responseBody);
         } catch (ParseException e) {
             log.error("Could not parse response from twitch", e);
             throw new TwitchFollowerException("Twitch Response Body was Invalid", e);
-        } catch (Exception e) {
-            log.error("Error parsing out the data field", e);
-            throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
 
-        return totalFollowers;
+        return (Long) jsonObject.get(TOTAL_KEY);
     }
 
     /**
@@ -173,30 +158,26 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public TwitchFollower[] getRecentFollowers(String channel) {
-        // Attempt to contact twitch api
         String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
 
-        // Parse down to the data array
-        JSONArray jsonArray;
+        JSONObject jsonObject;
         try {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
-            jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
+            jsonObject = (JSONObject) jsonParser.parse(responseBody);
         } catch (ParseException e) {
             log.error("Could not parse response from twitch", e);
             throw new TwitchFollowerException("Twitch Response Body was Invalid", e);
-        } catch (Exception e) {
-            log.error("Error parsing out the data field", e);
-            throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
+        }
+
+        JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
+        if(jsonArray.isEmpty()) {
+            throw new TwitchFollowerNotFoundException("Twitch Followers not found");
         }
 
         TwitchFollower[] twitchFollowers = new TwitchFollower[jsonArray.size()];
         for(int i = 0; i < jsonArray.size(); i++) {
             try {
-                // Grab current node index
                 JSONObject currentNode = (JSONObject) jsonArray.get(i);
-
-                // Create Twitch User
                 TwitchFollower twitchFollower = new TwitchFollower();
                 twitchFollower.setFromId((String) currentNode.get(FROM_ID_KEY));
                 twitchFollower.setFromName((String) currentNode.get(FROM_NAME_KEY));

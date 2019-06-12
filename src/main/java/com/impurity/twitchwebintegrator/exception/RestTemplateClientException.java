@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.exception.twitch;
+package com.impurity.twitchwebintegrator.exception;
 
 /**
  * @author tmk2003

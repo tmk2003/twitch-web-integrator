@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.exception.twitch.RestTemplateClientException;
+import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

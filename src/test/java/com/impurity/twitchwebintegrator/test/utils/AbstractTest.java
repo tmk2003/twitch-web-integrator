@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.impurity.twitchwebintegrator.model.TwitchFollower;
+import com.impurity.twitchwebintegrator.model.TwitchUser;
 
 import java.io.IOException;
 
@@ -13,6 +15,38 @@ import java.io.IOException;
 public abstract class AbstractTest {
 
     private final ObjectMapper _objectMapper = new ObjectMapper();
+
+    protected TwitchFollower[] getValidTwitchFollowerArray(int amount) {
+        TwitchFollower[] twitchFollowers = new TwitchFollower[amount];
+        for(int i = 0; i < amount; i++) {
+            twitchFollowers[i] = getValidTwitchFollower();
+        }
+        return twitchFollowers;
+    }
+
+    protected TwitchFollower getValidTwitchFollower() {
+        TwitchFollower twitchFollower = new TwitchFollower();
+        twitchFollower.setFromId("");
+        twitchFollower.setFromName("");
+        twitchFollower.setToId("");
+        twitchFollower.setToName("");
+        twitchFollower.setFollowedAt("");
+        return twitchFollower;
+    }
+
+    protected TwitchUser getValidTwitchUser() {
+        TwitchUser twitchUser = new TwitchUser();
+        twitchUser.setOfflineImageUrl("");
+        twitchUser.setProfileImageUrl("");
+        twitchUser.setBroadcasterType("");
+        twitchUser.setDisplayName("");
+        twitchUser.setViewCount(0L);
+        twitchUser.setDescription("");
+        twitchUser.setId("");
+        twitchUser.setLogin("");
+        twitchUser.setType("");
+        return twitchUser;
+    }
 
     /**
      * Map the object to json string

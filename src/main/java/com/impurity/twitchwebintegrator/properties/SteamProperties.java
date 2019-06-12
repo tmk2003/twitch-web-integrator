@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "steam")
 public class SteamProperties {
     private String key;
-    private String baseUrl;
     private String libraryUrl;
     private String imageUrl;
 }

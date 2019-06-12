@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "twitch")
 public class TwitchProperties {
-    private String baseUrl;
     private String userUrl;
     private String followersUrl;
     private String streamUrl;

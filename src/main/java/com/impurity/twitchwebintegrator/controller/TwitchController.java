@@ -25,21 +25,21 @@ public class TwitchController {
         return _twitchService.getUser(channelName);
     }
 
-    @GetMapping("/stream/{channelName}")
+    @GetMapping(value = "/stream/{channelName}", produces = "application/json")
     public TwitchStream getStream(
             @PathVariable("channelName") String channelName
     ) {
         return _twitchService.getStream(channelName);
     }
 
-    @GetMapping("/followers/{channelName}/recent")
+    @GetMapping(value = "/followers/{channelName}/recent", produces = "application/json")
     public TwitchFollower[] getFollowers(
             @PathVariable("channelName") String channelName
     ) {
         return _twitchService.getRecentFollowers(channelName);
     }
 
-    @GetMapping("/followers/{channelName}/total")
+    @GetMapping(value = "/followers/{channelName}/total", produces = "application/json")
     public Long getTotalFollowers(
             @PathVariable("channelName") String channelName
     ) {
