@@ -15,4 +15,5 @@ public class TwitchProperties {
     private String followersUrl;
     private String streamUrl;
     private String clientId;
+    private String clientSecret;
 }

@@ -2,6 +2,7 @@ package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 /**
  * @author tmk2003
  */
+@Slf4j
 public class TwitchClient extends RestTemplateClient {
 
     private final TwitchProperties _twitchProperties;
