@@ -1,8 +1,6 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
 import com.impurity.twitchwebintegrator.model.SteamGame;
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
 
 /**
  * @author tmk2003
