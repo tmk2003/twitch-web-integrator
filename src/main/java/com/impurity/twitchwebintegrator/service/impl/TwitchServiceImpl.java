@@ -7,6 +7,7 @@ import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import com.impurity.twitchwebintegrator.service.TwitchService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,6 +15,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.NotBlank;
 
 import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 
@@ -36,7 +39,7 @@ public class TwitchServiceImpl implements TwitchService {
      * @return A twitch user
      */
     @Override
-    public TwitchUser getUser(String channel) {
+    public TwitchUser getUser(@NotBlank String channel) {
         String responseBody = _twitchClient.sendGetUser(channel);
 
         JSONArray jsonArray;
@@ -85,7 +88,7 @@ public class TwitchServiceImpl implements TwitchService {
      * @return A twitch user
      */
     @Override
-    public TwitchStream getStream(String channel) {
+    public TwitchStream getStream(@NotBlank String channel) {
         String responseBody = _twitchClient.sendGetStream(channel);
 
         JSONObject jsonObject;
@@ -133,7 +136,7 @@ public class TwitchServiceImpl implements TwitchService {
      * @return An array of followers
      */
     @Override
-    public Long getTotalFollowers(String channel) {
+    public Long getTotalFollowers(@NotBlank String channel) {
         String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
 
         JSONObject jsonObject;
@@ -155,7 +158,7 @@ public class TwitchServiceImpl implements TwitchService {
      * @return An array of followers
      */
     @Override
-    public TwitchFollower[] getRecentFollowers(String channel) {
+    public TwitchFollower[] getRecentFollowers(@NotBlank String channel) {
         String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
 
         JSONObject jsonObject;
