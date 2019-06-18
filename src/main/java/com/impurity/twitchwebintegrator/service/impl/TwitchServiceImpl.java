@@ -7,7 +7,6 @@ import com.impurity.twitchwebintegrator.model.TwitchStream;
 import com.impurity.twitchwebintegrator.model.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import com.impurity.twitchwebintegrator.service.TwitchService;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -50,9 +49,6 @@ public class TwitchServiceImpl implements TwitchService {
         } catch (ParseException e) {
             log.error("Could not parse response from twitch", e);
             throw new TwitchUserCreationException("Twitch Response Body was Invalid", e);
-        } catch (Exception e) {
-            log.error("Error parsing out the data field", e);
-            throw new IllegalArgumentException("Twitch Response Body was Invalid", e);
         }
         if(jsonArray.isEmpty()) {
             throw new TwitchUserNotFoundException(channel + " was not found in twitch API");
@@ -60,22 +56,16 @@ public class TwitchServiceImpl implements TwitchService {
 
         JSONObject dataNode = (JSONObject) jsonArray.get(0);
 
-        TwitchUser twitchUser;
-        try {
-            twitchUser = new TwitchUser();
-            twitchUser.setId((String) dataNode.get(ID_KEY));
-            twitchUser.setLogin((String) dataNode.get(LOGIN_KEY));
-            twitchUser.setDisplayName((String) dataNode.get(DISPLAY_NAME_KEY));
-            twitchUser.setType((String) dataNode.get(TYPE_KEY));
-            twitchUser.setBroadcasterType((String) dataNode.get(BROADCASTER_TYPE_KEY));
-            twitchUser.setDescription((String) dataNode.get(DESCRIPTION_KEY));
-            twitchUser.setProfileImageUrl((String) dataNode.get(PROFILE_IMAGE_URL_KEY));
-            twitchUser.setOfflineImageUrl((String) dataNode.get(OFFLINE_IMAGE_URL_KEY));
-            twitchUser.setViewCount((Long) dataNode.get(VIEW_COUNT_KEY));
-        } catch (Exception e) {
-            log.error("Error constructing our twitch user", e);
-            throw new TwitchUserCreationException("Cannot create twitch user", e);
-        }
+        TwitchUser twitchUser = new TwitchUser();
+        twitchUser.setId((String) dataNode.get(ID_KEY));
+        twitchUser.setLogin((String) dataNode.get(LOGIN_KEY));
+        twitchUser.setDisplayName((String) dataNode.get(DISPLAY_NAME_KEY));
+        twitchUser.setType((String) dataNode.get(TYPE_KEY));
+        twitchUser.setBroadcasterType((String) dataNode.get(BROADCASTER_TYPE_KEY));
+        twitchUser.setDescription((String) dataNode.get(DESCRIPTION_KEY));
+        twitchUser.setProfileImageUrl((String) dataNode.get(PROFILE_IMAGE_URL_KEY));
+        twitchUser.setOfflineImageUrl((String) dataNode.get(OFFLINE_IMAGE_URL_KEY));
+        twitchUser.setViewCount((Long) dataNode.get(VIEW_COUNT_KEY));
 
         return twitchUser;
     }
@@ -106,25 +96,20 @@ public class TwitchServiceImpl implements TwitchService {
         }
 
         JSONObject dataNode = (JSONObject) jsonArray.get(0);
-        TwitchStream twitchStream;
-        try {
-            twitchStream = new TwitchStream();
-            twitchStream.setId((String) dataNode.get(ID_KEY));
-            twitchStream.setUserId((String) dataNode.get(USER_ID_KEY));
-            twitchStream.setUserName((String) dataNode.get(USER_NAME_KEY));
-            twitchStream.setGameId((String) dataNode.get(GAME_ID_KEY));
-            twitchStream.setType((String) dataNode.get(TYPE_KEY));
-            twitchStream.setTitle((String) dataNode.get(TITLE_KEY));
-            twitchStream.setLanguage((String) dataNode.get(LANGUAGE_KEY));
-            twitchStream.setThumbnailUrl((String) dataNode.get(THUMBNAIL_URL_KEY));
-            twitchStream.setViewerCount((Long) dataNode.get(VIEWER_COUNT_KEY));
-            twitchStream.setStartedAt((String) dataNode.get(STARTED_AT_KEY));
-            twitchStream.setCommunityIds(jsonArrayToStringArray((JSONArray) dataNode.get(COMMUNITY_IDS_KEY)));
-            twitchStream.setTagIds(jsonArrayToStringArray((JSONArray) dataNode.get(TAG_IDS_KEY)));
-        } catch (Exception e) {
-            log.error("Error constructing our twitch stream", e);
-            throw new TwitchUserCreationException("Cannot create twitch stream", e);
-        }
+
+        TwitchStream twitchStream = new TwitchStream();
+        twitchStream.setId((String) dataNode.get(ID_KEY));
+        twitchStream.setUserId((String) dataNode.get(USER_ID_KEY));
+        twitchStream.setUserName((String) dataNode.get(USER_NAME_KEY));
+        twitchStream.setGameId((String) dataNode.get(GAME_ID_KEY));
+        twitchStream.setType((String) dataNode.get(TYPE_KEY));
+        twitchStream.setTitle((String) dataNode.get(TITLE_KEY));
+        twitchStream.setLanguage((String) dataNode.get(LANGUAGE_KEY));
+        twitchStream.setThumbnailUrl((String) dataNode.get(THUMBNAIL_URL_KEY));
+        twitchStream.setViewerCount((Long) dataNode.get(VIEWER_COUNT_KEY));
+        twitchStream.setStartedAt((String) dataNode.get(STARTED_AT_KEY));
+        twitchStream.setCommunityIds(jsonArrayToStringArray((JSONArray) dataNode.get(COMMUNITY_IDS_KEY)));
+        twitchStream.setTagIds(jsonArrayToStringArray((JSONArray) dataNode.get(TAG_IDS_KEY)));
 
         return twitchStream;
     }
@@ -144,7 +129,7 @@ public class TwitchServiceImpl implements TwitchService {
             JSONParser jsonParser = new JSONParser();
             jsonObject = (JSONObject) jsonParser.parse(responseBody);
         } catch (ParseException e) {
-            log.error("Could not parse response from twitch", e);
+            log.error("Could not parse total followers response from twitch", e);
             throw new TwitchFollowerCreationException("Twitch Response Body was Invalid", e);
         }
 
@@ -166,7 +151,7 @@ public class TwitchServiceImpl implements TwitchService {
             JSONParser jsonParser = new JSONParser();
             jsonObject = (JSONObject) jsonParser.parse(responseBody);
         } catch (ParseException e) {
-            log.error("Could not parse response from twitch", e);
+            log.error("Could not parse recent followers response from twitch", e);
             throw new TwitchFollowerCreationException("Twitch Response Body was Invalid", e);
         }
 
