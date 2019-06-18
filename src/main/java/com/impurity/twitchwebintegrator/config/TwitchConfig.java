@@ -11,13 +11,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class TwitchConfig {
-
-    @Autowired
-    private TwitchProperties _twitchProperties;
-
     @Bean
-    public TwitchClient getTwitchClient() {
-        return new TwitchClient(_twitchProperties);
+    public TwitchClient getTwitchClient(
+            final TwitchProperties twitchProperties
+    ) {
+        return new TwitchClient(twitchProperties);
     }
 
 }

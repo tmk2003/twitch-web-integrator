@@ -11,13 +11,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SteamConfig {
-
-    @Autowired
-    private SteamProperties _steamProperties;
-
     @Bean
-    public SteamClient getSteamClient() {
-        return new SteamClient(_steamProperties);
+    public SteamClient getSteamClient(
+            final SteamProperties steamProperties
+    ) {
+        return new SteamClient(steamProperties);
     }
 
 }
