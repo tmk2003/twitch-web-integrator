@@ -18,14 +18,14 @@ public class SteamController {
     @Autowired
     private SteamService _steamService;
 
-    @GetMapping("/library/{steamProfileId}")
+    @GetMapping("/{steamProfileId}/library")
     public SteamGame[] getGameLibrary(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
         return _steamService.getGameLibrary(steamProfileID);
     }
 
-    @GetMapping("/library/{steamProfileId}/amount")
+    @GetMapping("/{steamProfileId}/library/amount")
     public Integer getGameLibraryAmount(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
