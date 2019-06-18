@@ -4,16 +4,7 @@ package com.impurity.twitchwebintegrator.exception.twitch;
  * @author tmk2003
  */
 public class TwitchUserCreationException extends TwitchException {
-    private final long serialVersionUID = -1672930411967682149L;
-
-    /**
-     * Generic Twitch Exception
-     *
-     * @param message Explanatory message
-     */
-    public TwitchUserCreationException(String message) {
-        super(message);
-    }
+    private static final long serialVersionUID = -1672930411967682149L;
 
     /**
      * Generic Twitch Exception

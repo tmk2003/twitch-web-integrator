@@ -4,7 +4,7 @@ package com.impurity.twitchwebintegrator.exception.twitch;
  * @author tmk2003
  */
 public class TwitchStreamCreationException extends TwitchException {
-    private final long serialVersionUID = 8735249218148979603L;
+    private static final long serialVersionUID = 8735249218148979603L;
 
     /**
      * Generic Twitch Exception

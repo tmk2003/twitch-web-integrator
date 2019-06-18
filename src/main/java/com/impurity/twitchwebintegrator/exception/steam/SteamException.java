@@ -4,7 +4,7 @@ package com.impurity.twitchwebintegrator.exception.steam;
  * @author tmk2003
  */
 public class SteamException extends RuntimeException {
-    private final long serialVersionUID = 950798548622562062L;
+    private static final long serialVersionUID = 950798548622562062L;
 
     /**
      * Generic Twitch Exception
