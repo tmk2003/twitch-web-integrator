@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.model;
+package com.impurity.twitchwebintegrator.domain;
 
 import lombok.Data;
 

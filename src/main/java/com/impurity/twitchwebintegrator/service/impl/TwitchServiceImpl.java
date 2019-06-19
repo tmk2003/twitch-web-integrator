@@ -2,10 +2,9 @@ package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.exception.twitch.*;
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchStream;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
-import com.impurity.twitchwebintegrator.properties.TwitchProperties;
+import com.impurity.twitchwebintegrator.domain.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.TwitchStream;
+import com.impurity.twitchwebintegrator.domain.TwitchUser;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;

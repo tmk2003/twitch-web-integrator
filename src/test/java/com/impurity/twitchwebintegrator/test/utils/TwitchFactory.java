@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.domain.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.TwitchUser;
 
 /**
  * @author tmk2003

@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.service;
 
-import com.impurity.twitchwebintegrator.model.SteamGame;
+import com.impurity.twitchwebintegrator.domain.SteamLibrary;
 
 /**
  * @author tmk2003
@@ -13,7 +13,7 @@ public interface SteamService {
      * @param steamProfileID - ID to grab the user library of
      * @return A steam users library
      */
-    SteamGame[] getGameLibrary(String steamProfileID);
+    SteamLibrary getGameLibrary(String steamProfileID);
 
     /**
      * Get the steam users library amount
@@ -21,5 +21,5 @@ public interface SteamService {
      * @param steamProfileID - ID to grab the user library of
      * @return A steam users library amount
      */
-    Integer getGameLibraryAmount(String steamProfileID);
+    Long getGameLibraryAmount(String steamProfileID);
 }

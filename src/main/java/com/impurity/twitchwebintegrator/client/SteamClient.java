@@ -1,10 +1,14 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.client.response.SteamLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.SteamServerLibraryResponse;
+import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryCreationException;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
@@ -12,6 +16,7 @@ import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
 /**
  * @author tmk2003
  */
+@Slf4j
 public class SteamClient extends RestTemplateClient {
     private final SteamProperties steamProperties;
 
@@ -44,24 +49,21 @@ public class SteamClient extends RestTemplateClient {
      * @param steamID - Name of the channel to get information on
      * @return The response of the rest call
      */
-    public String sendGetLibrary(String steamID) {
+    public ResponseEntity<SteamServerLibraryResponse> getLibrary(String steamID) {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(steamProperties.getLibraryUrl())
                 .queryParam(KEY, steamProperties.getKey())
                 .queryParam(STEAM_ID, steamID)
                 .queryParam(INCLUDE_APPINFO, 1);
 
-        return makeRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
-    }
-
-    // TODO
-    public SteamLibraryResponse getLibrary(String steamID) {
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl(steamProperties.getLibraryUrl())
-                .queryParam(KEY, steamProperties.getKey())
-                .queryParam(STEAM_ID, steamID)
-                .queryParam(INCLUDE_APPINFO, 1);
-
-        return getRequest(builder.toUriString(), new HttpEntity<>(getHeaders()), SteamLibraryResponse.class).getBody();
+        try {
+            return getRequest(builder.toUriString(), new HttpEntity<>(getHeaders()), SteamServerLibraryResponse.class);
+        } catch (HttpClientErrorException ex) {
+            log.error("Steam Client Issues: {}", ex.getMessage());
+            throw new SteamLibraryCreationException("Cannot create library", ex);
+        } catch (HttpServerErrorException ex) {
+            log.error("Steam Issues: {}", ex.getMessage());
+            throw new SteamLibraryCreationException("Cannot create library", ex);
+        }
     }
 }

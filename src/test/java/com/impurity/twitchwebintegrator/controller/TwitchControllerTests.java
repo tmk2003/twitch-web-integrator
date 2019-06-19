@@ -1,9 +1,9 @@
 package com.impurity.twitchwebintegrator.controller;
 
 import com.impurity.twitchwebintegrator.exception.twitch.*;
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchStream;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.domain.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.TwitchStream;
+import com.impurity.twitchwebintegrator.domain.TwitchUser;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import com.impurity.twitchwebintegrator.test.utils.TwitchFactory;

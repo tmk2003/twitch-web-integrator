@@ -1,9 +1,6 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
-import com.impurity.twitchwebintegrator.model.SteamGame;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
-import com.impurity.twitchwebintegrator.test.utils.SteamFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 /**
  * @author tmk2003

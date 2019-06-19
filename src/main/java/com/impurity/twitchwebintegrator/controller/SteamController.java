@@ -1,6 +1,7 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.model.SteamGame;
+import com.impurity.twitchwebintegrator.domain.SteamLibrary;
+import com.impurity.twitchwebintegrator.response.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +28,13 @@ public class SteamController {
             @ApiResponse(code = 404, message = "The steam library was not found")
     })
     @GetMapping("/{steamProfileId}/library")
-    public SteamGame[] getGameLibrary(
+    public SteamLibraryResponse getGameLibrary(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
-        return steamService.getGameLibrary(steamProfileID);
+        SteamLibrary steamLibrary = steamService.getGameLibrary(steamProfileID);
+        SteamLibraryResponse steamLibraryResponse = new SteamLibraryResponse();
+        steamLibraryResponse.setGames(steamLibrary.getGames());
+        return steamLibraryResponse;
     }
 
     @ApiOperation(value = "Returns Steam library amount")
@@ -39,7 +43,7 @@ public class SteamController {
             @ApiResponse(code = 404, message = "The steam library amount was not found")
     })
     @GetMapping("/{steamProfileId}/library/amount")
-    public Integer getGameLibraryAmount(
+    public Long getGameLibraryAmount(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
         return steamService.getGameLibraryAmount(steamProfileID);

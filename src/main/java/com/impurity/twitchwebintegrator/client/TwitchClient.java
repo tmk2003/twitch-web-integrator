@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.domain.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
