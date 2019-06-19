@@ -14,4 +14,13 @@ public class RestTemplateClientException extends RuntimeException {
     public RestTemplateClientException(String message) {
         super(message);
     }
+
+    /**
+     * Generic Rest Template Exception
+     * @param message Explanatory Message
+     * @param cause Exception causing this
+     */
+    public RestTemplateClientException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
