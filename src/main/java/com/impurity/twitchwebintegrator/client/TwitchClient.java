@@ -16,20 +16,20 @@ import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 @Slf4j
 public class TwitchClient extends RestTemplateClient {
 
-    private final TwitchProperties _twitchProperties;
+    private final TwitchProperties twitchProperties;
 
     /**
      * Create the Twitch Client
      * @param twitchProperties - required properties
      */
     public TwitchClient(TwitchProperties twitchProperties) {
-        this._twitchProperties = twitchProperties;
+        this.twitchProperties = twitchProperties;
     }
 
     @Override
     protected HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Client-ID", _twitchProperties.getClientId());
+        headers.set("Client-ID", twitchProperties.getClientId());
         return headers;
     }
 
@@ -41,7 +41,7 @@ public class TwitchClient extends RestTemplateClient {
      */
     public String sendGetUser(String channel) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .fromHttpUrl(_twitchProperties.getUserUrl())
+                .fromHttpUrl(twitchProperties.getUserUrl())
                 .queryParam(LOGIN_KEY, channel);
 
         return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
@@ -55,7 +55,7 @@ public class TwitchClient extends RestTemplateClient {
      */
     public String sendGetStream(String channel) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .fromHttpUrl(_twitchProperties.getStreamUrl())
+                .fromHttpUrl(twitchProperties.getStreamUrl())
                 .queryParam(USER_LOGIN_KEY, channel);
 
         return makeRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
@@ -69,7 +69,7 @@ public class TwitchClient extends RestTemplateClient {
      */
     public String sendGetFollowers(TwitchUser twitchUser) {
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl(_twitchProperties.getFollowersUrl())
+                .fromHttpUrl(twitchProperties.getFollowersUrl())
                 .queryParam(TO_ID_KEY, twitchUser.getId());
 
         return makeRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));

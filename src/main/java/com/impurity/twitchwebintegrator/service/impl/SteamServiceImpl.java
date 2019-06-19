@@ -23,11 +23,11 @@ import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
 public class SteamServiceImpl implements SteamService {
 
     @Autowired
-    private SteamClient _steamClient;
+    private SteamClient steamClient;
 
     @Override
     public SteamGame[] getGameLibrary(String steamProfileID) {
-        String responseBody = _steamClient.sendGetLibrary(steamProfileID);
+        String responseBody = steamClient.sendGetLibrary(steamProfileID);
 
         // Parse down to the data array
         JSONArray gamesNode;
@@ -55,12 +55,12 @@ public class SteamServiceImpl implements SteamService {
                 steamGame.setAppId((Long) currentNode.get(APPID));
                 steamGame.setHasCommunityVisibleStats((Boolean) currentNode.get(HAS_COMMUNITY_VISIBLE_STATS));
                 steamGame.setImgIconUrl(
-                        _steamClient.imageHashToUrl(
+                        steamClient.imageHashToUrl(
                                 steamGame.getAppId(),
                                 (String) currentNode.get(IMG_ICON_URL))
                 );
                 steamGame.setImgLogoUrl(
-                        _steamClient.imageHashToUrl(
+                        steamClient.imageHashToUrl(
                                 steamGame.getAppId(),
                                 (String) currentNode.get(IMG_LOGO_URL))
                 );

@@ -27,9 +27,7 @@ import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
 public class TwitchServiceImpl implements TwitchService {
 
     @Autowired
-    private TwitchClient _twitchClient;
-    @Autowired
-    private TwitchProperties _twitchProperties;
+    private TwitchClient twitchClient;
 
     /**
      * Get the twitch user
@@ -39,7 +37,7 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public TwitchUser getUser(@NotBlank String channel) {
-        String responseBody = _twitchClient.sendGetUser(channel);
+        String responseBody = twitchClient.sendGetUser(channel);
 
         JSONArray jsonArray;
         try {
@@ -79,7 +77,7 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public TwitchStream getStream(@NotBlank String channel) {
-        String responseBody = _twitchClient.sendGetStream(channel);
+        String responseBody = twitchClient.sendGetStream(channel);
 
         JSONObject jsonObject;
         try {
@@ -122,7 +120,7 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public Long getTotalFollowers(@NotBlank String channel) {
-        String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
+        String responseBody = twitchClient.sendGetFollowers(this.getUser(channel));
 
         JSONObject jsonObject;
         try {
@@ -144,7 +142,7 @@ public class TwitchServiceImpl implements TwitchService {
      */
     @Override
     public TwitchFollower[] getRecentFollowers(@NotBlank String channel) {
-        String responseBody = _twitchClient.sendGetFollowers(this.getUser(channel));
+        String responseBody = twitchClient.sendGetFollowers(this.getUser(channel));
 
         JSONObject jsonObject;
         try {

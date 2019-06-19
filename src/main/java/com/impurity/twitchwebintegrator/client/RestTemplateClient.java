@@ -1,21 +1,25 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
+import lombok.Data;
+import lombok.Getter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
 public abstract class RestTemplateClient {
-    private final RestTemplate _restTemplate;
+    @Getter
+    private final RestTemplate restTemplate;
 
     /**
      * Create the rest template client
      */
     public RestTemplateClient() {
-        this._restTemplate = new RestTemplate();
+        this.restTemplate = new RestTemplate();
     }
 
     /**
@@ -32,7 +36,7 @@ public abstract class RestTemplateClient {
      */
     protected String makeRequest(String uri, HttpMethod httpMethod, HttpEntity entity) {
         HttpEntity<String> response = Optional.ofNullable(
-                _restTemplate.exchange(
+                restTemplate.exchange(
                         uri, httpMethod, entity, String.class
                 )
         ).orElseThrow(
@@ -43,4 +47,8 @@ public abstract class RestTemplateClient {
         );
     }
 
+    // TODO
+    protected <T> ResponseEntity<T> getRequest(String uri, HttpEntity entity, Class<T> clazz) {
+        return restTemplate.getForEntity(uri, clazz, entity);
+    }
 }

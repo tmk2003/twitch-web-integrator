@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class SteamController {
 
     @Autowired
-    private SteamService _steamService;
+    private SteamService steamService;
 
     @ApiOperation(value = "Returns Steam library")
     @ApiResponses(value = {
@@ -30,7 +30,7 @@ public class SteamController {
     public SteamGame[] getGameLibrary(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
-        return _steamService.getGameLibrary(steamProfileID);
+        return steamService.getGameLibrary(steamProfileID);
     }
 
     @ApiOperation(value = "Returns Steam library amount")
@@ -42,6 +42,6 @@ public class SteamController {
     public Integer getGameLibraryAmount(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
-        return _steamService.getGameLibraryAmount(steamProfileID);
+        return steamService.getGameLibraryAmount(steamProfileID);
     }
 }

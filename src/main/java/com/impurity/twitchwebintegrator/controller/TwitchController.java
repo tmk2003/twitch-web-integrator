@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class TwitchController {
 
     @Autowired
-    private TwitchService _twitchService;
+    private TwitchService twitchService;
 
     @ApiOperation(value = "Returns Twitch User")
     @ApiResponses(value = {
@@ -37,7 +37,7 @@ public class TwitchController {
     public TwitchUser getUser(
             @PathVariable("channelName") String channelName
     ) {
-        return _twitchService.getUser(channelName);
+        return twitchService.getUser(channelName);
     }
 
     @ApiOperation(value = "Returns Twitch Steam")
@@ -53,7 +53,7 @@ public class TwitchController {
     public TwitchStream getStream(
             @PathVariable("channelName") String channelName
     ) {
-        return _twitchService.getStream(channelName);
+        return twitchService.getStream(channelName);
     }
 
     @ApiOperation(value = "Returns Twitch User's recent followers")
@@ -69,7 +69,7 @@ public class TwitchController {
     public TwitchFollower[] getFollowers(
             @PathVariable("channelName") String channelName
     ) {
-        return _twitchService.getRecentFollowers(channelName);
+        return twitchService.getRecentFollowers(channelName);
     }
 
     @ApiOperation(value = "Returns Twitch User's total follows")
@@ -85,6 +85,6 @@ public class TwitchController {
     public Long getTotalFollowers(
             @PathVariable("channelName") String channelName
     ) {
-        return _twitchService.getTotalFollowers(channelName);
+        return twitchService.getTotalFollowers(channelName);
     }
 }

@@ -1,5 +1,6 @@
 package com.impurity.twitchwebintegrator.client;
 
+import com.impurity.twitchwebintegrator.client.response.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,14 +13,14 @@ import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
  * @author tmk2003
  */
 public class SteamClient extends RestTemplateClient {
-    private final SteamProperties _steamProperties;
+    private final SteamProperties steamProperties;
 
     /**
      * Create the Steam Client
      * @param steamProperties - Required properties
      */
     public SteamClient(final SteamProperties steamProperties) {
-        this._steamProperties = steamProperties;
+        this.steamProperties = steamProperties;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class SteamClient extends RestTemplateClient {
      * @return the proper url to get the image
      */
     public String imageHashToUrl(Long appId, String imageHash) {
-        return this._steamProperties.getImageUrl() + appId + "/" + imageHash + ".jpg";
+        return this.steamProperties.getImageUrl() + appId + "/" + imageHash + ".jpg";
     }
 
     /**
@@ -45,11 +46,22 @@ public class SteamClient extends RestTemplateClient {
      */
     public String sendGetLibrary(String steamID) {
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl(_steamProperties.getLibraryUrl())
-                .queryParam(KEY, _steamProperties.getKey())
+                .fromHttpUrl(steamProperties.getLibraryUrl())
+                .queryParam(KEY, steamProperties.getKey())
                 .queryParam(STEAM_ID, steamID)
                 .queryParam(INCLUDE_APPINFO, 1);
 
         return makeRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity<>(getHeaders()));
+    }
+
+    // TODO
+    public SteamLibraryResponse getLibrary(String steamID) {
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(steamProperties.getLibraryUrl())
+                .queryParam(KEY, steamProperties.getKey())
+                .queryParam(STEAM_ID, steamID)
+                .queryParam(INCLUDE_APPINFO, 1);
+
+        return getRequest(builder.toUriString(), new HttpEntity<>(getHeaders()), SteamLibraryResponse.class).getBody();
     }
 }
