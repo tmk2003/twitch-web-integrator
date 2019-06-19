@@ -3,7 +3,7 @@ package com.impurity.twitchwebintegrator.exception.steam;
 /**
  * @author tmk2003
  */
-public class SteamLibraryCreationException extends SteamException {
+public class SteamLibraryCreationException extends RuntimeException {
     private static final long serialVersionUID = -8859427755595616816L;
 
     /**

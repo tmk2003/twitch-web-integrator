@@ -3,7 +3,7 @@ package com.impurity.twitchwebintegrator.exception.twitch;
 /**
  * @author tmk2003
  */
-public class TwitchFollowerCreationException extends TwitchException {
+public class TwitchFollowerCreationException extends RuntimeException {
     private static final long serialVersionUID = -2209610310903549177L;
 
     /**
