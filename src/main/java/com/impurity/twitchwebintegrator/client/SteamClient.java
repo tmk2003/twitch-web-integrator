@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.client.response.SteamServerLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryCreationException;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.impurity.twitchwebintegrator.constant.SteamKeys.*;
@@ -41,7 +39,7 @@ public class SteamClient extends RestTemplateClient {
      * @return the proper url to get the image
      */
     public String imageHashToUrl(Long appId, String imageHash) {
-        return this.steamProperties.getImageUrl() + appId + "/" + imageHash + ".jpg";
+        return "http://media.steampowered.com/steamcommunity/public/images/apps/" + appId + "/" + imageHash + ".jpg";
     }
 
     /**
@@ -50,15 +48,15 @@ public class SteamClient extends RestTemplateClient {
      * @param steamID - Name of the channel to get information on
      * @return The response of the rest call
      */
-    public ResponseEntity<SteamServerLibraryResponse> getLibrary(String steamID) {
+    public ResponseEntity<SteamApiLibraryResponse> getLibrary(String steamID) {
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl(steamProperties.getLibraryUrl())
+                .fromHttpUrl("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/")
                 .queryParam(KEY, steamProperties.getKey())
                 .queryParam(STEAM_ID, steamID)
                 .queryParam(INCLUDE_APPINFO, 1);
 
         try {
-            return getRequest(builder.toUriString(), new HttpEntity<>(getHeaders()), SteamServerLibraryResponse.class);
+            return getRequest(builder.toUriString(), new HttpEntity<>(getHeaders()), SteamApiLibraryResponse.class);
         } catch (RestTemplateClientException ex) {
             log.error("Steam Client Issues: {}", ex.getMessage());
             throw new SteamLibraryCreationException("Cannot get library", ex);

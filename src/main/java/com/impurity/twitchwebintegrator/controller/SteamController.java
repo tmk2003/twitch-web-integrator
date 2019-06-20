@@ -31,9 +31,8 @@ public class SteamController {
     public SteamLibraryResponse getGameLibrary(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
-        SteamLibrary steamLibrary = steamService.getGameLibrary(steamProfileID);
         SteamLibraryResponse steamLibraryResponse = new SteamLibraryResponse();
-        steamLibraryResponse.setGames(steamLibrary.getGames());
+        steamLibraryResponse.setGames(steamService.getGameLibrary(steamProfileID).getGames());
         return steamLibraryResponse;
     }
 

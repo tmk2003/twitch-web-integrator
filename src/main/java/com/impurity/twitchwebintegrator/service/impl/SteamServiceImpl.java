@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.SteamClient;
-import com.impurity.twitchwebintegrator.client.response.SteamServerLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.domain.SteamLibrary;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
 import com.impurity.twitchwebintegrator.service.SteamService;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,12 +25,17 @@ public class SteamServiceImpl implements SteamService {
     private SteamClient steamClient;
 
     @Override
-    public SteamLibrary getGameLibrary(String steamProfileID) {
-        ResponseEntity<SteamServerLibraryResponse> responseEntity = steamClient.getLibrary(steamProfileID);
-        SteamServerLibraryResponse steamServerLibraryResponse = responseEntity.getBody();
+    public SteamLibrary getGameLibrary(@NotBlank String steamProfileID) {
+        ResponseEntity<SteamApiLibraryResponse> responseEntity = steamClient.getLibrary(steamProfileID);
+
+        SteamApiLibraryResponse steamApiLibraryResponse = Optional
+                .ofNullable(responseEntity.getBody())
+                .orElseThrow(() -> new SteamLibraryNotFoundException("No library body found"));
+
         SteamLibrary steamLibrary = Optional
-                .ofNullable(steamServerLibraryResponse.getResponse())
-                .orElseThrow(() -> new SteamLibraryNotFoundException("No Library Found"));
+                .ofNullable(steamApiLibraryResponse.getResponse())
+                .orElseThrow(() -> new SteamLibraryNotFoundException("No library found"));
+
         Arrays.stream(steamLibrary.getGames()).forEach(
                 steamLibraryGame -> {
                     Long appId = steamLibraryGame.getAppId();
@@ -43,8 +49,10 @@ public class SteamServiceImpl implements SteamService {
     }
 
     @Override
-    public Long getGameLibraryAmount(String steamProfileID) {
-        return getGameLibrary(steamProfileID).getGameCount();
+    public Long getGameLibraryAmount(@NotBlank String steamProfileID) {
+        return Optional
+                .ofNullable(getGameLibrary(steamProfileID).getGameCount())
+                .orElseThrow(() -> new RuntimeException("No library amount found"));
     }
 
 }

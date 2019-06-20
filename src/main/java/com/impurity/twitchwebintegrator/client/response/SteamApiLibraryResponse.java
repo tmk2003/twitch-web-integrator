@@ -8,7 +8,7 @@ import lombok.Data;
  * @author tmk2003
  */
 @Data
-public class SteamServerLibraryResponse {
+public class SteamApiLibraryResponse {
     @JsonProperty("response")
     private SteamLibrary response;
 }
