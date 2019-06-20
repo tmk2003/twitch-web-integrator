@@ -2,7 +2,7 @@ package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
-import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryCreationException;
+import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryRequestException;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +61,7 @@ public class SteamClient extends RestTemplateClient {
             return getRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), SteamApiLibraryResponse.class);
         } catch (RestTemplateClientException ex) {
             log.error("Steam Client Issues: {}", ex.getMessage());
-            throw new SteamLibraryCreationException("Cannot get library", ex);
+            throw new SteamClientLibraryRequestException("Cannot get library", ex);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.exception.twitch;
+package com.impurity.twitchwebintegrator.exception.steam;
 
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import org.junit.jupiter.api.DisplayName;
@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TwitchUserCreationExceptionTests extends AbstractTest {
+public class SteamLibraryAmountNotFoundExceptionTests extends AbstractTest {
 
     @Test
-    @DisplayName("The twitch user creation exception stores cause properly")
-    public void captures_cause() {
-        Exception exception = new Exception();
-        assertEquals(new TwitchUserCreationException("apples", exception).getCause(), exception);
+    @DisplayName("The steam library amount not found exception stores message properly")
+    public void captures_message() {
+        String testMessage = "apples";
+        assertEquals(new SteamLibraryAmountNotFoundException(testMessage).getMessage(), testMessage);
     }
 }
 

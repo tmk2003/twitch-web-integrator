@@ -17,13 +17,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SteamLibraryCreationExceptionTests extends AbstractTest {
+public class SteamClientLibraryRequestExceptionTests extends AbstractTest {
 
     @Test
-    @DisplayName("The steam exception stores cause properly")
-    public void captures_cause() {
-        Exception exception = new Exception();
-        assertEquals(new SteamLibraryCreationException("apples", exception).getCause(), exception);
+    @DisplayName("The steam library request exception stores message properly")
+    public void captures_message() {
+        String testMessage = "apples";
+        assertEquals(new SteamClientLibraryRequestException(testMessage, new Exception()).getMessage(), testMessage);
+    }
+
+    @Test
+    @DisplayName("The steam library not found exception stores message properly")
+    public void captures_throwable() {
+        Exception testException = new Exception();
+        assertEquals(new SteamClientLibraryRequestException("apples", testException).getCause(), testException);
     }
 }
 

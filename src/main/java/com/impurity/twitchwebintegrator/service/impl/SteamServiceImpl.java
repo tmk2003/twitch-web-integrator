@@ -52,7 +52,7 @@ public class SteamServiceImpl implements SteamService {
     public Long getGameLibraryAmount(@NotBlank String steamProfileID) {
         return Optional
                 .ofNullable(getGameLibrary(steamProfileID).getGameCount())
-                .orElseThrow(() -> new RuntimeException("No library amount found"));
+                .orElseThrow(() -> new SteamLibraryNotFoundException("No library amount found"));
     }
 
 }

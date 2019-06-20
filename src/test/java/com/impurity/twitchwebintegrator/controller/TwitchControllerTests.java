@@ -1,6 +1,5 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
 import com.impurity.twitchwebintegrator.domain.TwitchFollower;
 import com.impurity.twitchwebintegrator.domain.TwitchStream;
 import com.impurity.twitchwebintegrator.domain.TwitchUser;
@@ -79,7 +78,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a twitch user and it cannot be created, return 500")
     public void twitch_user_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getUser(MOCK_CHANNEL_NAME)).thenThrow(TwitchUserCreationException.class);
+        when(_mockTwitchService.getUser(MOCK_CHANNEL_NAME)).thenThrow(TwitchClientUserRequestException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/user")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -120,7 +119,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a twitch stream and it cannot be created, return 500")
     public void twitch_stream_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getStream(MOCK_CHANNEL_NAME)).thenThrow(TwitchStreamCreationException.class);
+        when(_mockTwitchService.getStream(MOCK_CHANNEL_NAME)).thenThrow(TwitchClientStreamRequestException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/stream")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +148,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch recent followers and is not found, return 404")
     public void no_twitch_followers_recent_return_404() throws Exception {
-        when(_mockTwitchService.getRecentFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchFollowerNotFoundException.class);
+        when(_mockTwitchService.getRecentFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchRecentFollowersNotFoundException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/followers/recent")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +159,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch recent followers and it cannot be created, return 500")
     public void twitch_followers_recent_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getRecentFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchFollowerCreationException.class);
+        when(_mockTwitchService.getRecentFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchClientFollowersRequestException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/followers/recent")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -184,7 +183,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch total followers and is not found, return 404")
     public void no_twitch_followers_total_return_404() throws Exception {
-        when(_mockTwitchService.getTotalFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchFollowerNotFoundException.class);
+        when(_mockTwitchService.getTotalFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchRecentFollowersNotFoundException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/followers/total")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -195,7 +194,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch total followers and it cannot be created, return 500")
     public void twitch_followers_total_creation_failure_return_500() throws Exception {
-        when(_mockTwitchService.getTotalFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchFollowerCreationException.class);
+        when(_mockTwitchService.getTotalFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchClientFollowersRequestException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/followers/total")
                         .contentType(MediaType.APPLICATION_JSON)

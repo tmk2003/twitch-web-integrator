@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TwitchStreamCreationExceptionTests extends AbstractTest {
+public class TwitchRecentFollowersNotFoundExceptionTests extends AbstractTest {
 
     @Test
-    @DisplayName("The twitch stream creation exception stores cause properly")
-    public void captures_cause() {
-        Exception exception = new Exception();
-        assertEquals(new TwitchStreamCreationException("apples", exception).getCause(), exception);
+    @DisplayName("The twitch follower not found exception stores message properly")
+    public void captures_message() {
+        String testMessage = "apples";
+        assertEquals(new TwitchRecentFollowersNotFoundException(testMessage).getMessage(), testMessage);
     }
 }
 

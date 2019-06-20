@@ -7,6 +7,10 @@ import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.domain.TwitchFollower;
 import com.impurity.twitchwebintegrator.domain.TwitchStream;
 import com.impurity.twitchwebintegrator.domain.TwitchUser;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchRecentFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchTotalFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,26 +44,26 @@ public class TwitchServiceImpl implements TwitchService {
                 .ofNullable(responseEntity.getBody())
                 .orElseThrow(() -> {
                     log.error("There was no response entity found while getting twitch user");
-                    return new RuntimeException("No user response body found");
+                    return new TwitchUserNotFoundException("No user response body found");
                 });
 
         TwitchUser[] twitchUsers = Optional
                 .ofNullable(twitchApiUserResponse.getUsers())
                 .orElseThrow(() -> {
                     log.error("The user array was not instantiated");
-                    return new RuntimeException("User array not instantiated");
+                    return new TwitchUserNotFoundException("User array not instantiated");
                 });
 
         if (twitchUsers.length == 0) {
             log.error("There were no users found while getting twitch user");
-            throw new RuntimeException("No users found");
+            throw new TwitchUserNotFoundException("No users found");
         }
 
         return Optional
                 .ofNullable(twitchUsers[0])
                 .orElseThrow(() -> {
                     log.error("The first user found was not instantiated");
-                    return new RuntimeException("The first user found was not instantiated");
+                    return new TwitchUserNotFoundException("The first user found was not instantiated");
                 });
     }
 
@@ -78,26 +82,26 @@ public class TwitchServiceImpl implements TwitchService {
                 .ofNullable(responseEntity.getBody())
                 .orElseThrow(() -> {
                     log.error("There was no response entity found while getting twitch stream");
-                    return new RuntimeException("No stream response body found");
+                    return new TwitchStreamNotFoundException("No stream response body found");
                 });
 
         TwitchStream[] twitchStreams = Optional
                 .ofNullable(twitchApiStreamResponse.getStreams())
                 .orElseThrow(() -> {
                     log.error("The stream array was not instantiated");
-                    return new RuntimeException("Stream array not instantiated");
+                    return new TwitchStreamNotFoundException("Stream array not instantiated");
                 });
 
         if (twitchStreams.length == 0) {
             log.error("There were no streams found while getting twitch user");
-            throw new RuntimeException("No streams found");
+            throw new TwitchStreamNotFoundException("No streams found");
         }
 
         return Optional
                 .ofNullable(twitchStreams[0])
                 .orElseThrow(() -> {
                     log.error("The first stream found was not instantiated");
-                    return new RuntimeException("The first stream found was not instantiated");
+                    return new TwitchStreamNotFoundException("The first stream found was not instantiated");
                 });
     }
 
@@ -114,11 +118,11 @@ public class TwitchServiceImpl implements TwitchService {
 
         TwitchApiFollowerResponse twitchApiFollowerResponse = Optional
                 .ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new RuntimeException("No total followers response body found"));
+                .orElseThrow(() -> new TwitchTotalFollowersNotFoundException("No total followers response body found"));
 
         return Optional
                 .ofNullable(twitchApiFollowerResponse.getTotal())
-                .orElseThrow(() -> new RuntimeException("No total followers found"));
+                .orElseThrow(() -> new TwitchTotalFollowersNotFoundException("No total followers found"));
     }
 
     /**
@@ -134,10 +138,10 @@ public class TwitchServiceImpl implements TwitchService {
 
         TwitchApiFollowerResponse twitchApiFollowerResponse = Optional
                 .ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new RuntimeException("No recent followers response body found"));
+                .orElseThrow(() -> new TwitchRecentFollowersNotFoundException("No recent followers response body found"));
 
         return Optional
                 .ofNullable(twitchApiFollowerResponse.getFollowers())
-                .orElseThrow(() -> new RuntimeException("No recent followers found"));
+                .orElseThrow(() -> new TwitchRecentFollowersNotFoundException("No recent followers found"));
     }
 }

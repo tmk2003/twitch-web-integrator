@@ -3,6 +3,10 @@ package com.impurity.twitchwebintegrator.client;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
+import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserRequestException;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +53,17 @@ public class TwitchClient extends RestTemplateClient {
                 .fromHttpUrl("https://api.twitch.tv/helix/users")
                 .queryParam("login", channel);
 
-        return getRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), TwitchApiUserResponse.class);
+        try {
+            return getRequest(
+                    uriComponentsBuilder.toUriString(),
+                    HttpMethod.GET,
+                    new HttpEntity(this.getHeaders()),
+                    TwitchApiUserResponse.class
+            );
+        } catch (RestTemplateClientException ex) {
+            log.error("Twitch Client Issues: {}", ex.getMessage());
+            throw new TwitchClientUserRequestException("Cannot get user", ex);
+        }
     }
 
     /**
@@ -63,7 +77,17 @@ public class TwitchClient extends RestTemplateClient {
                 .fromHttpUrl("https://api.twitch.tv/helix/streams")
                 .queryParam("user_login", channel);
 
-        return getRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), TwitchApiStreamResponse.class);
+        try {
+            return getRequest(
+                    uriComponentsBuilder.toUriString(),
+                    HttpMethod.GET,
+                    new HttpEntity(this.getHeaders()),
+                    TwitchApiStreamResponse.class
+            );
+        } catch (RestTemplateClientException ex) {
+            log.error("Twitch Client Issues: {}", ex.getMessage());
+            throw new TwitchClientStreamRequestException("Cannot get stream", ex);
+        }
     }
 
     /**
@@ -77,6 +101,16 @@ public class TwitchClient extends RestTemplateClient {
                 .fromHttpUrl("https://api.twitch.tv/helix/users/follows")
                 .queryParam("to_id", twitchUserId);
 
-        return getRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), TwitchApiFollowerResponse.class);
+        try {
+            return getRequest(
+                    builder.toUriString(),
+                    HttpMethod.GET,
+                    new HttpEntity(this.getHeaders()),
+                    TwitchApiFollowerResponse.class
+            );
+        } catch (RestTemplateClientException ex) {
+            log.error("Twitch Client Issues: {}", ex.getMessage());
+            throw new TwitchClientFollowersRequestException("Cannot get followers", ex);
+        }
     }
 }
