@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class TwitchFollower {
-    @JsonProperty("id")
+    @JsonProperty("from_id")
     private String fromId;
     @JsonProperty("from_name")
     private String fromName;

@@ -3,16 +3,16 @@ package com.impurity.twitchwebintegrator.client;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
-import com.impurity.twitchwebintegrator.domain.TwitchUser;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
+import javax.print.attribute.standard.Media;
+import javax.validation.constraints.NotBlank;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * @author tmk2003
@@ -26,13 +26,14 @@ public class TwitchClient extends RestTemplateClient {
      * Create the Twitch Client
      * @param twitchProperties - required properties
      */
-    public TwitchClient(TwitchProperties twitchProperties) {
+    public TwitchClient(@NonNull final TwitchProperties twitchProperties) {
         this.twitchProperties = twitchProperties;
     }
 
     @Override
     protected HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", APPLICATION_JSON_VALUE);
         headers.set("Client-ID", twitchProperties.getClientId());
         return headers;
     }
@@ -43,12 +44,12 @@ public class TwitchClient extends RestTemplateClient {
      * @param channel - Name of the channel to get information on
      * @return The response of the rest call
      */
-    public ResponseEntity<TwitchApiUserResponse> getUser(String channel) {
+    public ResponseEntity<TwitchApiUserResponse> getUser(@NotBlank final String channel) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl("https://api.twitch.tv/helix/users")
-                .queryParam(LOGIN_KEY, channel);
+                .queryParam("login", channel);
 
-        return getRequest(uriComponentsBuilder.toUriString(), new HttpEntity<>(getHeaders()), TwitchApiUserResponse.class);
+        return getRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), TwitchApiUserResponse.class);
     }
 
     /**
@@ -57,12 +58,12 @@ public class TwitchClient extends RestTemplateClient {
      * @param channel - Name of the channel to get information on
      * @return The response of the rest call
      */
-    public ResponseEntity<TwitchApiStreamResponse> getStream(String channel) {
+    public ResponseEntity<TwitchApiStreamResponse> getStream(@NotBlank final String channel) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl("https://api.twitch.tv/helix/streams")
-                .queryParam(USER_LOGIN_KEY, channel);
+                .queryParam("user_login", channel);
 
-        return getRequest(uriComponentsBuilder.toUriString(), new HttpEntity<>(getHeaders()), TwitchApiStreamResponse.class);
+        return getRequest(uriComponentsBuilder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), TwitchApiStreamResponse.class);
     }
 
     /**
@@ -71,11 +72,11 @@ public class TwitchClient extends RestTemplateClient {
      * @param twitchUserId - The Twitch User id to perform the look up on
      * @return The response of the rest call
      */
-    public ResponseEntity<TwitchApiFollowerResponse> getFollowers(String twitchUserId) {
+    public ResponseEntity<TwitchApiFollowerResponse> getFollowers(@NotBlank final String twitchUserId) {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl("https://api.twitch.tv/helix/users/follows")
-                .queryParam(TO_ID_KEY, twitchUserId);
+                .queryParam("to_id", twitchUserId);
 
-        return getRequest(builder.toUriString(), new HttpEntity<>(getHeaders()), TwitchApiFollowerResponse.class);
+        return getRequest(builder.toUriString(), HttpMethod.GET, new HttpEntity(this.getHeaders()), TwitchApiFollowerResponse.class);
     }
 }

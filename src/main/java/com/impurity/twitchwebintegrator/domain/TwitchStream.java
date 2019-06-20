@@ -23,7 +23,7 @@ public class TwitchStream {
     @JsonProperty("title")
     private String title;
     @JsonProperty("viewer_count")
-    private String viewerCount;
+    private Long viewerCount;
     @JsonProperty("started_at")
     private String startedAt;
     @JsonProperty("language")

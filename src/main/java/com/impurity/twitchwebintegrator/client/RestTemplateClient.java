@@ -36,37 +36,20 @@ public abstract class RestTemplateClient {
     protected abstract HttpHeaders getHeaders();
 
     /**
-     * Generate the response body from steam based off the uri
-     *
-     * @param uri - Generated uri based off the request
-     * @return - Response body
-     */
-    protected String makeRequest(String uri, HttpMethod httpMethod, HttpEntity entity) {
-        HttpEntity<String> response = Optional.ofNullable(
-                restTemplate.exchange(
-                        uri, httpMethod, entity, String.class
-                )
-        ).orElseThrow(
-                () -> new RestTemplateClientException("Response was Null")
-        );
-        return Optional.ofNullable(response.getBody()).orElseThrow(
-                () -> new RestTemplateClientException("Response Body was Null")
-        );
-    }
-
-    /**
      *  Perform the GET request to the provided URI
      * @param uri The URI to perform the request to
+     * @param method The restful method
      * @param entity The entity we are sending to the URI
      * @param clazz The expected object type to receive back
      * @param <T> The Class type of the returned object
      * @return The Response from the GET request
      */
-    protected <T> ResponseEntity<T> getRequest(String uri, HttpEntity entity, Class<T> clazz) {
+    protected <T> ResponseEntity<T> getRequest(String uri, HttpMethod method, HttpEntity entity, Class<T> clazz) {
         try {
-            return restTemplate.getForEntity(uri, clazz, entity);
+            return restTemplate.exchange(uri, method, entity, clazz);
         } catch(HttpClientErrorException | HttpServerErrorException ex) {
             log.error("Could not complete request: {}", ex.getMessage());
+            log.error(ex.getResponseBodyAsString());
             throw new RestTemplateClientException("Get Request Failure", ex);
         }
     }

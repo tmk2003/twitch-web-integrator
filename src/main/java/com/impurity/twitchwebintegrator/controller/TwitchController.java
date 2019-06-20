@@ -1,10 +1,5 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.domain.SteamLibrary;
-import com.impurity.twitchwebintegrator.domain.TwitchFollower;
-import com.impurity.twitchwebintegrator.domain.TwitchStream;
-import com.impurity.twitchwebintegrator.domain.TwitchUser;
-import com.impurity.twitchwebintegrator.response.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.response.TwitchFollowersResponse;
 import com.impurity.twitchwebintegrator.response.TwitchStreamResponse;
 import com.impurity.twitchwebintegrator.response.TwitchUserResponse;
@@ -14,8 +9,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * @author tmk2003
@@ -36,8 +32,8 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/user",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
     public TwitchUserResponse getUser(
             @PathVariable("channelName") String channelName
@@ -54,8 +50,8 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/stream",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
     public TwitchStreamResponse getStream(
             @PathVariable("channelName") String channelName
@@ -72,8 +68,8 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/followers/recent",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
     public TwitchFollowersResponse getFollowers(
             @PathVariable("channelName") String channelName
@@ -90,8 +86,8 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/followers/total",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
     public Long getTotalFollowers(
             @PathVariable("channelName") String channelName
