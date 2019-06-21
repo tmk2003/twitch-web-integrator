@@ -1,8 +1,8 @@
-package com.impurity.twitchwebintegrator.exception.steam;
+package com.impurity.twitchwebintegrator.exception.twitch;
 
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,20 +17,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SteamClientLibraryRequestExceptionTests extends AbstractTest {
+public class TwitchClientFollowersRequestExceptionTests extends AbstractTest {
 
     @Test
-    @DisplayName("The steam library request exception stores message properly")
+    @DisplayName("The twitch client followers request exception stores message properly")
     public void captures_message() {
         String testMessage = "apples";
-        assertEquals(new SteamClientLibraryRequestException(testMessage, new Exception()).getMessage(), testMessage);
+        assertEquals(new TwitchClientFollowersRequestException(testMessage, new Exception()).getMessage(), testMessage);
     }
 
     @Test
-    @DisplayName("The steam library request exception stores message properly")
+    @DisplayName("The twitch client followers request exception stores message properly")
     public void captures_throwable() {
         Exception testException = new Exception();
-        assertEquals(new SteamClientLibraryRequestException("apples", testException).getCause(), testException);
+        assertEquals(new TwitchClientFollowersRequestException("apples", testException).getCause(), testException);
     }
 }
 

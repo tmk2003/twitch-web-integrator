@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TwitchRecentFollowersNotFoundExceptionTests extends AbstractTest {
 
     @Test
-    @DisplayName("The twitch follower not found exception stores message properly")
+    @DisplayName("The twitch recent follower not found exception stores message properly")
     public void captures_message() {
         String testMessage = "apples";
         assertEquals(new TwitchRecentFollowersNotFoundException(testMessage).getMessage(), testMessage);
