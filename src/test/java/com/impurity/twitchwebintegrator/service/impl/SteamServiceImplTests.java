@@ -5,6 +5,7 @@ import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
+import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import com.impurity.twitchwebintegrator.test.utils.SteamFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
+import static com.impurity.twitchwebintegrator.test.utils.SteamFactory.getValidSteamGameArray;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,7 +33,7 @@ import static org.springframework.http.HttpStatus.OK;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SteamServiceImplTests {
+public class SteamServiceImplTests extends AbstractTest {
 
     @Mock
     private SteamClient steamClient;
@@ -96,7 +98,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(10L);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));
@@ -110,7 +112,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(10L);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));
@@ -125,7 +127,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(10L);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));
@@ -140,7 +142,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(10L);
         Arrays.stream(library.getGames()).forEach(game -> game.setImgIconUrl(null));
         response.setResponse(library);
@@ -154,7 +156,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(10L);
         Arrays.stream(library.getGames()).forEach(game -> game.setImgIconUrl(null));
         response.setResponse(library);
@@ -168,7 +170,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(10L);
         Arrays.stream(library.getGames()).forEach(game -> game.setAppId(null));
         response.setResponse(library);
@@ -194,7 +196,7 @@ public class SteamServiceImplTests {
         String steamProfileId = "1234";
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(null);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));
@@ -208,7 +210,7 @@ public class SteamServiceImplTests {
         Long steamGameCount = 10L;
         SteamApiLibraryResponse response = new SteamApiLibraryResponse();
         SteamLibrary library = new SteamLibrary();
-        library.setGames(SteamFactory.getValidSteamGameArray(10));
+        library.setGames(getValidSteamGameArray(10));
         library.setGameCount(steamGameCount);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));

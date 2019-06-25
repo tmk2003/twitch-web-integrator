@@ -7,17 +7,16 @@ import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchRecentFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowersNotFoundException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchTotalFollowersNotFoundException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.service.TwitchService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 /**
@@ -37,7 +36,7 @@ public class TwitchServiceImpl implements TwitchService {
      * @return A twitch user
      */
     @Override
-    public TwitchUser getUser(@NotBlank String channel) {
+    public TwitchUser getUser(@NonNull String channel) {
         ResponseEntity<TwitchApiUserResponse> responseEntity = twitchClient.getUser(channel);
 
         TwitchApiUserResponse twitchApiUserResponse = Optional
@@ -75,7 +74,7 @@ public class TwitchServiceImpl implements TwitchService {
      * @return A twitch user
      */
     @Override
-    public TwitchStream getStream(@NotBlank String channel) {
+    public TwitchStream getStream(@NonNull String channel) {
         ResponseEntity<TwitchApiStreamResponse> responseEntity = twitchClient.getStream(channel);
 
         TwitchApiStreamResponse twitchApiStreamResponse = Optional
@@ -106,23 +105,31 @@ public class TwitchServiceImpl implements TwitchService {
     }
 
     /**
-     * Get the users recent followers
+     * Get the users followers
+     *
+     * @param channel - Channel to grab the followers for
+     * @return - The API response from twitch
+     */
+    private TwitchApiFollowerResponse getFollowers(@NonNull String channel) {
+        String userId = this.getUser(channel).getId();
+        ResponseEntity<TwitchApiFollowerResponse> responseEntity = twitchClient.getFollowers(userId);
+
+        return Optional
+                .ofNullable(responseEntity.getBody())
+                .orElseThrow(() -> new TwitchFollowersNotFoundException("No recent followers response body found"));
+    }
+
+    /**
+     * Get the users total followers
      *
      * @param channel - Channel to grab the followers for
      * @return An array of followers
      */
     @Override
-    public Long getTotalFollowers(@NotBlank String channel) {
-        String userId = this.getUser(channel).getId();
-        ResponseEntity<TwitchApiFollowerResponse> responseEntity = twitchClient.getFollowers(userId);
-
-        TwitchApiFollowerResponse twitchApiFollowerResponse = Optional
-                .ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new TwitchTotalFollowersNotFoundException("No total followers response body found"));
-
+    public Long getTotalFollowers(String channel) {
         return Optional
-                .ofNullable(twitchApiFollowerResponse.getTotal())
-                .orElseThrow(() -> new TwitchTotalFollowersNotFoundException("No total followers found"));
+                .ofNullable(getFollowers(channel).getTotal())
+                .orElse(0L);
     }
 
     /**
@@ -132,16 +139,9 @@ public class TwitchServiceImpl implements TwitchService {
      * @return An array of followers
      */
     @Override
-    public TwitchFollower[] getRecentFollowers(@NotBlank String channel) {
-        String userId = this.getUser(channel).getId();
-        ResponseEntity<TwitchApiFollowerResponse> responseEntity = twitchClient.getFollowers(userId);
-
-        TwitchApiFollowerResponse twitchApiFollowerResponse = Optional
-                .ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new TwitchRecentFollowersNotFoundException("No recent followers response body found"));
-
+    public TwitchFollower[] getRecentFollowers(@NonNull String channel) {
         return Optional
-                .ofNullable(twitchApiFollowerResponse.getFollowers())
-                .orElseThrow(() -> new TwitchRecentFollowersNotFoundException("No recent followers found"));
+                .ofNullable(getFollowers(channel).getFollowers())
+                .orElse(new TwitchFollower[0]);
     }
 }

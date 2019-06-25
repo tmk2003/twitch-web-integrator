@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TwitchRecentFollowersNotFoundExceptionTests extends AbstractTest {
+public class TwitchFollowersNotFoundExceptionTests extends AbstractTest {
 
     @Test
     @DisplayName("The twitch recent follower not found exception stores message properly")
     public void captures_message() {
         String testMessage = "apples";
-        assertEquals(new TwitchRecentFollowersNotFoundException(testMessage).getMessage(), testMessage);
+        assertEquals(new TwitchFollowersNotFoundException(testMessage).getMessage(), testMessage);
     }
 }
 

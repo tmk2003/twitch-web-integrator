@@ -44,7 +44,6 @@ public class SteamControllerTests extends AbstractTest {
     private MockMvc _mockMvc;
     private final String MOCK_CHANNEL_NAME = "abc123";
 
-    /******************* Get Steam Library *******************/
     @Test
     @DisplayName("When getting a steam library and is found, return 200 and library")
     public void steam_library_return_200() throws Exception {
@@ -83,7 +82,6 @@ public class SteamControllerTests extends AbstractTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    /******************* Get Steam Library Amount *******************/
     @Test
     @DisplayName("When getting a steam library amount and is found, return 200 and library amount")
     public void steam_library_amount_return_200() throws Exception {

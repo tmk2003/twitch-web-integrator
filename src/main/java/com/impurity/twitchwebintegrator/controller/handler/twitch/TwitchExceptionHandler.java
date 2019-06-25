@@ -1,9 +1,8 @@
 package com.impurity.twitchwebintegrator.controller.handler.twitch;
 
 import com.impurity.twitchwebintegrator.domain.ApiError;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchRecentFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowersNotFoundException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchTotalFollowersNotFoundException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -22,17 +21,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class TwitchExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(TwitchRecentFollowersNotFoundException.class)
-    protected ResponseEntity<ApiError> handledTwitchFollowerNotFoundException(final TwitchRecentFollowersNotFoundException ex) {
+    @ExceptionHandler(TwitchFollowersNotFoundException.class)
+    protected ResponseEntity<ApiError> handledTwitchFollowerNotFoundException(final TwitchFollowersNotFoundException ex) {
         log.info("The Twitch recent followers was not found: {}", ex.getMessage());
         ApiError apiError = new ApiError(NOT_FOUND, "Could not find twitch followers.", ex);
-        return new ResponseEntity<>(apiError, apiError.getStatus());
-    }
-
-    @ExceptionHandler(TwitchTotalFollowersNotFoundException.class)
-    protected ResponseEntity<ApiError> handledTwitchTotalFollowersNotFoundException(final TwitchTotalFollowersNotFoundException ex) {
-        log.info("The Twitch total followers was not found: {}", ex.getMessage());
-        ApiError apiError = new ApiError(NOT_FOUND, "Could not find twitch followers total.", ex);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 

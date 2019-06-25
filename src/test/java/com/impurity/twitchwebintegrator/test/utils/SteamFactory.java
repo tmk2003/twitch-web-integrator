@@ -21,7 +21,7 @@ public class SteamFactory {
         steamGame.setImgIconUrl("iconUrl");
         steamGame.setImgLogoUrl("logoUrl");
         steamGame.setName("name");
-        steamGame.setPlaytimeForever(1L);
+        steamGame.setPlaytimeForever(123L);
         return steamGame;
     }
 }
