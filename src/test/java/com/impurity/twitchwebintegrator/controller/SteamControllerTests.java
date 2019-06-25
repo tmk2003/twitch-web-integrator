@@ -2,6 +2,7 @@ package com.impurity.twitchwebintegrator.controller;
 
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
+import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryAmountNotFoundException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
@@ -43,6 +44,33 @@ public class SteamControllerTests extends AbstractTest {
     @Autowired
     private MockMvc _mockMvc;
     private final String MOCK_CHANNEL_NAME = "abc123";
+
+    @Test
+    @DisplayName("Return 500 if illegal argument thrown")
+    public void handles_illegalArgument() throws Exception {
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(IllegalArgumentException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Return 500 if null pointer thrown")
+    public void handles_nullPointer() throws Exception {
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(NullPointerException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @DisplayName("Return 503 if rest template server  thrown")
+    public void handles_restTemplateServer() throws Exception {
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(RestTemplateServerException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isServiceUnavailable());
+    }
 
     @Test
     @DisplayName("When getting a steam library and is found, return 200 and library")

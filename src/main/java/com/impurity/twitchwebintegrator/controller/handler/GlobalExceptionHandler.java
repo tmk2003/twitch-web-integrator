@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * @author tmk2003
@@ -30,7 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<ApiError> handledNullPointerException(final NullPointerException ex) {
         log.info("Null pointer: {}", ex.getMessage());
-        ApiError apiError = new ApiError(BAD_REQUEST, "Null Pointer present internally", ex);
+        ApiError apiError = new ApiError(INTERNAL_SERVER_ERROR, "Null Pointer present internally", ex);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
