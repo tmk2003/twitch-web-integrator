@@ -1,5 +1,6 @@
 package com.impurity.twitchwebintegrator.controller.handler;
 
+import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -31,6 +32,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.info("Null pointer: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, ex.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request
+        );
+    }
+
+    @ExceptionHandler(RestTemplateServerException.class)
+    protected ResponseEntity<Object> handledRestTemplateServerException(Exception ex, WebRequest request) {
+        log.info("Null pointer: {}", ex.getMessage());
+        return handleExceptionInternal(
+                ex, ex.getMessage(), new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE, request
         );
     }
 

@@ -1,18 +1,15 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
-import lombok.Data;
+import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 
-import java.util.Optional;
 
 /**
  * @author tmk2003
@@ -36,7 +33,7 @@ public abstract class RestTemplateClient {
     protected abstract HttpHeaders getHeaders();
 
     /**
-     *  Perform the GET request to the provided URI
+     *  Perform the GET request to the provided URI--
      * @param uri The URI to perform the request to
      * @param method The restful method
      * @param entity The entity we are sending to the URI
@@ -44,13 +41,16 @@ public abstract class RestTemplateClient {
      * @param <T> The Class type of the returned object
      * @return The Response from the GET request
      */
-    protected <T> ResponseEntity<T> getRequest(String uri, HttpMethod method, HttpEntity entity, Class<T> clazz) {
+    protected <T> ResponseEntity<T> getRequest(String uri, HttpMethod method, HttpEntity entity, Class<T> clazz)
+            throws RestTemplateClientException {
         try {
             return restTemplate.exchange(uri, method, entity, clazz);
-        } catch(HttpClientErrorException | HttpServerErrorException ex) {
-            log.error("Could not complete request: {}", ex.getMessage());
-            log.error(ex.getResponseBodyAsString());
-            throw new RestTemplateClientException("Get Request Failure", ex);
+        } catch(HttpClientErrorException ex) {
+            log.error("Could not complete request: Message: {} - Body: {}", ex.getMessage(), ex.getResponseBodyAsString());
+            throw new RestTemplateClientException("Get Request Failure", ex.getStatusCode(), ex);
+        } catch(HttpServerErrorException ex) {
+            log.error("Could not complete request: Message: {} - Body: {}", ex.getMessage(), ex.getResponseBodyAsString());
+            throw new RestTemplateServerException("Get Request Failure", ex.getStatusCode(), ex);
         }
     }
 }

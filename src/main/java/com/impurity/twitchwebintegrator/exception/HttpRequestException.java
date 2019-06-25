@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 /**
  * @author tmk2003
  */
-public class RestTemplateClientException extends Exception {
-    private static final long serialVersionUID = 3940856042422350250L;
+public abstract class HttpRequestException extends RuntimeException {
+    private static final long serialVersionUID = 924869611273733372L;
 
     @Getter
     private final HttpStatus status;
@@ -18,7 +18,7 @@ public class RestTemplateClientException extends Exception {
      * @param status Http status returned
      * @param cause Exception causing this
      */
-    public RestTemplateClientException(String message, HttpStatus status, Throwable cause) {
+    public HttpRequestException(String message, HttpStatus status, Throwable cause) {
         super(message, cause);
         this.status = status;
     }

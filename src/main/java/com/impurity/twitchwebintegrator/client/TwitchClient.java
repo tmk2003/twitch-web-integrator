@@ -4,16 +4,15 @@ import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerRespons
 import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersRequestException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamRequestException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserHttpRequestException;
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.constraints.NotBlank;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -62,7 +61,7 @@ public class TwitchClient extends RestTemplateClient {
             );
         } catch (RestTemplateClientException ex) {
             log.error("Twitch Client Issues: {}", ex.getMessage());
-            throw new TwitchClientUserRequestException("Cannot get user", ex);
+            throw new TwitchClientUserHttpRequestException("Cannot get user", ex.getStatus(), ex);
         }
     }
 
@@ -86,7 +85,7 @@ public class TwitchClient extends RestTemplateClient {
             );
         } catch (RestTemplateClientException ex) {
             log.error("Twitch Client Issues: {}", ex.getMessage());
-            throw new TwitchClientStreamRequestException("Cannot get stream", ex);
+            throw new TwitchClientStreamHttpRequestException("Cannot get stream", ex.getStatus(), ex);
         }
     }
 
@@ -110,7 +109,7 @@ public class TwitchClient extends RestTemplateClient {
             );
         } catch (RestTemplateClientException ex) {
             log.error("Twitch Client Issues: {}", ex.getMessage());
-            throw new TwitchClientFollowersRequestException("Cannot get followers", ex);
+            throw new TwitchClientFollowersHttpRequestException("Cannot get followers", ex.getStatus(), ex);
         }
     }
 }

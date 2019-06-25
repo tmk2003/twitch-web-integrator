@@ -19,25 +19,34 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class TwitchClientExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(TwitchClientFollowersRequestException.class)
-    protected ResponseEntity<Object> handledTwitchClientFollowersRequestException(Exception ex, WebRequest request) {
-        log.info("The Twitch client had an issue while retrieving recent followers : {}", ex.getMessage());
+    @ExceptionHandler(TwitchClientFollowersHttpRequestException.class)
+    protected ResponseEntity<Object> handledTwitchClientFollowersRequestException(
+            final TwitchClientFollowersHttpRequestException ex,
+            final WebRequest request
+    ) {
+        log.info("The Twitch client had an issue while retrieving recent followers : {}:{}", ex.getStatus(), ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch client failed to get recent followers", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request
         );
     }
 
-    @ExceptionHandler(TwitchClientStreamRequestException.class)
-    protected ResponseEntity<Object> handledTwitchClientStreamRequestException(Exception ex, WebRequest request) {
-        log.info("The Twitch client had an issue while retrieving stream : {}", ex.getMessage());
+    @ExceptionHandler(TwitchClientStreamHttpRequestException.class)
+    protected ResponseEntity<Object> handledTwitchClientStreamRequestException(
+            final TwitchClientStreamHttpRequestException ex,
+            final WebRequest request
+    ) {
+        log.info("The Twitch client had an issue while retrieving stream: {}:{}", ex.getStatus(), ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch client failed to get stream", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request
         );
     }
 
-    @ExceptionHandler(TwitchClientUserRequestException.class)
-    protected ResponseEntity<Object> handledTwitchClientUserRequestException(Exception ex, WebRequest request) {
-        log.info("The Twitch client had an issue while retrieving users : {}", ex.getMessage());
+    @ExceptionHandler(TwitchClientUserHttpRequestException.class)
+    protected ResponseEntity<Object> handledTwitchClientUserRequestException(
+            final TwitchClientUserHttpRequestException ex,
+            final WebRequest request
+    ) {
+        log.info("The Twitch client had an issue while retrieving users : {}:{}", ex.getStatus(), ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch client failed to get users", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request
         );

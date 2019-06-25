@@ -23,7 +23,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class TwitchExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(TwitchRecentFollowersNotFoundException.class)
-    protected ResponseEntity<Object> handledTwitchFollowerNotFoundException(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handledTwitchFollowerNotFoundException(
+            final TwitchRecentFollowersNotFoundException ex,
+            final WebRequest request
+    ) {
         log.info("The Twitch recent followers was not found: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch recent followers not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request
@@ -31,7 +34,10 @@ public class TwitchExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(TwitchTotalFollowersNotFoundException.class)
-    protected ResponseEntity<Object> handledTwitchTotalFollowersNotFoundException(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handledTwitchTotalFollowersNotFoundException(
+            final TwitchTotalFollowersNotFoundException ex,
+            final WebRequest request
+    ) {
         log.info("The Twitch total followers was not found: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch total followers not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request
@@ -39,7 +45,10 @@ public class TwitchExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(TwitchUserNotFoundException.class)
-    protected ResponseEntity<Object> handledTwitchUserNotFoundException(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handledTwitchUserNotFoundException(
+            final TwitchUserNotFoundException ex,
+            final WebRequest request
+    ) {
         log.info("The Twitch user was not found: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch user not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request
@@ -47,7 +56,10 @@ public class TwitchExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(TwitchStreamNotFoundException.class)
-    protected ResponseEntity<Object> handledTwitchStreamNotFoundException(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handledTwitchStreamNotFoundException(
+            final TwitchStreamNotFoundException ex,
+            final WebRequest request
+    ) {
         log.info("The Twitch stream was not found: {}", ex.getMessage());
         return handleExceptionInternal(
                 ex, "Twitch stream not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request
