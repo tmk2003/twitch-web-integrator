@@ -48,10 +48,7 @@ public class TwitchServiceImpl implements TwitchService {
 
         TwitchUser[] twitchUsers = Optional
                 .ofNullable(twitchApiUserResponse.getUsers())
-                .orElseThrow(() -> {
-                    log.error("The user array was not instantiated");
-                    return new TwitchUserNotFoundException("User array not instantiated");
-                });
+                .orElse(new TwitchUser[0]);
 
         if (twitchUsers.length == 0) {
             log.error("There were no users found while getting twitch user");
@@ -86,10 +83,7 @@ public class TwitchServiceImpl implements TwitchService {
 
         TwitchStream[] twitchStreams = Optional
                 .ofNullable(twitchApiStreamResponse.getStreams())
-                .orElseThrow(() -> {
-                    log.error("The stream array was not instantiated");
-                    return new TwitchStreamNotFoundException("Stream array not instantiated");
-                });
+                .orElse(new TwitchStream[0]);
 
         if (twitchStreams.length == 0) {
             log.error("There were no streams found while getting twitch user");

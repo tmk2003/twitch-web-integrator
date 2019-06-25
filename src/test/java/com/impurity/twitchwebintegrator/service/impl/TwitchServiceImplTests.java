@@ -6,6 +6,7 @@ import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -125,5 +126,50 @@ public class TwitchServiceImplTests extends AbstractTest {
         twitchApiFollowerResponse.setTotal(total);
         when(twitchClient.getFollowers(twitchApiUserResponse.getUsers()[0].getId())).thenReturn(new ResponseEntity<>(twitchApiFollowerResponse, OK));
         assertEquals(total, twitchService.getTotalFollowers(channel));
+    }
+
+    @Test
+    @DisplayName("When the user channel null, throw null pointer")
+    public void twitchUser_null_channel() {
+        assertThrows(NullPointerException.class, () -> twitchService.getUser(null));
+    }
+
+    @Test
+    @DisplayName("When the user body null, throw twitch user not found")
+    public void twitchUser_withOut_body() {
+        String channel = "1234";
+        when(twitchClient.getUser(channel)).thenReturn(new ResponseEntity<>(null, OK));
+        assertThrows(TwitchUserNotFoundException.class, () -> twitchService.getUser(channel));
+    }
+
+    @Test
+    @DisplayName("When the users are null, throw twitch user not found")
+    public void twitchUser_withOut_users() {
+        String channel = "1234";
+        TwitchApiUserResponse twitchApiUserResponse = new TwitchApiUserResponse();
+        twitchApiUserResponse.setUsers(null);
+        when(twitchClient.getUser(channel)).thenReturn(new ResponseEntity<>(twitchApiUserResponse, OK));
+        assertThrows(TwitchUserNotFoundException.class, () -> twitchService.getUser(channel));
+    }
+
+    @Test
+    @DisplayName("When the user found but null, throw twitch user not found")
+    public void twitchUser_with_nullUser() {
+        String channel = "1234";
+        TwitchApiUserResponse twitchApiUserResponse = new TwitchApiUserResponse();
+        twitchApiUserResponse.setUsers(new TwitchUser[]{null});
+        when(twitchClient.getUser(channel)).thenReturn(new ResponseEntity<>(twitchApiUserResponse, OK));
+        assertThrows(TwitchUserNotFoundException.class, () -> twitchService.getUser(channel));
+    }
+
+    @Test
+    @DisplayName("When the user found, return user")
+    public void twitchUser_with_users() {
+        TwitchUser twitchUser = getValidTwitchUser();
+        String channel = "1234";
+        TwitchApiUserResponse twitchApiUserResponse = new TwitchApiUserResponse();
+        twitchApiUserResponse.setUsers(new TwitchUser[]{twitchUser});
+        when(twitchClient.getUser(channel)).thenReturn(new ResponseEntity<>(twitchApiUserResponse, OK));
+        assertEquals(twitchUser, twitchService.getUser(channel));
     }
 }
