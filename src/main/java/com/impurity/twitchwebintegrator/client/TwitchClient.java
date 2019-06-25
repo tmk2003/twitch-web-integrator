@@ -10,11 +10,12 @@ import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserHttpReq
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
-import javax.validation.constraints.NotBlank;
-
+import static com.impurity.twitchwebintegrator.factory.TwitchUrlFactory.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -47,14 +48,10 @@ public class TwitchClient extends RestTemplateClient {
      * @param channel - Name of the channel to get information on
      * @return The response of the rest call
      */
-    public ResponseEntity<TwitchApiUserResponse> getUser(@NotBlank final String channel) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .fromHttpUrl("https://api.twitch.tv/helix/users")
-                .queryParam("login", channel);
-
+    public ResponseEntity<TwitchApiUserResponse> getUser(@NonNull final String channel) {
         try {
             return getRequest(
-                    uriComponentsBuilder.toUriString(),
+                    getUserURL(channel),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     TwitchApiUserResponse.class
@@ -71,14 +68,10 @@ public class TwitchClient extends RestTemplateClient {
      * @param channel - Name of the channel to get information on
      * @return The response of the rest call
      */
-    public ResponseEntity<TwitchApiStreamResponse> getStream(@NotBlank final String channel) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .fromHttpUrl("https://api.twitch.tv/helix/streams")
-                .queryParam("user_login", channel);
-
+    public ResponseEntity<TwitchApiStreamResponse> getStream(@NonNull final String channel) {
         try {
             return getRequest(
-                    uriComponentsBuilder.toUriString(),
+                    getStreamURL(channel),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     TwitchApiStreamResponse.class
@@ -95,14 +88,10 @@ public class TwitchClient extends RestTemplateClient {
      * @param twitchUserId - The Twitch User id to perform the look up on
      * @return The response of the rest call
      */
-    public ResponseEntity<TwitchApiFollowerResponse> getFollowers(@NotBlank final String twitchUserId) {
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl("https://api.twitch.tv/helix/users/follows")
-                .queryParam("to_id", twitchUserId);
-
+    public ResponseEntity<TwitchApiFollowerResponse> getFollowers(@NonNull final String twitchUserId) {
         try {
             return getRequest(
-                    builder.toUriString(),
+                    getFollowersURL(twitchUserId),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     TwitchApiFollowerResponse.class

@@ -10,7 +10,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import static com.impurity.twitchwebintegrator.factory.SteamUrlFactory.getLibraryURL;
 
 /**
  * @author tmk2003
@@ -32,15 +33,6 @@ public class SteamClient extends RestTemplateClient {
         return new HttpHeaders();
     }
 
-    public String getLibraryURL(@NonNull final String steamID) {
-       return UriComponentsBuilder
-               .fromHttpUrl("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/")
-               .queryParam("key", steamProperties.getKey())
-               .queryParam("steamid", steamID)
-               .queryParam("include_appinfo", 1)
-               .toUriString();
-    }
-
     /**
      * Perform a Get on the twitch API to attempt to retrieve a Twitch User
      *
@@ -49,7 +41,12 @@ public class SteamClient extends RestTemplateClient {
      */
     public ResponseEntity<SteamApiLibraryResponse> getLibrary(@NonNull final String steamID) {
         try {
-            return getRequest(getLibraryURL(steamID), HttpMethod.GET, new HttpEntity(this.getHeaders()), SteamApiLibraryResponse.class);
+            return getRequest(
+                    getLibraryURL(steamProperties.getKey(), steamID),
+                    HttpMethod.GET,
+                    new HttpEntity(this.getHeaders()),
+                    SteamApiLibraryResponse.class
+            );
         } catch (RestTemplateClientException ex) {
             log.error("Steam Client Issues: {}", ex.getMessage());
             throw new SteamClientLibraryHttpRequestException("Cannot get library", ex.getStatus(), ex);
