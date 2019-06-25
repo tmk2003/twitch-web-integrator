@@ -60,7 +60,7 @@ public class TwitchClient extends RestTemplateClient {
                     TwitchApiUserResponse.class
             );
         } catch (RestTemplateClientException ex) {
-            log.error("Twitch Client Issues: {}", ex.getMessage());
+            log.error("Twitch client issue retrieving user: {}", ex.getMessage());
             throw new TwitchClientUserHttpRequestException("Cannot get user", ex.getStatus(), ex);
         }
     }
@@ -84,7 +84,7 @@ public class TwitchClient extends RestTemplateClient {
                     TwitchApiStreamResponse.class
             );
         } catch (RestTemplateClientException ex) {
-            log.error("Twitch Client Issues: {}", ex.getMessage());
+            log.error("Twitch client issue retrieving stream: {}", ex.getMessage());
             throw new TwitchClientStreamHttpRequestException("Cannot get stream", ex.getStatus(), ex);
         }
     }
@@ -108,7 +108,7 @@ public class TwitchClient extends RestTemplateClient {
                     TwitchApiFollowerResponse.class
             );
         } catch (RestTemplateClientException ex) {
-            log.error("Twitch Client Issues: {}", ex.getMessage());
+            log.error("Twitch client issue retrieving followers: {}", ex.getMessage());
             throw new TwitchClientFollowersHttpRequestException("Cannot get followers", ex.getStatus(), ex);
         }
     }
