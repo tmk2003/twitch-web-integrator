@@ -2,10 +2,13 @@ package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
+import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import org.junit.jupiter.api.DisplayName;
@@ -20,8 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.test.utils.TwitchFactory.getValidTwitchFollowerArray;
-import static com.impurity.twitchwebintegrator.test.utils.TwitchFactory.getValidTwitchUser;
+import static com.impurity.twitchwebintegrator.test.utils.TwitchFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;
@@ -171,5 +173,50 @@ public class TwitchServiceImplTests extends AbstractTest {
         twitchApiUserResponse.setUsers(new TwitchUser[]{twitchUser});
         when(twitchClient.getUser(channel)).thenReturn(new ResponseEntity<>(twitchApiUserResponse, OK));
         assertEquals(twitchUser, twitchService.getUser(channel));
+    }
+
+    @Test
+    @DisplayName("When the stream channel null, throw null pointer")
+    public void twitchStream_null_channel() {
+        assertThrows(NullPointerException.class, () -> twitchService.getStream(null));
+    }
+
+    @Test
+    @DisplayName("When the stream body null, throw twitch stream not found")
+    public void twitchStream_withOut_body() {
+        String channel = "1234";
+        when(twitchClient.getStream(channel)).thenReturn(new ResponseEntity<>(null, OK));
+        assertThrows(TwitchStreamNotFoundException.class, () -> twitchService.getStream(channel));
+    }
+
+    @Test
+    @DisplayName("When the streams are null, throw twitch stream not found")
+    public void twitchStream_withOut_streams() {
+        String channel = "1234";
+        TwitchApiStreamResponse twitchApiStreamResponse = new TwitchApiStreamResponse();
+        twitchApiStreamResponse.setStreams(null);
+        when(twitchClient.getStream(channel)).thenReturn(new ResponseEntity<>(twitchApiStreamResponse, OK));
+        assertThrows(TwitchStreamNotFoundException.class, () -> twitchService.getStream(channel));
+    }
+
+    @Test
+    @DisplayName("When the first stream is null, throw twitch stream not found")
+    public void twitchStream_with_nullStreams() {
+        String channel = "1234";
+        TwitchApiStreamResponse twitchApiStreamResponse = new TwitchApiStreamResponse();
+        twitchApiStreamResponse.setStreams(new TwitchStream[]{null});
+        when(twitchClient.getStream(channel)).thenReturn(new ResponseEntity<>(twitchApiStreamResponse, OK));
+        assertThrows(TwitchStreamNotFoundException.class, () -> twitchService.getStream(channel));
+    }
+
+    @Test
+    @DisplayName("When the stream is found, return the stream")
+    public void twitchStream_with_streams() {
+        String channel = "1234";
+        TwitchStream twitchStream = getValidTwitchStream();
+        TwitchApiStreamResponse twitchApiStreamResponse = new TwitchApiStreamResponse();
+        twitchApiStreamResponse.setStreams(new TwitchStream[]{twitchStream});
+        when(twitchClient.getStream(channel)).thenReturn(new ResponseEntity<>(twitchApiStreamResponse, OK));
+        assertEquals(twitchStream, twitchService.getStream(channel));
     }
 }

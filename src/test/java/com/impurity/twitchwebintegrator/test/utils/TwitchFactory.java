@@ -1,6 +1,7 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
 
 /**
@@ -13,6 +14,23 @@ public class TwitchFactory {
             twitchFollowers[i] = getValidTwitchFollower();
         }
         return twitchFollowers;
+    }
+
+    public static TwitchStream getValidTwitchStream() {
+        TwitchStream twitchStream = new TwitchStream();
+        twitchStream.setCommunityIds(new String[]{"communityids"});
+        twitchStream.setGameId("gameid");
+        twitchStream.setId("id");
+        twitchStream.setLanguage("language");
+        twitchStream.setStartedAt("startedat");
+        twitchStream.setTagIds(new String[]{"tagids"});
+        twitchStream.setThumbnailUrl("thumbnailurl");
+        twitchStream.setTitle("title");
+        twitchStream.setType("type");
+        twitchStream.setUserId("userid");
+        twitchStream.setUserName("username");
+        twitchStream.setViewerCount(123L);
+        return twitchStream;
     }
 
     public static TwitchFollower getValidTwitchFollower() {
