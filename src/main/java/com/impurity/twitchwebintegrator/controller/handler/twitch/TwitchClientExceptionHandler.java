@@ -1,20 +1,18 @@
 package com.impurity.twitchwebintegrator.controller.handler.twitch;
 
 import com.impurity.twitchwebintegrator.domain.ApiError;
-import com.impurity.twitchwebintegrator.exception.twitch.*;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserHttpRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @author tmk2003
