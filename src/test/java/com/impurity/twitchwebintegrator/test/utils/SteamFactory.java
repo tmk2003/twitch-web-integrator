@@ -18,9 +18,9 @@ public class SteamFactory {
         SteamLibraryGame steamGame = new SteamLibraryGame();
         steamGame.setAppId(123L);
         steamGame.setHasCommunityVisibleStats(true);
-        steamGame.setImgIconUrl("");
-        steamGame.setImgLogoUrl("");
-        steamGame.setName("");
+        steamGame.setImgIconUrl("iconUrl");
+        steamGame.setImgLogoUrl("logoUrl");
+        steamGame.setName("name");
         steamGame.setPlaytimeForever(1L);
         return steamGame;
     }
