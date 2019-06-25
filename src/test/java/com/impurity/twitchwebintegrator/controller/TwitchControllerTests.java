@@ -183,7 +183,7 @@ public class TwitchControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting twitch total followers and is not found, return 404")
     public void no_twitch_followers_total_return_404() throws Exception {
-        when(_mockTwitchService.getTotalFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchRecentFollowersNotFoundException.class);
+        when(_mockTwitchService.getTotalFollowers(MOCK_CHANNEL_NAME)).thenThrow(TwitchTotalFollowersNotFoundException.class);
         _mockMvc.perform(
                 get("/twitch/" + MOCK_CHANNEL_NAME + "/followers/total")
                         .contentType(MediaType.APPLICATION_JSON)

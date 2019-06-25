@@ -3,6 +3,7 @@ package com.impurity.twitchwebintegrator.controller;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryAmountNotFoundException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
 import com.impurity.twitchwebintegrator.response.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.service.SteamService;
@@ -96,7 +97,7 @@ public class SteamControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a steam library amount and is not found, return 404 amount")
     public void no_steam_library_amount_return_404() throws Exception {
-        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryNotFoundException.class);
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryAmountNotFoundException.class);
         _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
