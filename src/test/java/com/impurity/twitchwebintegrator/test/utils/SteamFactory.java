@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
-import com.impurity.twitchwebintegrator.domain.SteamLibraryGame;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 
 /**
  * @author tmk2003

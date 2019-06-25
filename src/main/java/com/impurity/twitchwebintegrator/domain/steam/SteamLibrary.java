@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.domain;
+package com.impurity.twitchwebintegrator.domain.steam;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

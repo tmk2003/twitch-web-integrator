@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.domain.TwitchFollower;
-import com.impurity.twitchwebintegrator.domain.TwitchStream;
-import com.impurity.twitchwebintegrator.domain.TwitchUser;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
 import com.impurity.twitchwebintegrator.exception.twitch.*;
 import com.impurity.twitchwebintegrator.response.TwitchFollowersResponse;
 import com.impurity.twitchwebintegrator.response.TwitchStreamResponse;

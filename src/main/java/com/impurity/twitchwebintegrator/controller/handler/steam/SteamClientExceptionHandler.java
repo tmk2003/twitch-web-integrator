@@ -1,5 +1,6 @@
 package com.impurity.twitchwebintegrator.controller.handler.steam;
 
+import com.impurity.twitchwebintegrator.domain.ApiError;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
+
 /**
  * @author tmk2003
  */
@@ -20,13 +24,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SteamClientExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(SteamClientLibraryHttpRequestException.class)
-    protected ResponseEntity<Object> handledSteamClientLibraryRequestException(
-            final SteamClientLibraryHttpRequestException ex,
-            final WebRequest request
-    ) {
+    protected ResponseEntity<ApiError> handledSteamClientLibraryRequestException(final SteamClientLibraryHttpRequestException ex) {
         log.info("The Steam Client was unable to successfully complete the get library request: {}:{}", ex.getStatus(), ex.getMessage());
-        return handleExceptionInternal(
-                ex, "Get Steam Library failed", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request
-        );
+        ApiError apiError = new ApiError(INTERNAL_SERVER_ERROR, "Could not complete request to fetch steam library.", ex);
+        return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 }

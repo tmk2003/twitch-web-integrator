@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.client.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.impurity.twitchwebintegrator.domain.SteamLibrary;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import lombok.Data;
 
 /**

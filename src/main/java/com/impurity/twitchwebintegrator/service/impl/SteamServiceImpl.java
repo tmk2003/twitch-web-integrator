@@ -2,7 +2,7 @@ package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.SteamClient;
 import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
-import com.impurity.twitchwebintegrator.domain.SteamLibrary;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import lombok.extern.slf4j.Slf4j;

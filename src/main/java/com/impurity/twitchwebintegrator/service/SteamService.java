@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.service;
 
-import com.impurity.twitchwebintegrator.domain.SteamLibrary;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 
 /**
  * @author tmk2003

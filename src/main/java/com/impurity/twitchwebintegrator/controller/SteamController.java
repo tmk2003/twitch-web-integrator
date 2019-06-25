@@ -1,6 +1,5 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.domain.SteamLibrary;
 import com.impurity.twitchwebintegrator.response.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import io.swagger.annotations.Api;
