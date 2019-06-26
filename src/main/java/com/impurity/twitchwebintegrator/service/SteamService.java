@@ -16,10 +16,10 @@ public interface SteamService {
     SteamLibrary getGameLibrary(String steamProfileID);
 
     /**
-     * Get the steam users library amount
+     * Get the steam users library total
      *
      * @param steamProfileID - ID to grab the user library of
-     * @return A steam users library amount
+     * @return A steam users library total
      */
-    Long getGameLibraryAmount(String steamProfileID);
+    Long getGameLibraryTotal(String steamProfileID);
 }

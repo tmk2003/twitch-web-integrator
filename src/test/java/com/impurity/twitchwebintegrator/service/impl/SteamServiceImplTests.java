@@ -187,7 +187,7 @@ public class SteamServiceImplTests extends AbstractTest {
     @Test
     @DisplayName("When the appId null for get steam library amount, throw null pointer")
     public void steamLibraryAmount_null_steamProfileId() {
-        assertThrows(NullPointerException.class, () -> steamService.getGameLibraryAmount(null));
+        assertThrows(NullPointerException.class, () -> steamService.getGameLibraryTotal(null));
     }
 
     @Test
@@ -200,7 +200,7 @@ public class SteamServiceImplTests extends AbstractTest {
         library.setGameCount(null);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));
-        assertEquals((Long) 0L, steamService.getGameLibraryAmount(steamProfileId));
+        assertEquals((Long) 0L, steamService.getGameLibraryTotal(steamProfileId));
     }
 
     @Test
@@ -214,6 +214,6 @@ public class SteamServiceImplTests extends AbstractTest {
         library.setGameCount(steamGameCount);
         response.setResponse(library);
         when(steamClient.getLibrary(steamProfileId)).thenReturn(new ResponseEntity<>(response, OK));
-        assertEquals(steamGameCount, steamService.getGameLibraryAmount(steamProfileId));
+        assertEquals(steamGameCount, steamService.getGameLibraryTotal(steamProfileId));
     }
 }

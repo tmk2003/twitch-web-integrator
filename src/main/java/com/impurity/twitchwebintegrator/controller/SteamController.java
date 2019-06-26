@@ -54,6 +54,6 @@ public class SteamController {
     public Long getGameLibraryTotal(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
-        return steamService.getGameLibraryAmount(steamProfileID);
+        return steamService.getGameLibraryTotal(steamProfileID);
     }
 }

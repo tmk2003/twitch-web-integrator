@@ -50,7 +50,7 @@ public class SteamServiceImpl implements SteamService {
     }
 
     @Override
-    public Long getGameLibraryAmount(@NonNull String steamProfileID) {
+    public Long getGameLibraryTotal(@NonNull String steamProfileID) {
         return getGameLibrary(steamProfileID).getGameCount();
     }
 
