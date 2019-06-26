@@ -1,9 +1,9 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiFollowerResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiStreamResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;

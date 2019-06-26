@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.response.TwitchFollowersResponse;
-import com.impurity.twitchwebintegrator.response.TwitchStreamResponse;
-import com.impurity.twitchwebintegrator.response.TwitchUserResponse;
+import com.impurity.twitchwebintegrator.response.twitch.TwitchFollowersResponse;
+import com.impurity.twitchwebintegrator.response.twitch.TwitchStreamResponse;
+import com.impurity.twitchwebintegrator.response.twitch.TwitchUserResponse;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

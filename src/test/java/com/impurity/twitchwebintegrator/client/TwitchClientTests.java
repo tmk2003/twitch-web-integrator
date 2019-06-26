@@ -1,9 +1,9 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiFollowerResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiStreamResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamHttpRequestException;
@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.builder.TwitchUrlBuilder.*;
+import static com.impurity.twitchwebintegrator.builder.twitch.TwitchUrlBuilder.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.ExpectedCount.once;

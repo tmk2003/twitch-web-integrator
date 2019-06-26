@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.client.response;
+package com.impurity.twitchwebintegrator.client.response.steam;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;

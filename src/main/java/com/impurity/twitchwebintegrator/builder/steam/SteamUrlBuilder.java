@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.builder;
+package com.impurity.twitchwebintegrator.builder.steam;
 
 import lombok.NonNull;
 import org.springframework.web.util.UriComponentsBuilder;

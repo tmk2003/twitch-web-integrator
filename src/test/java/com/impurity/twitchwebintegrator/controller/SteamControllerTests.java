@@ -6,7 +6,7 @@ import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryAmountNotFoundException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
-import com.impurity.twitchwebintegrator.response.SteamLibraryResponse;
+import com.impurity.twitchwebintegrator.response.steam.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import com.impurity.twitchwebintegrator.test.utils.SteamFactory;

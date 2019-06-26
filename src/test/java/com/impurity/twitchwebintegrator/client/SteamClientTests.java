@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.steam.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 
-import static com.impurity.twitchwebintegrator.builder.SteamUrlBuilder.buildLibraryURL;
+import static com.impurity.twitchwebintegrator.builder.steam.SteamUrlBuilder.buildLibraryURL;
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,6 +1,7 @@
-package com.impurity.twitchwebintegrator.builder;
+package com.impurity.twitchwebintegrator.builder.steam;
 
 
+import com.impurity.twitchwebintegrator.builder.steam.SteamUrlBuilder;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

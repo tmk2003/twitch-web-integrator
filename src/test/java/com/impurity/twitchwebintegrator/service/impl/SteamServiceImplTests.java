@@ -1,12 +1,11 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.SteamClient;
-import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.steam.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
-import com.impurity.twitchwebintegrator.test.utils.SteamFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.impurity.twitchwebintegrator.client.response;
+package com.impurity.twitchwebintegrator.client.response.twitch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.impurity.twitchwebintegrator.domain.twitch.TwitchPagination;

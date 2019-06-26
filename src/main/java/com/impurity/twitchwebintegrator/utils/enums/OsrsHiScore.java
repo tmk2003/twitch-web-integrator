@@ -1,0 +1,40 @@
+package com.impurity.twitchwebintegrator.utils.enums;
+
+/**
+ * @author tmk2003
+ */
+public enum OsrsHiScore {
+    OVERALL,
+    ATTACK,
+    DEFENCE,
+    STRENGTH,
+    HITPOINTS,
+    RANGED,
+    PRAYER,
+    MAGIC,
+    COOKING,
+    WOODCUTTING,
+    FLETCHING,
+    FISHING,
+    FIREMAKING,
+    CRAFTING,
+    SMITHING,
+    MINING,
+    HERBLORE,
+    AGILITY,
+    THIEVING,
+    SLAYER,
+    FARMING,
+    RUNECRAFTING,
+    HUNTER,
+    CONSTRUCTION,
+    EASY_CLUE_SCROLLS,
+    MEDIUM_CLUE_SCROLLS,
+    CLUE_SCROLLS,
+    BOUNTY_HUNTER,
+    BOUNTY_HUNTER_ROGUES,
+    HARD_CLUE_SCROLL,
+    LAST_MAN_STANDING,
+    ELITE_CLUE_SCROLL,
+    MASTER_CLUE_SCROLL,
+}

@@ -1,6 +1,6 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.steam.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
@@ -13,7 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import static com.impurity.twitchwebintegrator.builder.SteamUrlBuilder.buildLibraryURL;
+import static com.impurity.twitchwebintegrator.builder.steam.SteamUrlBuilder.buildLibraryURL;
 
 /**
  * @author tmk2003

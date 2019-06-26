@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.client;
 
-import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
-import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiFollowerResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiStreamResponse;
+import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamHttpRequestException;
@@ -17,7 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import static com.impurity.twitchwebintegrator.builder.TwitchUrlBuilder.*;
+import static com.impurity.twitchwebintegrator.builder.twitch.TwitchUrlBuilder.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**

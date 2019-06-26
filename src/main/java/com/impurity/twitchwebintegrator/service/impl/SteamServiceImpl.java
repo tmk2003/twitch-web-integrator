@@ -1,7 +1,7 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.SteamClient;
-import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
+import com.impurity.twitchwebintegrator.client.response.steam.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
