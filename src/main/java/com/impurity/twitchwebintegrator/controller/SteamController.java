@@ -29,7 +29,7 @@ public class SteamController {
             @ApiResponse(code = 404, message = "The steam library was not found")
     })
     @GetMapping(
-            value = "/{steamProfileId}/library",
+            value = "/user/{steamProfileId}/library",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -47,7 +47,7 @@ public class SteamController {
             @ApiResponse(code = 404, message = "The steam library amount was not found")
     })
     @GetMapping(
-            value = "/{steamProfileId}/library/amount",
+            value = "/user/{steamProfileId}/library/amount",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
