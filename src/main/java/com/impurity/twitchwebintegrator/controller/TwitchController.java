@@ -31,7 +31,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch user was not found")
     })
     @GetMapping(
-            value = "/{channelName}/user",
+            value = "/user/{channelName}",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -49,7 +49,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch stream was not found")
     })
     @GetMapping(
-            value = "/{channelName}/stream",
+            value = "/user/{channelName}/stream",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -67,7 +67,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch recent followers were not found")
     })
     @GetMapping(
-            value = "/{channelName}/followers/recent",
+            value = "/user/{channelName}/followers/recent",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -85,7 +85,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch user total followers were not found")
     })
     @GetMapping(
-            value = "/{channelName}/followers/total",
+            value = "/user/{channelName}/followers/total",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
