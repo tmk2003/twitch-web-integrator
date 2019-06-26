@@ -4,7 +4,7 @@ package com.impurity.twitchwebintegrator.exception.steam;
  * @author tmk2003
  */
 public class SteamLibraryNotFoundException extends RuntimeException {
-    private static final long serialVersionUID = -805952780820062553L;
+    private static final long serialVersionUID = 2813516408240107708L;
 
     /**
      * Generic Twitch Exception

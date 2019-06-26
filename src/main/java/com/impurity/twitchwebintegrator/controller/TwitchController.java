@@ -1,16 +1,17 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchStream;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.response.TwitchFollowersResponse;
+import com.impurity.twitchwebintegrator.response.TwitchStreamResponse;
+import com.impurity.twitchwebintegrator.response.TwitchUserResponse;
 import com.impurity.twitchwebintegrator.service.TwitchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * @author tmk2003
@@ -31,13 +32,15 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/user",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
-    public TwitchUser getUser(
+    public TwitchUserResponse getUser(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getUser(channelName);
+        TwitchUserResponse twitchUserResponse = new TwitchUserResponse();
+        twitchUserResponse.setUser(twitchService.getUser(channelName));
+        return twitchUserResponse;
     }
 
     @ApiOperation(value = "Returns Twitch Steam")
@@ -47,13 +50,15 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/stream",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
-    public TwitchStream getStream(
+    public TwitchStreamResponse getStream(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getStream(channelName);
+        TwitchStreamResponse twitchStreamResponse = new TwitchStreamResponse();
+        twitchStreamResponse.setStream(twitchService.getStream(channelName));
+        return twitchStreamResponse;
     }
 
     @ApiOperation(value = "Returns Twitch User's recent followers")
@@ -63,13 +68,15 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/followers/recent",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
-    public TwitchFollower[] getFollowers(
+    public TwitchFollowersResponse getFollowers(
             @PathVariable("channelName") String channelName
     ) {
-        return twitchService.getRecentFollowers(channelName);
+        TwitchFollowersResponse twitchStreamResponse = new TwitchFollowersResponse();
+        twitchStreamResponse.setFollowers(twitchService.getRecentFollowers(channelName));
+        return twitchStreamResponse;
     }
 
     @ApiOperation(value = "Returns Twitch User's total follows")
@@ -79,8 +86,8 @@ public class TwitchController {
     })
     @GetMapping(
             value = "/{channelName}/followers/total",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
     )
     public Long getTotalFollowers(
             @PathVariable("channelName") String channelName

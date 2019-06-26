@@ -1,7 +1,8 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
 
 /**
  * @author tmk2003
@@ -15,27 +16,44 @@ public class TwitchFactory {
         return twitchFollowers;
     }
 
+    public static TwitchStream getValidTwitchStream() {
+        TwitchStream twitchStream = new TwitchStream();
+        twitchStream.setCommunityIds(new String[]{"communityids"});
+        twitchStream.setGameId("gameid");
+        twitchStream.setId("id");
+        twitchStream.setLanguage("language");
+        twitchStream.setStartedAt("startedat");
+        twitchStream.setTagIds(new String[]{"tagids"});
+        twitchStream.setThumbnailUrl("thumbnailurl");
+        twitchStream.setTitle("title");
+        twitchStream.setType("type");
+        twitchStream.setUserId("userid");
+        twitchStream.setUserName("username");
+        twitchStream.setViewerCount(123L);
+        return twitchStream;
+    }
+
     public static TwitchFollower getValidTwitchFollower() {
         TwitchFollower twitchFollower = new TwitchFollower();
-        twitchFollower.setFromId("");
-        twitchFollower.setFromName("");
-        twitchFollower.setToId("");
-        twitchFollower.setToName("");
-        twitchFollower.setFollowedAt("");
+        twitchFollower.setFromId("fromid");
+        twitchFollower.setFromName("fromname");
+        twitchFollower.setToId("toid");
+        twitchFollower.setToName("toname");
+        twitchFollower.setFollowedAt("followedat");
         return twitchFollower;
     }
 
     public static TwitchUser getValidTwitchUser() {
         TwitchUser twitchUser = new TwitchUser();
-        twitchUser.setOfflineImageUrl("");
-        twitchUser.setProfileImageUrl("");
-        twitchUser.setBroadcasterType("");
-        twitchUser.setDisplayName("");
-        twitchUser.setViewCount(0L);
-        twitchUser.setDescription("");
-        twitchUser.setId("");
-        twitchUser.setLogin("");
-        twitchUser.setType("");
+        twitchUser.setOfflineImageUrl("offlineimageurl");
+        twitchUser.setProfileImageUrl("profileimageurl");
+        twitchUser.setBroadcasterType("broadcastertype");
+        twitchUser.setDisplayName("displayname");
+        twitchUser.setViewCount(123L);
+        twitchUser.setDescription("description");
+        twitchUser.setId("id");
+        twitchUser.setLogin("login");
+        twitchUser.setType("type");
         return twitchUser;
     }
 }

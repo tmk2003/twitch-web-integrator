@@ -1,23 +1,23 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
 import com.impurity.twitchwebintegrator.client.TwitchClient;
-import com.impurity.twitchwebintegrator.exception.twitch.*;
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchStream;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
-import com.impurity.twitchwebintegrator.properties.TwitchProperties;
+import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
+import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
+import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
+import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.service.TwitchService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
-
-import static com.impurity.twitchwebintegrator.constant.TwitchKeys.*;
+import java.util.Optional;
 
 /**
  * @author tmk2003
@@ -36,36 +36,31 @@ public class TwitchServiceImpl implements TwitchService {
      * @return A twitch user
      */
     @Override
-    public TwitchUser getUser(@NotBlank String channel) {
-        String responseBody = twitchClient.sendGetUser(channel);
+    public TwitchUser getUser(@NonNull String channel) {
+        ResponseEntity<TwitchApiUserResponse> responseEntity = twitchClient.getUser(channel);
 
-        JSONArray jsonArray;
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
-            jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
-        } catch (ParseException e) {
-            log.error("Could not parse response from twitch", e);
-            throw new TwitchUserCreationException("Twitch Response Body was Invalid", e);
+        TwitchApiUserResponse twitchApiUserResponse = Optional
+                .ofNullable(responseEntity.getBody())
+                .orElseThrow(() -> {
+                    log.error("There was no response entity found while getting twitch user");
+                    return new TwitchUserNotFoundException("No user response body found");
+                });
+
+        TwitchUser[] twitchUsers = Optional
+                .ofNullable(twitchApiUserResponse.getUsers())
+                .orElse(new TwitchUser[0]);
+
+        if (twitchUsers.length == 0) {
+            log.error("There were no users found while getting twitch user");
+            throw new TwitchUserNotFoundException("No users found");
         }
-        if(jsonArray.isEmpty()) {
-            throw new TwitchUserNotFoundException(channel + " was not found in twitch API");
-        }
 
-        JSONObject dataNode = (JSONObject) jsonArray.get(0);
-
-        TwitchUser twitchUser = new TwitchUser();
-        twitchUser.setId((String) dataNode.get(ID_KEY));
-        twitchUser.setLogin((String) dataNode.get(LOGIN_KEY));
-        twitchUser.setDisplayName((String) dataNode.get(DISPLAY_NAME_KEY));
-        twitchUser.setType((String) dataNode.get(TYPE_KEY));
-        twitchUser.setBroadcasterType((String) dataNode.get(BROADCASTER_TYPE_KEY));
-        twitchUser.setDescription((String) dataNode.get(DESCRIPTION_KEY));
-        twitchUser.setProfileImageUrl((String) dataNode.get(PROFILE_IMAGE_URL_KEY));
-        twitchUser.setOfflineImageUrl((String) dataNode.get(OFFLINE_IMAGE_URL_KEY));
-        twitchUser.setViewCount((Long) dataNode.get(VIEW_COUNT_KEY));
-
-        return twitchUser;
+        return Optional
+                .ofNullable(twitchUsers[0])
+                .orElseThrow(() -> {
+                    log.error("The first user found was not instantiated");
+                    return new TwitchUserNotFoundException("The first user found was not instantiated");
+                });
     }
 
 
@@ -76,40 +71,59 @@ public class TwitchServiceImpl implements TwitchService {
      * @return A twitch user
      */
     @Override
-    public TwitchStream getStream(@NotBlank String channel) {
-        String responseBody = twitchClient.sendGetStream(channel);
+    public TwitchStream getStream(@NonNull String channel) {
+        ResponseEntity<TwitchApiStreamResponse> responseEntity = twitchClient.getStream(channel);
 
-        JSONObject jsonObject;
-        try {
-            JSONParser jsonParser = new JSONParser();
-            jsonObject = (JSONObject) jsonParser.parse(responseBody);
-        } catch (ParseException e) {
-            log.error("Could not parse response from twitch", e);
-            throw new TwitchUserCreationException("Twitch Response Body was Invalid", e);
+        TwitchApiStreamResponse twitchApiStreamResponse = Optional
+                .ofNullable(responseEntity.getBody())
+                .orElseThrow(() -> {
+                    log.error("There was no response entity found while getting twitch stream");
+                    return new TwitchStreamNotFoundException("No stream response body found");
+                });
+
+        TwitchStream[] twitchStreams = Optional
+                .ofNullable(twitchApiStreamResponse.getStreams())
+                .orElse(new TwitchStream[0]);
+
+        if (twitchStreams.length == 0) {
+            log.error("There were no streams found while getting twitch user");
+            throw new TwitchStreamNotFoundException("No streams found");
         }
 
-        JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
-        if(jsonArray.isEmpty()) {
-            throw new TwitchStreamNotFoundException("Twitch stream not found.");
-        }
+        return Optional
+                .ofNullable(twitchStreams[0])
+                .orElseThrow(() -> {
+                    log.error("The first stream found was not instantiated");
+                    return new TwitchStreamNotFoundException("The first stream found was not instantiated");
+                });
+    }
 
-        JSONObject dataNode = (JSONObject) jsonArray.get(0);
+    /**
+     * Get the users followers
+     *
+     * @param channel - Channel to grab the followers for
+     * @return - The API response from twitch
+     */
+    private TwitchApiFollowerResponse getFollowers(@NonNull String channel) {
+        String userId = this.getUser(channel).getId();
+        ResponseEntity<TwitchApiFollowerResponse> responseEntity = twitchClient.getFollowers(userId);
 
-        TwitchStream twitchStream = new TwitchStream();
-        twitchStream.setId((String) dataNode.get(ID_KEY));
-        twitchStream.setUserId((String) dataNode.get(USER_ID_KEY));
-        twitchStream.setUserName((String) dataNode.get(USER_NAME_KEY));
-        twitchStream.setGameId((String) dataNode.get(GAME_ID_KEY));
-        twitchStream.setType((String) dataNode.get(TYPE_KEY));
-        twitchStream.setTitle((String) dataNode.get(TITLE_KEY));
-        twitchStream.setLanguage((String) dataNode.get(LANGUAGE_KEY));
-        twitchStream.setThumbnailUrl((String) dataNode.get(THUMBNAIL_URL_KEY));
-        twitchStream.setViewerCount((Long) dataNode.get(VIEWER_COUNT_KEY));
-        twitchStream.setStartedAt((String) dataNode.get(STARTED_AT_KEY));
-        twitchStream.setCommunityIds(jsonArrayToStringArray((JSONArray) dataNode.get(COMMUNITY_IDS_KEY)));
-        twitchStream.setTagIds(jsonArrayToStringArray((JSONArray) dataNode.get(TAG_IDS_KEY)));
+        return Optional
+                .ofNullable(responseEntity.getBody())
+                .orElseThrow(() -> new TwitchFollowersNotFoundException("No recent followers response body found"));
+    }
 
-        return twitchStream;
+    /**
+     * Get the users total followers
+     *
+     * @param channel - Channel to grab the followers for
+     * @return An array of followers
+     */
+    @Override
+    public Long getTotalFollowers(String channel) {
+        return Optional
+                .ofNullable(getFollowers(channel).getTotal())
+                .orElse(0L);
     }
 
     /**
@@ -119,75 +133,9 @@ public class TwitchServiceImpl implements TwitchService {
      * @return An array of followers
      */
     @Override
-    public Long getTotalFollowers(@NotBlank String channel) {
-        String responseBody = twitchClient.sendGetFollowers(this.getUser(channel));
-
-        JSONObject jsonObject;
-        try {
-            JSONParser jsonParser = new JSONParser();
-            jsonObject = (JSONObject) jsonParser.parse(responseBody);
-        } catch (ParseException e) {
-            log.error("Could not parse total followers response from twitch", e);
-            throw new TwitchFollowerCreationException("Twitch Response Body was Invalid", e);
-        }
-
-        return (Long) jsonObject.get(TOTAL_KEY);
-    }
-
-    /**
-     * Get the users recent followers
-     *
-     * @param channel - Channel to grab the followers for
-     * @return An array of followers
-     */
-    @Override
-    public TwitchFollower[] getRecentFollowers(@NotBlank String channel) {
-        String responseBody = twitchClient.sendGetFollowers(this.getUser(channel));
-
-        JSONObject jsonObject;
-        try {
-            JSONParser jsonParser = new JSONParser();
-            jsonObject = (JSONObject) jsonParser.parse(responseBody);
-        } catch (ParseException e) {
-            log.error("Could not parse recent followers response from twitch", e);
-            throw new TwitchFollowerCreationException("Twitch Response Body was Invalid", e);
-        }
-
-        JSONArray jsonArray = (JSONArray) jsonObject.get(DATA_KEY);
-        if(jsonArray.isEmpty()) {
-            throw new TwitchFollowerNotFoundException("Twitch Followers not found");
-        }
-
-        TwitchFollower[] twitchFollowers = new TwitchFollower[jsonArray.size()];
-        for(int i = 0; i < jsonArray.size(); i++) {
-            try {
-                JSONObject currentNode = (JSONObject) jsonArray.get(i);
-                TwitchFollower twitchFollower = new TwitchFollower();
-                twitchFollower.setFromId((String) currentNode.get(FROM_ID_KEY));
-                twitchFollower.setFromName((String) currentNode.get(FROM_NAME_KEY));
-                twitchFollower.setToId((String) currentNode.get(TO_ID_KEY));
-                twitchFollower.setToName((String) currentNode.get(TO_NAME_KEY));
-                twitchFollower.setFollowedAt((String) currentNode.get(FOLLOWED_AT_KEY));
-                twitchFollowers[i] = twitchFollower;
-            } catch (Exception e) {
-                log.error("Error constructing our twitch follower", e);
-                throw new TwitchFollowerCreationException("Cannot create twitch follower", e);
-            }
-        }
-
-        return twitchFollowers;
-    }
-
-    /**
-     * Converts a jsonArray to a stringArray
-     * @param jsonArray JSON array from twitch
-     * @return String array for a pojo to use
-     */
-    private String[] jsonArrayToStringArray(JSONArray jsonArray) {
-        String[] stringArray = new String[jsonArray.size()];
-        for(int i = 0; i < jsonArray.size(); i++) {
-            stringArray[i] = (String) jsonArray.get(i);
-        }
-        return stringArray;
+    public TwitchFollower[] getRecentFollowers(@NonNull String channel) {
+        return Optional
+                .ofNullable(getFollowers(channel).getFollowers())
+                .orElse(new TwitchFollower[0]);
     }
 }

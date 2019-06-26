@@ -1,27 +1,27 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
-import com.impurity.twitchwebintegrator.model.SteamGame;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 
 /**
  * @author tmk2003
  */
 public class SteamFactory {
-    public static SteamGame[] getValidSteamGameArray(int amount) {
-        SteamGame[] steamGames = new SteamGame[amount];
+    public static SteamLibraryGame[] getValidSteamGameArray(int amount) {
+        SteamLibraryGame[] steamGames = new SteamLibraryGame[amount];
         for(int i = 0; i < amount; i++) {
             steamGames[i] = getValidSteamGame();
         }
         return steamGames;
     }
 
-    public static SteamGame getValidSteamGame() {
-        SteamGame steamGame = new SteamGame();
+    public static SteamLibraryGame getValidSteamGame() {
+        SteamLibraryGame steamGame = new SteamLibraryGame();
         steamGame.setAppId(123L);
         steamGame.setHasCommunityVisibleStats(true);
-        steamGame.setImgIconUrl("");
-        steamGame.setImgLogoUrl("");
-        steamGame.setName("");
-        steamGame.setPlaytimeForever(1L);
+        steamGame.setImgIconUrl("iconUrl");
+        steamGame.setImgLogoUrl("logoUrl");
+        steamGame.setName("name");
+        steamGame.setPlaytimeForever(123L);
         return steamGame;
     }
 }

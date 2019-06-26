@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -23,8 +24,21 @@ public class RestTemplateClientExceptionTests extends AbstractTest {
     @DisplayName("The rest template client exception stores message properly")
     public void captures_message() {
         String testMessage = "apples";
-        RestTemplateClientException exception = new RestTemplateClientException(testMessage);
-        assertEquals(exception.getMessage(), testMessage);
+        assertEquals(new RestTemplateClientException(testMessage, HttpStatus.SERVICE_UNAVAILABLE, new Exception()).getMessage(), testMessage);
+    }
+
+    @Test
+    @DisplayName("The rest template client exception stores message properly")
+    public void captures_throwable() {
+        Exception testException = new Exception();
+        assertEquals(new RestTemplateClientException("apples", HttpStatus.SERVICE_UNAVAILABLE, testException).getCause(), testException);
+    }
+
+    @Test
+    @DisplayName("The rest template client exception stores message properly")
+    public void captures_status() {
+        HttpStatus testStatus = HttpStatus.ACCEPTED;
+        assertEquals(new RestTemplateClientException("apples",testStatus, new Exception()).getStatus(), testStatus);
     }
 }
 

@@ -1,8 +1,12 @@
 package com.impurity.twitchwebintegrator.controller;
 
-import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryCreationException;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
+import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
+import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
+import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryAmountNotFoundException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
-import com.impurity.twitchwebintegrator.model.SteamGame;
+import com.impurity.twitchwebintegrator.response.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.service.SteamService;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import com.impurity.twitchwebintegrator.test.utils.SteamFactory;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,17 +45,50 @@ public class SteamControllerTests extends AbstractTest {
     private MockMvc _mockMvc;
     private final String MOCK_CHANNEL_NAME = "abc123";
 
-    /******************* Get Steam Library *******************/
+    @Test
+    @DisplayName("Return 500 if illegal argument thrown")
+    public void handles_illegalArgument() throws Exception {
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(IllegalArgumentException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Return 500 if null pointer thrown")
+    public void handles_nullPointer() throws Exception {
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(NullPointerException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @DisplayName("Return 503 if rest template server  thrown")
+    public void handles_restTemplateServer() throws Exception {
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(RestTemplateServerException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isServiceUnavailable());
+    }
+
     @Test
     @DisplayName("When getting a steam library and is found, return 200 and library")
     public void steam_library_return_200() throws Exception {
-        SteamGame[] steamGames = SteamFactory.getValidSteamGameArray(10);
+        SteamLibrary steamLibrary = new SteamLibrary();
+        SteamLibraryGame[] steamGames = SteamFactory.getValidSteamGameArray(10);
+        SteamLibraryResponse steamLibraryResponse = new SteamLibraryResponse();
 
-        when(_mockSteamService.getGameLibrary(MOCK_CHANNEL_NAME)).thenReturn(steamGames);
-        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library"))
+        steamLibrary.setGames(steamGames);
+        steamLibraryResponse.setGames(steamGames);
+
+
+        when(_mockSteamService.getGameLibrary(MOCK_CHANNEL_NAME)).thenReturn(steamLibrary);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        mapToJson(steamGames)
+                        mapToJson(steamLibraryResponse)
                 ));
     }
 
@@ -58,24 +96,26 @@ public class SteamControllerTests extends AbstractTest {
     @DisplayName("When getting a steam library and is not found, return 404")
     public void no_steam_library_return_404() throws Exception {
         when(_mockSteamService.getGameLibrary(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryNotFoundException.class);
-        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library"))
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("When getting a steam library and it cannot be created, return 500")
     public void steam_library_return_500() throws Exception {
-        when(_mockSteamService.getGameLibrary(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryCreationException.class);
-        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library"))
+        when(_mockSteamService.getGameLibrary(MOCK_CHANNEL_NAME)).thenThrow(SteamClientLibraryHttpRequestException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
     }
 
-    /******************* Get Steam Library Amount *******************/
     @Test
     @DisplayName("When getting a steam library amount and is found, return 200 and library amount")
     public void steam_library_amount_return_200() throws Exception {
-        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenReturn(0);
-        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount"))
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenReturn(0L);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("0"));
     }
@@ -83,16 +123,18 @@ public class SteamControllerTests extends AbstractTest {
     @Test
     @DisplayName("When getting a steam library amount and is not found, return 404 amount")
     public void no_steam_library_amount_return_404() throws Exception {
-        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryNotFoundException.class);
-        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount"))
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryAmountNotFoundException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("When getting a steam library amount and it cannot be created, return 500 amount")
     public void steam_library_amount_return_500() throws Exception {
-        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(SteamLibraryCreationException.class);
-        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount"))
+        when(_mockSteamService.getGameLibraryAmount(MOCK_CHANNEL_NAME)).thenThrow(SteamClientLibraryHttpRequestException.class);
+        _mockMvc.perform(get("/steam/" + MOCK_CHANNEL_NAME + "/library/amount")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
     }
 }

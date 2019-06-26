@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.service;
 
-import com.impurity.twitchwebintegrator.model.TwitchFollower;
-import com.impurity.twitchwebintegrator.model.TwitchStream;
-import com.impurity.twitchwebintegrator.model.TwitchUser;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
+import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
 
 /**
  * @author Tyler Kokoszka
