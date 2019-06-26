@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @Api(value = "Steam API endpoints", tags = {"Steam"})
 @CrossOrigin(origins = {"https://tmk2003.github.io", "http://localhost:4200"}, maxAge = 3600)
-@RequestMapping("/steam")
+@RequestMapping("/steam/v1")
 @RestController
 public class SteamController {
 
@@ -29,7 +29,7 @@ public class SteamController {
             @ApiResponse(code = 404, message = "The steam library was not found")
     })
     @GetMapping(
-            value = "/user/{steamProfileId}/library",
+            value = "/users/{steamProfileId}/libraries",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -47,11 +47,11 @@ public class SteamController {
             @ApiResponse(code = 404, message = "The steam library amount was not found")
     })
     @GetMapping(
-            value = "/user/{steamProfileId}/library/amount",
+            value = "/users/{steamProfileId}/libraries/total",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    public Long getGameLibraryAmount(
+    public Long getGameLibraryTotal(
             @PathVariable("steamProfileId") String steamProfileID
     ) {
         return steamService.getGameLibraryAmount(steamProfileID);

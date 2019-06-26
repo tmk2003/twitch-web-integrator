@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @Api(value = "Twitch API endpoints", tags = {"Twitch"})
 @CrossOrigin(origins = {"https://tmk2003.github.io", "http://localhost:4200"}, maxAge = 3600)
-@RequestMapping("/twitch")
+@RequestMapping("/twitch/v1")
 @RestController
 public class TwitchController {
 
@@ -31,7 +31,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch user was not found")
     })
     @GetMapping(
-            value = "/user/{channelName}",
+            value = "/users/{channelName}",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -49,7 +49,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch stream was not found")
     })
     @GetMapping(
-            value = "/user/{channelName}/stream",
+            value = "/users/{channelName}/streams",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -67,7 +67,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch recent followers were not found")
     })
     @GetMapping(
-            value = "/user/{channelName}/followers/recent",
+            value = "/users/{channelName}/followers",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
@@ -85,7 +85,7 @@ public class TwitchController {
             @ApiResponse(code = 404, message = "The twitch user total followers were not found")
     })
     @GetMapping(
-            value = "/user/{channelName}/followers/total",
+            value = "/users/{channelName}/followers/total",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
