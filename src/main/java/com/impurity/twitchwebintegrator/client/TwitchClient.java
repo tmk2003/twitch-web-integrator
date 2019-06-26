@@ -10,29 +10,25 @@ import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserHttpReq
 import com.impurity.twitchwebintegrator.properties.TwitchProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
-import static com.impurity.twitchwebintegrator.factory.TwitchUrlFactory.*;
+import static com.impurity.twitchwebintegrator.builder.TwitchUrlBuilder.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * @author tmk2003
  */
 @Slf4j
+@Component
 public class TwitchClient extends RestTemplateClient {
 
-    private final TwitchProperties twitchProperties;
-
-    /**
-     * Create the Twitch Client
-     * @param twitchProperties - required properties
-     */
-    public TwitchClient(@NonNull final TwitchProperties twitchProperties) {
-        this.twitchProperties = twitchProperties;
-    }
+    @Autowired
+    private TwitchProperties twitchProperties;
 
     @Override
     protected HttpHeaders getHeaders() {
@@ -51,7 +47,7 @@ public class TwitchClient extends RestTemplateClient {
     public ResponseEntity<TwitchApiUserResponse> getUser(@NonNull final String channel) {
         try {
             return getRequest(
-                    getUserURL(channel),
+                    buildUserURL(channel).toUriString(),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     TwitchApiUserResponse.class
@@ -71,7 +67,7 @@ public class TwitchClient extends RestTemplateClient {
     public ResponseEntity<TwitchApiStreamResponse> getStream(@NonNull final String channel) {
         try {
             return getRequest(
-                    getStreamURL(channel),
+                    buildStreamURL(channel).toUriString(),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     TwitchApiStreamResponse.class
@@ -91,7 +87,7 @@ public class TwitchClient extends RestTemplateClient {
     public ResponseEntity<TwitchApiFollowerResponse> getFollowers(@NonNull final String twitchUserId) {
         try {
             return getRequest(
-                    getFollowersURL(twitchUserId),
+                    buildFollowersURL(twitchUserId).toUriString(),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     TwitchApiFollowerResponse.class

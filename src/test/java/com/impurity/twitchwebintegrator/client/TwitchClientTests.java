@@ -1,12 +1,10 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiFollowerResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiStreamResponse;
 import com.impurity.twitchwebintegrator.client.response.TwitchApiUserResponse;
 import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
-import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientFollowersHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientStreamHttpRequestException;
 import com.impurity.twitchwebintegrator.exception.twitch.TwitchClientUserHttpRequestException;
@@ -26,8 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.factory.SteamUrlFactory.getLibraryURL;
-import static com.impurity.twitchwebintegrator.factory.TwitchUrlFactory.*;
+import static com.impurity.twitchwebintegrator.builder.TwitchUrlBuilder.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.ExpectedCount.once;
@@ -55,12 +52,6 @@ public class TwitchClientTests extends AbstractTest {
     }
 
     @Test
-    @DisplayName("When the steam client is injected with null properties, throw null pointer")
-    public void twitchClient_null_properties() {
-        assertThrows(NullPointerException.class, () -> new TwitchClient(null));
-    }
-
-    @Test
     @DisplayName("When the twitch client follower has null user id, throw null pointer")
     public void twitchClient_followers_null_userId() {
         assertThrows(NullPointerException.class, () -> twitchClient.getFollowers(null));
@@ -83,7 +74,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_OK_twitchApiUserResponse() throws JsonProcessingException {
         String channel = "123";
         TwitchApiUserResponse twitchApiUserResponse = new TwitchApiUserResponse();
-        mockServer.expect(once(), requestTo(getUserURL(channel)))
+        mockServer.expect(once(), requestTo(buildUserURL(channel).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +88,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_CLIENTERROR_twitchApiUserResponse() throws JsonProcessingException {
         String channel = "123";
         TwitchApiUserResponse twitchApiUserResponse = new TwitchApiUserResponse();
-        mockServer.expect(once(), requestTo(getUserURL(channel)))
+        mockServer.expect(once(), requestTo(buildUserURL(channel).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +102,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_SERVERERROR_twitchApiUserResponse() throws JsonProcessingException {
         String channel = "123";
         TwitchApiUserResponse twitchApiUserResponse = new TwitchApiUserResponse();
-        mockServer.expect(once(), requestTo(getUserURL(channel)))
+        mockServer.expect(once(), requestTo(buildUserURL(channel).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,7 +116,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_OK_twitchApiStreamResponse() throws JsonProcessingException {
         String channel = "123";
         TwitchApiStreamResponse twitchApiStreamResponse = new TwitchApiStreamResponse();
-        mockServer.expect(once(), requestTo(getStreamURL(channel)))
+        mockServer.expect(once(), requestTo(buildStreamURL(channel).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,7 +130,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_CLIENTERROR_twitchApiStreamResponse() throws JsonProcessingException {
         String channel = "123";
         TwitchApiStreamResponse twitchApiStreamResponse = new TwitchApiStreamResponse();
-        mockServer.expect(once(), requestTo(getStreamURL(channel)))
+        mockServer.expect(once(), requestTo(buildStreamURL(channel).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -153,7 +144,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_SERVERERROR_twitchApiStreamResponse() throws JsonProcessingException {
         String channel = "123";
         TwitchApiStreamResponse twitchApiStreamResponse = new TwitchApiStreamResponse();
-        mockServer.expect(once(), requestTo(getStreamURL(channel)))
+        mockServer.expect(once(), requestTo(buildStreamURL(channel).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -167,7 +158,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_OK_twitchApiFollowerResponse() throws JsonProcessingException {
         String userId = "123";
         TwitchApiFollowerResponse twitchApiFollowerResponse = new TwitchApiFollowerResponse();
-        mockServer.expect(once(), requestTo(getFollowersURL(userId)))
+        mockServer.expect(once(), requestTo(buildFollowersURL(userId).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -181,7 +172,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_CLIENTERROR_twitchApiFollowerResponse() throws JsonProcessingException {
         String userId = "123";
         TwitchApiFollowerResponse twitchApiFollowerResponse = new TwitchApiFollowerResponse();
-        mockServer.expect(once(), requestTo(getFollowersURL(userId)))
+        mockServer.expect(once(), requestTo(buildFollowersURL(userId).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -195,7 +186,7 @@ public class TwitchClientTests extends AbstractTest {
     public void twitchClient_with_SERVERERROR_twitchApiFollowerResponse() throws JsonProcessingException {
         String userId = "123";
         TwitchApiFollowerResponse twitchApiFollowerResponse = new TwitchApiFollowerResponse();
-        mockServer.expect(once(), requestTo(getFollowersURL(userId)))
+        mockServer.expect(once(), requestTo(buildFollowersURL(userId).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                         .contentType(MediaType.APPLICATION_JSON)

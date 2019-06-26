@@ -2,10 +2,8 @@ package com.impurity.twitchwebintegrator.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.impurity.twitchwebintegrator.client.response.SteamApiLibraryResponse;
-import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
 import com.impurity.twitchwebintegrator.exception.RestTemplateServerException;
 import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRequestException;
-import com.impurity.twitchwebintegrator.factory.SteamUrlFactory;
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 
+import static com.impurity.twitchwebintegrator.builder.SteamUrlBuilder.buildLibraryURL;
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.factory.SteamUrlFactory.getLibraryURL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.ExpectedCount.once;
@@ -50,12 +48,6 @@ public class SteamClientTests extends AbstractTest {
     }
 
     @Test
-    @DisplayName("When the steam client is injected with null properties, throw null pointer")
-    public void steamClient_null_properties() {
-        assertThrows(NullPointerException.class, () -> new SteamClient(null));
-    }
-
-    @Test
     @DisplayName("When the steam client library has null steamID, throw null pointer")
     public void steamClient_library_null_steamId() {
         assertThrows(NullPointerException.class, () -> steamClient.getLibrary(null));
@@ -66,7 +58,7 @@ public class SteamClientTests extends AbstractTest {
     public void steamClient_with_OK_steamApiLibraryResponse() throws JsonProcessingException {
         String steamId = "123";
         SteamApiLibraryResponse steamApiLibraryResponse = new SteamApiLibraryResponse();
-        mockServer.expect(once(), requestTo(getLibraryURL(steamProperties.getKey(), steamId)))
+        mockServer.expect(once(), requestTo(buildLibraryURL(steamProperties.getKey(), steamId).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +72,7 @@ public class SteamClientTests extends AbstractTest {
     public void steamClient_with_CLIENTERROR_steamApiLibraryResponse() throws JsonProcessingException {
         String steamId = "123";
         SteamApiLibraryResponse steamApiLibraryResponse = new SteamApiLibraryResponse();
-        mockServer.expect(once(), requestTo(getLibraryURL(steamProperties.getKey(), steamId)))
+        mockServer.expect(once(), requestTo(buildLibraryURL(steamProperties.getKey(), steamId).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -94,7 +86,7 @@ public class SteamClientTests extends AbstractTest {
     public void steamClient_with_SERVERERROR_steamApiLibraryResponse() throws JsonProcessingException {
         String steamId = "123";
         SteamApiLibraryResponse steamApiLibraryResponse = new SteamApiLibraryResponse();
-        mockServer.expect(once(), requestTo(getLibraryURL(steamProperties.getKey(), steamId)))
+        mockServer.expect(once(), requestTo(buildLibraryURL(steamProperties.getKey(), steamId).toUriString()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                         .contentType(MediaType.APPLICATION_JSON)

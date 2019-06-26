@@ -6,27 +6,23 @@ import com.impurity.twitchwebintegrator.exception.steam.SteamClientLibraryHttpRe
 import com.impurity.twitchwebintegrator.properties.SteamProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
-import static com.impurity.twitchwebintegrator.factory.SteamUrlFactory.getLibraryURL;
+import static com.impurity.twitchwebintegrator.builder.SteamUrlBuilder.buildLibraryURL;
 
 /**
  * @author tmk2003
  */
 @Slf4j
+@Component
 public class SteamClient extends RestTemplateClient {
-    private final SteamProperties steamProperties;
-
-    /**
-     * Create the Steam Client
-     * @param steamProperties - Required properties
-     */
-    public SteamClient(@NonNull final SteamProperties steamProperties) {
-        this.steamProperties = steamProperties;
-    }
+    @Autowired
+    private SteamProperties steamProperties;
 
     @Override
     protected HttpHeaders getHeaders() {
@@ -42,7 +38,7 @@ public class SteamClient extends RestTemplateClient {
     public ResponseEntity<SteamApiLibraryResponse> getLibrary(@NonNull final String steamID) {
         try {
             return getRequest(
-                    getLibraryURL(steamProperties.getKey(), steamID),
+                    buildLibraryURL(steamProperties.getKey(), steamID).toUriString(),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     SteamApiLibraryResponse.class
