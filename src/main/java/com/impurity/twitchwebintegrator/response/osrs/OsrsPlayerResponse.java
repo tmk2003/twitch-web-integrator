@@ -1,6 +1,7 @@
 package com.impurity.twitchwebintegrator.response.osrs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.impurity.twitchwebintegrator.domain.osrs.OsrsPlayer;
 import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
 import lombok.Data;
 
@@ -10,5 +11,5 @@ import lombok.Data;
 @Data
 public class OsrsPlayerResponse {
     @JsonProperty("player")
-    private String player;
+    private OsrsPlayer player;
 }
