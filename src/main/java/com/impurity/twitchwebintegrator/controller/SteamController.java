@@ -26,7 +26,8 @@ public class SteamController {
     @ApiOperation(value = "Returns Steam library")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The steam library was found and successfully returned"),
-            @ApiResponse(code = 404, message = "The steam library was not found")
+            @ApiResponse(code = 404, message = "The steam library was not found"),
+            @ApiResponse(code = 503, message = "The steam api is unavailable")
     })
     @GetMapping(
             value = "/users/{steamProfileId}/libraries",
@@ -44,7 +45,8 @@ public class SteamController {
     @ApiOperation(value = "Returns Steam library amount")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The steam library amount was found and successfully returned"),
-            @ApiResponse(code = 404, message = "The steam library amount was not found")
+            @ApiResponse(code = 404, message = "The steam library amount was not found"),
+            @ApiResponse(code = 503, message = "The steam api is unavailable")
     })
     @GetMapping(
             value = "/users/{steamProfileId}/libraries/total",

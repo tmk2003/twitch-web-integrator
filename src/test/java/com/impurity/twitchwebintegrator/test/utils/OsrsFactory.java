@@ -1,7 +1,11 @@
 package com.impurity.twitchwebintegrator.test.utils;
 
+import com.impurity.twitchwebintegrator.domain.osrs.OsrsPlayer;
+
+import static com.impurity.twitchwebintegrator.builder.osrs.OsrsPlayerBuilder.buildPlayer;
+
 public class OsrsFactory {
-    public static String getValidOsrsPlayerResponse() {
+    public static String getValidOsrsPlayerClientResponse() {
         return "590663,1328,39039916\n" +
                 "195711,91,6103476\n" +
                 "205897,89,5298921\n" +
@@ -36,5 +40,9 @@ public class OsrsFactory {
                 "-1,-1\n" +
                 "-1,-1\n" +
                 "-1,-1";
+    }
+
+    public static OsrsPlayer getValidOsrsPlayer(String name, String type) {
+        return buildPlayer(name, type, getValidOsrsPlayerClientResponse());
     }
 }

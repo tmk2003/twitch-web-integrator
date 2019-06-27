@@ -1,9 +1,7 @@
 package com.impurity.twitchwebintegrator.controller;
 
 import com.impurity.twitchwebintegrator.response.osrs.OsrsPlayerResponse;
-import com.impurity.twitchwebintegrator.response.steam.SteamLibraryResponse;
 import com.impurity.twitchwebintegrator.service.OsrsService;
-import com.impurity.twitchwebintegrator.service.SteamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,7 +26,8 @@ public class OsrsController {
     @ApiOperation(value = "Returns Osrs player")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The osrs player was found and successfully returned"),
-            @ApiResponse(code = 404, message = "The osrs player was not found")
+            @ApiResponse(code = 404, message = "The osrs player was not found"),
+            @ApiResponse(code = 503, message = "The osrs api is unavailable")
     })
     @GetMapping(
             value = "/players/{playerName}",

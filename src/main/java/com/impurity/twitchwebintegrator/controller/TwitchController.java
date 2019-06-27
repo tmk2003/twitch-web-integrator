@@ -28,7 +28,8 @@ public class TwitchController {
     @ApiOperation(value = "Returns Twitch User")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The twitch user was found and successfully returned"),
-            @ApiResponse(code = 404, message = "The twitch user was not found")
+            @ApiResponse(code = 404, message = "The twitch user was not found"),
+            @ApiResponse(code = 503, message = "The twitch api is unavailable")
     })
     @GetMapping(
             value = "/users/{channelName}",
@@ -46,7 +47,8 @@ public class TwitchController {
     @ApiOperation(value = "Returns Twitch Steam")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The twitch stream was found and successfully returned"),
-            @ApiResponse(code = 404, message = "The twitch stream was not found")
+            @ApiResponse(code = 404, message = "The twitch stream was not found"),
+            @ApiResponse(code = 503, message = "The twitch api is unavailable")
     })
     @GetMapping(
             value = "/users/{channelName}/streams",
@@ -64,7 +66,8 @@ public class TwitchController {
     @ApiOperation(value = "Returns Twitch User's recent followers")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The twitch recent followers were found and successfully returned"),
-            @ApiResponse(code = 404, message = "The twitch recent followers were not found")
+            @ApiResponse(code = 404, message = "The twitch recent followers were not found"),
+            @ApiResponse(code = 503, message = "The twitch api is unavailable")
     })
     @GetMapping(
             value = "/users/{channelName}/followers",
@@ -82,7 +85,8 @@ public class TwitchController {
     @ApiOperation(value = "Returns Twitch User's total follows")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The twitch user total followers were found and successfully returned"),
-            @ApiResponse(code = 404, message = "The twitch user total followers were not found")
+            @ApiResponse(code = 404, message = "The twitch user total followers were not found"),
+            @ApiResponse(code = 503, message = "The twitch api is unavailable")
     })
     @GetMapping(
             value = "/users/{channelName}/followers/total",

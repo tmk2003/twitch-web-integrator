@@ -1,8 +1,8 @@
 package com.impurity.twitchwebintegrator.client;
 
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
-import com.impurity.twitchwebintegrator.exception.osrs.OsrsItemHttpRequestException;
-import com.impurity.twitchwebintegrator.exception.osrs.OsrsPlayerHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.osrs.OsrsClientItemHttpRequestException;
+import com.impurity.twitchwebintegrator.exception.osrs.OsrsClientPlayerHttpRequestException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -42,7 +42,7 @@ public class OsrsClient extends RestTemplateClient {
             );
         } catch (RestTemplateClientException ex) {
             log.error("Osrs Client Issues: {}", ex.getMessage());
-            throw new OsrsPlayerHttpRequestException("Cannot get player", ex.getStatus(), ex);
+            throw new OsrsClientPlayerHttpRequestException("Cannot get player", ex.getStatus(), ex);
         }
     }
 
@@ -62,7 +62,7 @@ public class OsrsClient extends RestTemplateClient {
             );
         } catch (RestTemplateClientException ex) {
             log.error("Osrs Client Issues: {}", ex.getMessage());
-            throw new OsrsItemHttpRequestException("Cannot get item", ex.getStatus(), ex);
+            throw new OsrsClientItemHttpRequestException("Cannot get item", ex.getStatus(), ex);
         }
     }
 }

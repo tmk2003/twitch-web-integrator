@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 /**
  * @author tmk2003
  */
-public class OsrsPlayerHttpRequestException extends HttpRequestException {
-    private static final long serialVersionUID = -4955276495660819867L;
+public class OsrsClientItemHttpRequestException extends HttpRequestException {
+    private static final long serialVersionUID = 5869199903449373726L;
 
     /**
      * Generic Osrs Exception
@@ -16,7 +16,7 @@ public class OsrsPlayerHttpRequestException extends HttpRequestException {
      * @param status Http status
      * @param cause The causing exception
      */
-    public OsrsPlayerHttpRequestException(String message, HttpStatus status, Throwable cause) {
+    public OsrsClientItemHttpRequestException(String message, HttpStatus status, Throwable cause) {
         super(message, status, cause);
     }
 }

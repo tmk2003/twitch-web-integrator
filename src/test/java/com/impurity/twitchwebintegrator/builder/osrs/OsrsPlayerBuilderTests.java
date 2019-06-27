@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.impurity.twitchwebintegrator.builder.osrs.OsrsPlayerBuilder.buildPlayer;
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.test.utils.OsrsFactory.getValidOsrsPlayerResponse;
+import static com.impurity.twitchwebintegrator.test.utils.OsrsFactory.getValidOsrsPlayerClientResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -27,14 +27,14 @@ public class OsrsPlayerBuilderTests extends AbstractTest {
     @DisplayName("When player built, name is correct")
     public void osrsPlayer_name() {
         String name = "apples";
-        assertEquals(name, buildPlayer(name, "", getValidOsrsPlayerResponse()).getName());
+        assertEquals(name, buildPlayer(name, "", getValidOsrsPlayerClientResponse()).getName());
     }
 
     @Test
     @DisplayName("When player built, type is correct")
     public void osrsPlayer_type() {
         String type = "apples";
-        assertEquals(type, buildPlayer("", type, getValidOsrsPlayerResponse()).getType());
+        assertEquals(type, buildPlayer("", type, getValidOsrsPlayerClientResponse()).getType());
     }
 
 }
