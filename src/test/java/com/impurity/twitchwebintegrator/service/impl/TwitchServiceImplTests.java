@@ -1,16 +1,17 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
-import com.impurity.twitchwebintegrator.client.TwitchClient;
-import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiFollowerResponse;
-import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiStreamResponse;
-import com.impurity.twitchwebintegrator.client.response.twitch.TwitchApiUserResponse;
-import com.impurity.twitchwebintegrator.domain.twitch.TwitchFollower;
-import com.impurity.twitchwebintegrator.domain.twitch.TwitchStream;
-import com.impurity.twitchwebintegrator.domain.twitch.TwitchUser;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchFollowersNotFoundException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchStreamNotFoundException;
-import com.impurity.twitchwebintegrator.exception.twitch.TwitchUserNotFoundException;
+import com.impurity.twitchwebintegrator.twitch.client.TwitchClient;
+import com.impurity.twitchwebintegrator.twitch.client.response.TwitchApiFollowerResponse;
+import com.impurity.twitchwebintegrator.twitch.client.response.TwitchApiStreamResponse;
+import com.impurity.twitchwebintegrator.twitch.client.response.TwitchApiUserResponse;
+import com.impurity.twitchwebintegrator.twitch.domain.TwitchFollower;
+import com.impurity.twitchwebintegrator.twitch.domain.TwitchStream;
+import com.impurity.twitchwebintegrator.twitch.domain.TwitchUser;
+import com.impurity.twitchwebintegrator.twitch.exception.TwitchFollowersNotFoundException;
+import com.impurity.twitchwebintegrator.twitch.exception.TwitchStreamNotFoundException;
+import com.impurity.twitchwebintegrator.twitch.exception.TwitchUserNotFoundException;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
+import com.impurity.twitchwebintegrator.twitch.service.impl.TwitchServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.test.utils.TwitchFactory.*;
+import static com.impurity.twitchwebintegrator.twitch.test.utils.TwitchFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;

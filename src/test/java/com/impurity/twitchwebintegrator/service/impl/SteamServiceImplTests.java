@@ -1,10 +1,11 @@
 package com.impurity.twitchwebintegrator.service.impl;
 
-import com.impurity.twitchwebintegrator.client.SteamClient;
-import com.impurity.twitchwebintegrator.client.response.steam.SteamApiLibraryResponse;
-import com.impurity.twitchwebintegrator.domain.steam.SteamLibrary;
-import com.impurity.twitchwebintegrator.domain.steam.SteamLibraryGame;
-import com.impurity.twitchwebintegrator.exception.steam.SteamLibraryNotFoundException;
+import com.impurity.twitchwebintegrator.steam.client.SteamClient;
+import com.impurity.twitchwebintegrator.steam.client.response.SteamApiLibraryResponse;
+import com.impurity.twitchwebintegrator.steam.domain.SteamLibrary;
+import com.impurity.twitchwebintegrator.steam.domain.SteamLibraryGame;
+import com.impurity.twitchwebintegrator.steam.exception.SteamLibraryNotFoundException;
+import com.impurity.twitchwebintegrator.steam.service.impl.SteamServiceImpl;
 import com.impurity.twitchwebintegrator.test.utils.AbstractTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,7 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
-import static com.impurity.twitchwebintegrator.test.utils.SteamFactory.getValidSteamGameArray;
+import static com.impurity.twitchwebintegrator.steam.test.utils.SteamFactory.getValidSteamGameArray;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;
