@@ -22,6 +22,9 @@ public class OsrsScrollsBuilder {
      * @return The osrs scrolls with proper mapping
      */
     public static OsrsScrolls buildScrolls(@NonNull final String[] hiscores) {
+        if (hiscores.length != OsrsPlayerBuilder.HISCORE_TOTAL) {
+            throw new IllegalArgumentException("Invalid hiscores length");
+        }
         OsrsScroll[] scrolls = buildScrollsFromStringArray(
                 new String[] {
                         hiscores[OsrsHiScore.CLUE_SCROLLS.ordinal()],
@@ -50,9 +53,6 @@ public class OsrsScrollsBuilder {
      * @return The collection of scrolls
      */
     private static OsrsScroll[] buildScrollsFromStringArray(final String[] scrollValues) {
-        if (scrollValues.length != SCROLLS_TOTAL) {
-            throw new IllegalArgumentException("Invalid scrollValues length");
-        }
         OsrsScroll[] scrolls = new OsrsScroll[SCROLLS_TOTAL];
         for (int i = 0; i < scrolls.length; i++) {
             scrolls[i] = buildScrollFromString(scrollValues[i]);

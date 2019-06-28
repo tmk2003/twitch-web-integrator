@@ -23,8 +23,11 @@ public class OsrsSkillsBuilder {
      * @return The osrs skills with proper mapping
      */
     public static OsrsSkills buildSkills(@NonNull final String[] hiscores) {
+        if (hiscores.length != OsrsPlayerBuilder.HISCORE_TOTAL) {
+            throw new IllegalArgumentException("Invalid hiscores length");
+        }
         OsrsSkill[] skills = buildSkillsFromStringArray(
-                copyOfRange(hiscores, OsrsHiScore.OVERALL.ordinal(), OsrsHiScore.CONSTRUCTION.ordinal() + 1)
+                copyOfRange(hiscores, 0, OsrsHiScore.CONSTRUCTION.ordinal())
         );
         int i = -1;
         OsrsSkills osrsSkills = new OsrsSkills();
@@ -62,9 +65,6 @@ public class OsrsSkillsBuilder {
      * @return The collection of skills
      */
     private static OsrsSkill[] buildSkillsFromStringArray(final String[] skillValues) {
-        if (skillValues.length != SKILLS_TOTAL) {
-            throw new IllegalArgumentException("Invalid playerHiScores length");
-        }
         OsrsSkill[] skills = new OsrsSkill[SKILLS_TOTAL];
         for (int i = 0; i < skills.length; i++) {
             skills[i] = buildSkillFromString(skillValues[i]);

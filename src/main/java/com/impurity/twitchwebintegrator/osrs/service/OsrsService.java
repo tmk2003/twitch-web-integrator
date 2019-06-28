@@ -1,5 +1,6 @@
 package com.impurity.twitchwebintegrator.osrs.service;
 
+import com.impurity.twitchwebintegrator.osrs.domain.OsrsItem;
 import com.impurity.twitchwebintegrator.osrs.domain.OsrsPlayer;
 
 /**
@@ -9,5 +10,5 @@ public interface OsrsService {
 
     OsrsPlayer getPlayer(String playerName);
 
-    String getItem(Long item);
+    OsrsItem getItem(Long item);
 }

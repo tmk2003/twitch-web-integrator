@@ -4,6 +4,7 @@ package com.impurity.twitchwebintegrator.osrs.utils.enums;
  * @author tmk2003
  */
 public enum OsrsHiScore {
+    INVALID,
     OVERALL,
     ATTACK,
     DEFENCE,

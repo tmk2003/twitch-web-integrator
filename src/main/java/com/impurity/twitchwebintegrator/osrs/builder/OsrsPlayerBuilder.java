@@ -12,7 +12,7 @@ import static com.impurity.twitchwebintegrator.osrs.builder.OsrsSkillsBuilder.bu
  */
 public class OsrsPlayerBuilder {
     private static final String DELIMITER = "\\n";
-    private static final int HISCORE_TOTAL = 34;
+    public static final int HISCORE_TOTAL = 34;
 
     private OsrsPlayerBuilder() {}
 

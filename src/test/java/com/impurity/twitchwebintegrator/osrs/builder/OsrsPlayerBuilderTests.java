@@ -13,6 +13,7 @@ import static com.impurity.twitchwebintegrator.osrs.builder.OsrsPlayerBuilder.bu
 import static com.impurity.twitchwebintegrator.constant.Profiles.UNIT_TEST;
 import static com.impurity.twitchwebintegrator.osrs.test.utils.OsrsFactory.getValidOsrsPlayerClientResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author tmk2003
@@ -34,6 +35,30 @@ public class OsrsPlayerBuilderTests extends AbstractTest {
     public void osrsPlayer_type() {
         String type = "apples";
         assertEquals(type, buildPlayer("", type, getValidOsrsPlayerClientResponse()).getType());
+    }
+
+    @Test
+    @DisplayName("When player hi scores null, throw null pointer")
+    public void osrsPlayer_null_playerHiScores() {
+        assertThrows(NullPointerException.class, () -> buildPlayer("", "", null));
+    }
+
+    @Test
+    @DisplayName("When player type null, throw null pointer")
+    public void osrsPlayer_null_type() {
+        assertThrows(NullPointerException.class, () -> buildPlayer("", null, null));
+    }
+
+    @Test
+    @DisplayName("When player name null, throw null pointer")
+    public void osrsPlayer_null_name() {
+        assertThrows(NullPointerException.class, () -> buildPlayer(null, "", ""));
+    }
+
+    @Test
+    @DisplayName("When player hiscores invalid, throw illegal argument")
+    public void osrsPlayer_hiscores_invalidLength() {
+        assertThrows(IllegalArgumentException.class, () -> buildPlayer("", "", "123\n123\n123"));
     }
 
 }

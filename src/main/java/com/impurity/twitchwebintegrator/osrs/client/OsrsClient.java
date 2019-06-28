@@ -2,6 +2,7 @@ package com.impurity.twitchwebintegrator.osrs.client;
 
 import com.impurity.twitchwebintegrator.client.RestTemplateClient;
 import com.impurity.twitchwebintegrator.exception.RestTemplateClientException;
+import com.impurity.twitchwebintegrator.osrs.client.response.OsrsApiItemResponse;
 import com.impurity.twitchwebintegrator.osrs.exception.OsrsClientItemHttpRequestException;
 import com.impurity.twitchwebintegrator.osrs.exception.OsrsClientPlayerHttpRequestException;
 import lombok.NonNull;
@@ -30,13 +31,13 @@ public class OsrsClient extends RestTemplateClient {
     /**
      * Get a OSRS player based off he player name
      *
-     * @param player - Player name
+     * @param playerName - Player name
      * @return - Player hiscores
      */
-    public ResponseEntity<String> getPlayer(@NonNull final String player) {
+    public ResponseEntity<String> getPlayer(@NonNull final String playerName) {
         try {
             return getRequest(
-                    buildPlayerURL(player).toUriString(),
+                    buildPlayerURL(playerName).toUriString(),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
                     String.class
@@ -53,13 +54,13 @@ public class OsrsClient extends RestTemplateClient {
      * @param itemId - Item id
      * @return - Player item
      */
-    public ResponseEntity<String> getItem(@NonNull final Long itemId) {
+    public ResponseEntity<OsrsApiItemResponse> getItem(@NonNull final Long itemId) {
         try {
             return getRequest(
                     buildGrandExchangeURL(itemId).toUriString(),
                     HttpMethod.GET,
                     new HttpEntity(this.getHeaders()),
-                    String.class
+                    OsrsApiItemResponse.class
             );
         } catch (RestTemplateClientException ex) {
             log.error("Osrs Client Issues: {}", ex.getMessage());

@@ -22,6 +22,9 @@ public class OsrsMiniGameBuilder {
      * @return The osrs scrolls with proper mapping
      */
     public static OsrsMiniGames buildMiniGames(@NonNull final String[] hiscores) {
+        if (hiscores.length != OsrsPlayerBuilder.HISCORE_TOTAL) {
+            throw new IllegalArgumentException("Invalid hiscores length");
+        }
         OsrsMiniGame[] miniGames = buildMiniGamesFromStringArray(
                 new String[] {
                         hiscores[OsrsHiScore.BOUNTY_HUNTER.ordinal()],
@@ -44,9 +47,6 @@ public class OsrsMiniGameBuilder {
      * @return The collection of minigames
      */
     private static OsrsMiniGame[] buildMiniGamesFromStringArray(final String[] miniGameValues) {
-        if (miniGameValues.length != MINIGAMES_TOTAL) {
-            throw new IllegalArgumentException("Invalid miniGameValue length");
-        }
         OsrsMiniGame[] miniGames = new OsrsMiniGame[MINIGAMES_TOTAL];
         for (int i = 0; i < miniGames.length; i++) {
             miniGames[i] = buildMiniGame(miniGameValues[i]);

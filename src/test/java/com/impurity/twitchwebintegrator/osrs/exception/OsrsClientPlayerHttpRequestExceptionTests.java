@@ -24,21 +24,21 @@ public class OsrsClientPlayerHttpRequestExceptionTests extends AbstractTest {
     @DisplayName("The osrs player request exception stores message properly")
     public void captures_message() {
         String testMessage = "apples";
-        assertEquals(new OsrsClientItemHttpRequestException(testMessage, HttpStatus.SERVICE_UNAVAILABLE, new Exception()).getMessage(), testMessage);
+        assertEquals(new OsrsClientPlayerHttpRequestException(testMessage, HttpStatus.SERVICE_UNAVAILABLE, new Exception()).getMessage(), testMessage);
     }
 
     @Test
     @DisplayName("The osrs player request exception stores message properly")
     public void captures_throwable() {
         Exception testException = new Exception();
-        assertEquals(new OsrsClientItemHttpRequestException("apples", HttpStatus.SERVICE_UNAVAILABLE, testException).getCause(), testException);
+        assertEquals(new OsrsClientPlayerHttpRequestException("apples", HttpStatus.SERVICE_UNAVAILABLE, testException).getCause(), testException);
     }
 
     @Test
     @DisplayName("The osrs player request exception stores message properly")
     public void captures_status() {
         HttpStatus testStatus = HttpStatus.ACCEPTED;
-        assertEquals(new OsrsClientItemHttpRequestException("apples",testStatus, new Exception()).getStatus(), testStatus);
+        assertEquals(new OsrsClientPlayerHttpRequestException("apples",testStatus, new Exception()).getStatus(), testStatus);
     }
 }
 
